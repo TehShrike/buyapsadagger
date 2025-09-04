@@ -44,7 +44,8 @@ const parse_all_listing_pages = (): void => {
 	const html_files = fs.readdirSync(listing_pages_dir).filter(file => file.endsWith(".html"))
 	console.log(`Found ${html_files.length} HTML files to parse`)
 
-	const all_products: ProductInfo[] = []
+	const products_map = new Map<string, string>()
+	let total_products = 0
 
 	html_files.forEach(file_name => {
 		const file_path = path.join(listing_pages_dir, file_name)
@@ -55,14 +56,19 @@ const parse_all_listing_pages = (): void => {
 		const products = parse_listing_page(html_content)
 		console.log(`Found ${products.length} products`)
 
-		all_products.push(...products)
+		products.forEach(product => {
+			products_map.set(product.url, product.title)
+		})
+
+		total_products += products.length
 	})
 
-	const unique_products = all_products.filter((product, index, self) =>
-		index === self.findIndex(p => p.url === product.url)
-	)
+	const unique_products: ProductInfo[] = Array.from(products_map.entries()).map(([url, title]) => ({
+		url,
+		title
+	}))
 
-	console.log(`\nTotal products found: ${all_products.length}`)
+	console.log(`\nTotal products found: ${total_products}`)
 	console.log(`Unique products: ${unique_products.length}`)
 
 	const output_path = path.join(products_dir, "daggers.json")
