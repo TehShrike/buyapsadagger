@@ -7,7 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "download_product_listings": "node psa-parsers/download-listings.ts",
     "scrape_product_listings": "node psa-parsers/parse-listings.ts",
-    "update_daggers": "npm run download_product_listings && npm run scrape_product_listings"
+    "download_product_pages": "node psa-parsers/download-product-pages.ts",
+    "clean_html": "rm -f psa-parsers/listing-pages/*.html psa-parsers/products/*.html",
+    "update_daggers": "npm run clean_html &&npm run download_product_listings && npm run scrape_product_listings && npm run download_product_pages"
   },
   "repository": {
     "type": "git",
