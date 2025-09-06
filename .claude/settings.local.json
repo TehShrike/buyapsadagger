@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(npm run validate_products:*)",
+      "Bash(npm run parse_products:*)"
     ],
     "deny": [],
     "ask": []
