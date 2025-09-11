@@ -1,0 +1,42 @@
+- what's the difference between "custom" daggers and others?  (optic)
+- what's the "sabre"
+- difference between micro/compact/full size
+- difference between full size sc and full size sx
+- difference between compact variants
+	- sw1, sw2, sw3, sw4, swrv2, sw6
+	- compact c, compact x
+	- "extreme carry cut"
+
+next steps to parse out in a simpler version:
+- psa product name
+- psa url
+- size name (micro, compact, full_size_s)
+- width (numeric, assume inches)
+- length (numeric, assume inches)
+- height (numeric, assume inches)
+- barrel length (numeric, assume inches)
+- longer_barrel (boolean, true for all the X variants)
+- threaded barrel (boolean)
+- night sight (boolean)
+- compensated_slide (boolean)
+- slide_finish
+- optic_compatibility (none, rmr, shield rmsc)
+- has cover plate (boolean)
+- mag+bag bonus (boolean)
+- number of included mags
+
+- number the scripts so that order of operations is obvious
+- the current daggers.json should be in the psa-parsers/products directory
+- new script that reads it in and writes the simpler processed version to public
+- live Svelte component that displays items
+- checkboxes for micro/compact/full-size
+- checkboxes for extra-long barrel
+- uncheckable radio buttons rather than radio buttons with a "don't care" option?
+- checkboxes for optic compatibility (rmr, shield rmsc, don't care?)
+- checkbox for cover plate
+- download representative images for each product
+- resize the images to be small
+- sign up for PSA affiliate program
+- update the querystring on change
+- server-side render in CFW, rehydrate
+- make the checkbox buttons links for the benefit of scrapers
