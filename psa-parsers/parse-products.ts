@@ -197,10 +197,9 @@ const parse_products = async (): Promise<void> => {
 
 	const elapsed = Date.now() - start_time
 
-	const public_dir = path.join(__dirname, "..", "public", "products")
-	await fs.mkdir(public_dir, { recursive: true })
+	await fs.mkdir(products_dir, { recursive: true })
 
-	const output_file = path.join(public_dir, "daggers.json")
+	const output_file = path.join(products_dir, "daggers2.json")
 	await fs.writeFile(output_file, JSON.stringify(parsed_products, null, 2), "utf-8")
 
 	console.log(

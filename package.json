@@ -10,8 +10,9 @@
     "download_product_pages": "node psa-parsers/download-product-pages.ts",
     "parse_products": "node psa-parsers/parse-products.ts",
     "validate_products": "node psa-parsers/validate-products.ts",
+    "process_daggers_for_front_end": "node psa-parsers/process-daggers-for-front-end.ts",
     "clean_html": "rm -f psa-parsers/listing-pages/*.html psa-parsers/products/*.html",
-    "update_daggers": "npm run clean_html &&npm run download_product_listings && npm run scrape_product_listings && npm run download_product_pages"
+    "update_daggers": "npm run clean_html &&npm run download_product_listings && npm run scrape_product_listings && npm run download_product_pages && process_daggers_for_front_end"
   },
   "repository": {
     "type": "git",

@@ -4,7 +4,9 @@
       "Bash(node:*)",
       "Bash(npm run validate_products:*)",
       "Bash(npm run parse_products:*)",
-      "Bash(npm run scrape_product_listings:*)"
+      "Bash(npm run scrape_product_listings:*)",
+      "Bash(grep:*)",
+      "Bash(npm run:*)"
     ],
     "deny": [],
     "ask": []
