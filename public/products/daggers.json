@@ -17,7 +17,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 17
     },
     {
       "psa_product_name": "PSA Custom Compact Dagger RMR Pistol With Chameleon Fluted Barrel, Black",
@@ -36,7 +37,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Custom Compact Dagger RMR Pistol With Threaded DLC Barrel, Black",
@@ -55,7 +57,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Custom Compact Dagger RMR Pistol With Threaded Rose Gold Barrel, Black",
@@ -74,7 +77,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Custom Compact Dagger RMR Pistol With Threaded Stainless Barrel, Black",
@@ -93,7 +97,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Custom Compact Dagger RMR Pistol With Threaded TiN Barrel, Black",
@@ -112,7 +117,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Micro 9mm Pistol - Shield Cut With Night Sights, Black",
@@ -131,7 +137,8 @@
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": false,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm Pistol With C-1 RMR Compensated Slide, Black",
@@ -150,7 +157,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm Pistol With C-1 RMR Compensated Slide, Flat Dark Earth",
@@ -169,7 +177,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm Pistol With C-1 RMR Compensated Slide, Sniper Green",
@@ -188,7 +197,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm Pistol with Extreme Carry Cuts,  Black",
@@ -207,7 +217,8 @@
       "optic_compatibility": "none",
       "has_cover_plate": false,
       "mag_bag_bonus": false,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm Pistol With Extreme Carry Cuts, Flat Dark Earth",
@@ -226,7 +237,8 @@
       "optic_compatibility": "none",
       "has_cover_plate": false,
       "mag_bag_bonus": false,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm RMR Pistol with Extreme Carry Cuts - 2-Tone Flat Dark Earth",
@@ -245,7 +257,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm Pistol With Extreme Carry Cuts RMR Slide, Threaded Barrel - 2-Tone Sniper Green With PSA Soft Case",
@@ -264,7 +277,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm Pistol with Extreme Carry Cuts RMR Slide, Black",
@@ -283,7 +297,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm Pistol With RMR Slide, Threaded Barrel, & Suppressor Height Night Sights, Black",
@@ -302,7 +317,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm RMR Pistol W/Threaded Barrel, 10 - 15rd Magazines, & Pistol Case, Flat Dark Earth",
@@ -321,7 +337,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 10,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm Pistol With Extreme Carry Cuts, Sniper Green",
@@ -340,7 +357,8 @@
       "optic_compatibility": "none",
       "has_cover_plate": false,
       "mag_bag_bonus": false,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm Pistol With RMR Slide, Threaded Barrel, & Suppressor Height Night Sights, FDE",
@@ -359,7 +377,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm Pistol With SW1 ECC RMR Slide & Threaded Barrel w/10-15rd Mag and Bag, Sniper Green(Rear Sight Rear)",
@@ -378,7 +397,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 10,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm Pistol With SW1 Extreme Carry Cut RMR Slide & Non-Threaded Barrel, 2-Tone Flat Dark Earth",
@@ -397,7 +417,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm Pistol With SW1 Extreme Carry Cut RMR Slide & Non-Threaded Barrel, 2-Tone Sniper Green",
@@ -416,7 +437,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm Pistol With SW1 Extreme Carry Cut RMR Slide & Non-Threaded Barrel, Black",
@@ -435,7 +457,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm Pistol With SW1 Extreme Carry Cut RMR Slide & Threaded Barrel, Flat Dark Earth",
@@ -454,7 +477,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm Pistol With SW1 Extreme Carry Cut RMR Slide & Threaded Barrel, 2-Tone Sniper Green",
@@ -473,7 +497,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm Pistol With SW1 Extreme Carry Cut RMR Slide & Threaded Barrel, Black",
@@ -492,7 +517,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm Pistol With SW1 RMR Slide & Stainless Threaded Barrel, Black",
@@ -511,7 +537,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm Pistol With SW2 Extreme Carry Cut RMR Slide & Threaded Barrel, 2-Tone Flat Dark Earth",
@@ -530,7 +557,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm Pistol With SW2 Extreme Carry Cut RMR Slide & Threaded Barrel, 2-Tone Sniper Green",
@@ -549,7 +577,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm Pistol With SW2 Extreme Carry Cut RMR Slide & Threaded Barrel, Black",
@@ -568,7 +597,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm Pistol With SW2 Extreme Carry Cut RMR Slide & Threaded Barrel, Flat Dark Earth",
@@ -587,7 +617,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm Pistol With SW6 RMR Slide & Non-Threaded Barrel, Black",
@@ -606,7 +637,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": false,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm Pistol With SW6 RMR Slide & Non-Threaded Barrel, FDE",
@@ -625,7 +657,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": false,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm Pistol With SW6 RMR Slide & Stainless Non-Threaded Barrel, Black",
@@ -644,7 +677,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": false,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm Pistol With SW6 RMR Slide & Threaded Barrel, Black",
@@ -663,7 +697,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": false,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm Pistol With SWRV2 RMR Slide W/ Copper Threaded Barrel, Sniper Green",
@@ -682,7 +717,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm Pistol With SWRV2  RMR Slide & Threaded Barrel, Black",
@@ -701,7 +737,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm Pistol With SWRV2 RMR Slide & Threaded Barrel, FDE, 2-Tone (Rear Sight Rear)",
@@ -720,7 +757,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm Pistol With SWRV2 RMR Slide & Threaded Barrel, Green, 2-Tone",
@@ -739,7 +777,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm Pistol With SWRV2 RMR Slide & TiN Non-Threaded Barrel, Flat Dark Earth",
@@ -758,7 +797,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm Pistol With SWRV2 RMR Slide & TiN Non-Threaded Barrel, Sniper Green (Rear Sight Rear)",
@@ -777,7 +817,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm Pistol With  X-1 RMR Long Slide, Black",
@@ -796,7 +837,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm Pistol With X-1 RMR Long Slide, Flat Dark Earth",
@@ -815,7 +857,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm RMR Pistol w/ 10 PMAG 27rd/15rd Magazines & PSA Pistol Bag",
@@ -834,7 +877,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm RMR Pistol with Extreme Carry Cuts - Flat Dark Earth",
@@ -853,7 +897,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm RMR Pistol with Threaded Barrel, Black",
@@ -872,7 +917,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm RMR Pistol With Threaded Barrel, Flat Dark Earth",
@@ -891,7 +937,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Compact 9mm RMR Pistol With Threaded Barrel, Sniper Green",
@@ -910,7 +957,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Complete SW1 RMR Pistol W/ Gold Barrel & 10 15RD Mags, Black",
@@ -929,7 +977,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 10,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Complete SW3 RMR Pistol W/Copper Spiral Fluted Non-Threaded Barrel, Flat Dark Earth",
@@ -948,7 +997,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Full Size S 9mm Pistol With C-1 RMR Compensated Slide, Black",
@@ -967,7 +1017,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 17
     },
     {
       "psa_product_name": "PSA Dagger Full Size S 9mm Pistol With C-1 RMR Compensated Slide, Flat Dark Earth",
@@ -986,7 +1037,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 17
     },
     {
       "psa_product_name": "PSA Dagger Full Size - S 9mm Pistol With Extreme Carry Cut & Non-Threaded Barrel, Two-Tone Flat Sniper Green",
@@ -1005,7 +1057,8 @@
       "optic_compatibility": "none",
       "has_cover_plate": false,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 17
     },
     {
       "psa_product_name": "PSA Dagger Full Size - S 9mm Pistol With Extreme Carry Cut RMR Slide & Threaded Barrel, Black",
@@ -1024,7 +1077,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 17
     },
     {
       "psa_product_name": "PSA Dagger Full Size - S 9mm Pistol With Extreme Carry Cut RMR Slide & Threaded Barrel,  Two-Tone Flat Dark Earth",
@@ -1043,7 +1097,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 17
     },
     {
       "psa_product_name": "PSA Dagger Full Size - S 9mm Pistol With Extreme Carry Cut RMR Slide & Threaded Barrel, Two-Tone Sniper Green",
@@ -1062,7 +1117,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 17
     },
     {
       "psa_product_name": "PSA Dagger Full Size - S 9mm Pistol with SW1 RMR with Threaded Barrel & 10 17rd Mags & Bag, FDE (Rear Sight Rear)",
@@ -1081,7 +1137,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 10,
+      "mag_size": 17
     },
     {
       "psa_product_name": "PSA Dagger Full Size - S 9mm Pistol With SWRV2 RMR Slide & TiN Non-Threaded Barrel, Sniper Green",
@@ -1100,7 +1157,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 17
     },
     {
       "psa_product_name": "PSA Dagger Full Size - S 9mm Pistol With SWR RMR Slide W/Gold Barrel, Sniper Green With 10-17rd PMAGS & PSA Pistol Bag",
@@ -1119,7 +1177,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 17
     },
     {
       "psa_product_name": "PSA Dagger Full Size - S 9mm SW1 RMR Pistol With Threaded Barrel, Sniper Green",
@@ -1138,7 +1197,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 17
     },
     {
       "psa_product_name": "PSA Dagger Full Size - S 9mm SW2 RMR Pistol, Black",
@@ -1157,7 +1217,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 17
     },
     {
       "psa_product_name": "PSA Dagger Full Size - S 9mm SW2 RMR Pistol W/ Chameleon Threaded Barrel, Black",
@@ -1176,7 +1237,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 17
     },
     {
       "psa_product_name": "PSA Dagger Full Size - S 9mm SW3 RMR Pistol With Stainless Non-Threaded Barrel  With10 -17rd Magazines and Bag, Black",
@@ -1195,7 +1257,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 10,
+      "mag_size": 17
     },
     {
       "psa_product_name": "PSA Dagger Full Size - S 9mm Pistol With SWRV2 RMR & Gold Barrel, Flat Dark Earth",
@@ -1214,7 +1277,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 17
     },
     {
       "psa_product_name": "PSA Dagger Full Size-S , ECC, RMR, Threaded Barrel, Soft Case, With 10-17RD Mags, Black",
@@ -1233,7 +1297,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 10,
+      "mag_size": 17
     },
     {
       "psa_product_name": "PSA Dagger Full Size S 9mm Pistol With Compact X-1 RMR Long Slide, Black",
@@ -1252,7 +1317,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 17
     },
     {
       "psa_product_name": "PSA Dagger Full Size S 9mm Pistol With Compact X-1 RMR Long Slide, Flat Dark Earth",
@@ -1271,7 +1337,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 17
     },
     {
       "psa_product_name": "PSA Dagger Full Size S 9mm Pistol With Compact X-1 RMR Long Slide, Sniper Green",
@@ -1290,7 +1357,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 17
     },
     {
       "psa_product_name": "PSA Dagger Micro 9mm Pistol - Shield Cut With 5 15rd Mags & Bag, Black",
@@ -1309,7 +1377,8 @@
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 5
+      "number_of_included_mags": 5,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Micro 9mm Pistol - Shield Cut, Black",
@@ -1328,7 +1397,8 @@
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": false,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Micro 9mm Pistol - Shield Cut, FDE Slide, 2-Tone",
@@ -1347,7 +1417,8 @@
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": false,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Micro 9mm Pistol - Shield Cut, Flat Dark Earth",
@@ -1366,7 +1437,8 @@
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": false,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Micro 9mm Pistol - Shield Cut, Sniper Green Slide, 2-Tone",
@@ -1385,7 +1457,8 @@
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": false,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Micro 9mm Pistol - Shield Cut, Sniper Green",
@@ -1404,7 +1477,8 @@
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": false,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Micro 9mm Pistol - Shield Cut w/ Holosun 407k, Black",
@@ -1423,7 +1497,8 @@
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Micro 9mm Pistol - Shield Cut W/Holosun 407k, FDE Slide, 2-Tone",
@@ -1442,7 +1517,8 @@
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Micro 9mm Pistol - Shield Cut W/ Holosun 407K, Sniper Green Slide, 2-Tone",
@@ -1461,7 +1537,8 @@
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Micro 9mm Pistol - Shield Cut With Night Sights, Flat Dark Earth",
@@ -1480,7 +1557,8 @@
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": false,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Micro 9mm Pistol With Threaded Barrel - Shield Cut, Black",
@@ -1499,7 +1577,8 @@
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": false,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Micro C-1 9mm Pistol - Shield Cut, Black",
@@ -1518,7 +1597,8 @@
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": false,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Micro C-1 9mm Pistol - Shield Cut, Flat Dark Earth",
@@ -1537,7 +1617,8 @@
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": false,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Micro C-1 9mm Pistol - Shield Cut, Sniper Green",
@@ -1556,7 +1637,8 @@
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": false,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Micro C-1 9mm Pistol - Shield Cut, W/Holosun 407k, Black",
@@ -1575,7 +1657,8 @@
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Micro C-1 9mm Pistol - Shield Cut, Sniper Green Slide, 2-Tone",
@@ -1594,7 +1677,8 @@
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": false,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Micro C-1 9mm Pistol - Shield Cut, W/Holosun 407k, FDE Slide, 2-Tone",
@@ -1613,7 +1697,8 @@
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Micro C-1 9mm Pistol - Shield Cut, W/Holosun 407k, Sniper Green Slide, 2-Tone",
@@ -1632,7 +1717,8 @@
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Micro C-1 9mm Pistol - Shield Cut, FDE Slide, 2-Tone",
@@ -1651,7 +1737,8 @@
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": false,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Micro X-1 9mm Pistol - Shield Cut, Non-Threaded Barrel, Flat Dark Earth",
@@ -1670,7 +1757,8 @@
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": false,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Micro X-1 9mm Pistol - Shield Cut, Non-Threaded Barrel, Sniper Green Slide, 2-Tone",
@@ -1689,7 +1777,8 @@
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": false,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Micro X-1 9mm Pistol - Shield Cut, Non Threaded Barrel, Sniper Green",
@@ -1708,7 +1797,8 @@
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": false,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Micro X-1 9mm Pistol - Shield Cut, Non-Threaded Barrel, Black",
@@ -1727,7 +1817,8 @@
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": false,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Micro X-1 9mm Pistol - Shield Cut, Non-Threaded Barrel, FDE Slide, 2-Tone",
@@ -1746,7 +1837,8 @@
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": false,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Micro X-1 9mm Pistol -Shield Cut, Non-Threaded Barrel W/Holosun 407k, Black",
@@ -1765,7 +1857,8 @@
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Micro X-1 9mm Pistol - Shield Cut, Non-Threaded Barrel W/Holosun 407k, Two Tone, FDE Slide",
@@ -1784,7 +1877,8 @@
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 1,
+      "mag_size": 15
     },
     {
       "psa_product_name": "PSA Dagger Full Size - S 9mm ECC RMR Threaded Barrel Pistol With 10 17rd Magazines & Pistol Case, Flat Dark Earth",
@@ -1803,7 +1897,8 @@
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 10,
+      "mag_size": 17
     },
     {
       "psa_product_name": "PSA Sabre Dagger Full Size - S 9mm Pistol, Spiral Fluted Barrel, W/Mag Extensions, M81 Woodland Camo",
@@ -1822,7 +1917,8 @@
       "optic_compatibility": "none",
       "has_cover_plate": false,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 2,
+      "mag_size": 17
     },
     {
       "psa_product_name": "PSA Sabre Dagger Full Size - S 9mm Pistol, Ported Barrel, W/Mag Extensions, Black",
@@ -1841,7 +1937,8 @@
       "optic_compatibility": "none",
       "has_cover_plate": false,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 2,
+      "mag_size": 17
     },
     {
       "psa_product_name": "PSA Sabre Dagger Full Size - S 9mm Pistol, Ported Barrel, W/Mag Extensions, M81 Woodland Camo",
@@ -1860,7 +1957,8 @@
       "optic_compatibility": "none",
       "has_cover_plate": false,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 2,
+      "mag_size": 17
     },
     {
       "psa_product_name": "PSA Sabre Dagger Full Size - S 9mm Pistol, Spiral Fluted Barrel, W/Mag Extensions, Black",
@@ -1879,7 +1977,8 @@
       "optic_compatibility": "none",
       "has_cover_plate": false,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 2,
+      "mag_size": 17
     },
     {
       "psa_product_name": "PSA Sabre Dagger Full Size - S 9mm Pistol, Threaded Barrel, W/Mag Extensions, Black",
@@ -1898,7 +1997,8 @@
       "optic_compatibility": "none",
       "has_cover_plate": false,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 2,
+      "mag_size": 17
     },
     {
       "psa_product_name": "PSA Sabre Dagger Full Size - S 9mm Pistol, Threaded Barrel, W/Mag extensions, M81 Woodland Camo",
@@ -1917,7 +2017,8 @@
       "optic_compatibility": "none",
       "has_cover_plate": false,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 2,
+      "mag_size": 17
     },
     {
       "psa_product_name": "PSA Sabre Dagger Full Size - S 9mm Pistol, TiN Spiral Fluted Barrel, W/Mag Extensions, Black",
@@ -1936,7 +2037,8 @@
       "optic_compatibility": "none",
       "has_cover_plate": false,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 2,
+      "mag_size": 17
     },
     {
       "psa_product_name": "PSA Sabre Dagger Full Size - S 9mm Pistol, TiN Spiral Fluted Barrel, W/Mag Extensions, M81 Desert Camo",
@@ -1955,7 +2057,8 @@
       "optic_compatibility": "none",
       "has_cover_plate": false,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 2,
+      "mag_size": 17
     },
     {
       "psa_product_name": "PSA Sabre Dagger Full Size - S 9mm Pistol, TiN Ported Barrel, W/Mag Extensions, Black",
@@ -1974,7 +2077,8 @@
       "optic_compatibility": "none",
       "has_cover_plate": false,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 2,
+      "mag_size": 17
     },
     {
       "psa_product_name": "PSA Sabre Dagger Full Size - S 9mm Pistol, TiN Ported Barrel, W/Mag Extensions, M81 Desert Camo",
@@ -1993,7 +2097,8 @@
       "optic_compatibility": "none",
       "has_cover_plate": false,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 2,
+      "mag_size": 17
     },
     {
       "psa_product_name": "PSA Sabre Dagger Full Size - S 9mm Pistol, TiN-Threaded Barrel, W/Mag extensions, Black",
@@ -2012,7 +2117,8 @@
       "optic_compatibility": "none",
       "has_cover_plate": false,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 2,
+      "mag_size": 17
     },
     {
       "psa_product_name": "PSA Sabre Dagger Full Size - S 9mm Pistol, Tin-Threaded Barrel, W/Mag Extensions, M81 Desert Camo",
@@ -2031,7 +2137,8 @@
       "optic_compatibility": "none",
       "has_cover_plate": false,
       "mag_bag_bonus": true,
-      "number_of_included_mags": 1
+      "number_of_included_mags": 2,
+      "mag_size": 17
     }
   ],
   "slide_finishes": {

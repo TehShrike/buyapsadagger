@@ -5,7 +5,8 @@
 // Barrel Length: 3.41", 3.9", 4", 4.15", 4.5", 4.9"
 // Slide Finish: Black Cerakote, Sniper Green Cerakote, Flat Dark Earth Cerakote, Black DLC, DLC Coating
 // Optic Compatibility: none, rmr, shield_rmsc
-// Number of included mags: 1, 2, 5
+// Number of included mags: 1, 2, 5, 10
+// Magazine sizes: 15rd, 17rd
 
 import * as fs from "fs/promises"
 import * as path from "path"
@@ -39,6 +40,7 @@ type ProcessedProduct = {
 	has_cover_plate: boolean
 	mag_bag_bonus: boolean
 	number_of_included_mags: number
+	mag_size: number | null
 }
 
 const extract_numeric_value = (value: string): number => {
@@ -153,15 +155,63 @@ const has_longer_barrel = (title: string): boolean => {
 	return title_lower.includes("x-1") || title_lower.includes("x1") || title_lower.includes("long")
 }
 
-const extract_mag_count = (magazine_info: string): number => {
-	if (!magazine_info) return 1
+const extract_magazine_info = (title: string, magazine_info: string, features: string): { count: number, size: number | null } => {
+	const combined_text = (title + " " + magazine_info + " " + features).toLowerCase()
 	
-	const magazine_lower = magazine_info.toLowerCase()
-	if (magazine_lower.includes("2x") || magazine_lower.includes("two")) return 2
-	if (magazine_lower.includes("5x") || magazine_lower.includes("five")) return 5
-	if (magazine_lower.includes("10")) return 10
+	// Look for explicit magazine count patterns - only accept valid magazine sizes
+	const count_patterns = [
+		/\b(\d+)\s*[-\s]*\s*(1[57])rd\s+mag/i,  // "10 - 15rd Magazines" or "10-17rd Mag" (only 15 or 17)
+		/\bwith\s*(\d+)\s*(1[57])rd\s+mag/i,    // "With 10 17rd Mags"
+		/\b(\d+)\s*x\s*(1[57])rd/i,             // "5x 15rd"
+		/\b(\d+)\s+(1[57])rd\s+mag/i,           // "10 15RD Mags"
+		/\bwith(\d+)\s*[-\s]*\s*(1[57])rd/i     // "With10 -17rd"
+	]
 	
-	return 1
+	for (const pattern of count_patterns) {
+		const match = combined_text.match(pattern)
+		if (match) {
+			const count = parseInt(match[1])
+			const size = parseInt(match[2])
+			return { count, size }
+		}
+	}
+	
+	// Look for magazine info in the magazine field
+	if (magazine_info) {
+		const magazine_lower = magazine_info.toLowerCase()
+		
+		// Extract count
+		let count = 1
+		if (magazine_lower.includes("2 17rd magazines") || magazine_lower.includes("2x")) count = 2
+		else if (magazine_lower.includes("5x") || magazine_lower.includes("five")) count = 5
+		else if (magazine_lower.includes("10")) count = 10
+		else if (magazine_lower.includes("one (1)")) count = 1
+		
+		// Extract size - only accept valid PSA magazine sizes (15rd, 17rd)
+		let size: number | null = null
+		const size_match = magazine_info.match(/(\d+)rd/i)
+		if (size_match) {
+			const parsed_size = parseInt(size_match[1])
+			// Only accept PSA standard magazine sizes
+			if (parsed_size === 15 || parsed_size === 17) {
+				size = parsed_size
+			}
+		}
+		
+		return { count, size }
+	}
+	
+	// Look in features for magazine info as fallback
+	const features_size_match = features.match(/(\d{2})rd\s+magazine/i)
+	if (features_size_match) {
+		const parsed_size = parseInt(features_size_match[1])
+		if (parsed_size === 15 || parsed_size === 17) {
+			return { count: 1, size: parsed_size }
+		}
+	}
+	
+	// No fallback - return null if we can't determine magazine size
+	return { count: 1, size: null }
 }
 
 const has_mag_bag_bonus = (title: string, features: string, magazine_info: string): boolean => {
@@ -183,6 +233,7 @@ const process_product = (raw_product: RawProduct): ProcessedProduct => {
 	const color = normalize_color(extract_color_from_title(title))
 	const optic_compatibility = determine_optic_compatibility(title, features)
 	const magazine_info = product_details.magazine || ""
+	const mag_info = extract_magazine_info(title, magazine_info, features)
 	
 	return {
 		psa_product_name: title,
@@ -201,7 +252,8 @@ const process_product = (raw_product: RawProduct): ProcessedProduct => {
 		optic_compatibility,
 		has_cover_plate: optic_compatibility !== "none",
 		mag_bag_bonus: has_mag_bag_bonus(title, features, magazine_info),
-		number_of_included_mags: extract_mag_count(magazine_info)
+		number_of_included_mags: mag_info.count,
+		mag_size: mag_info.size
 	}
 }
 
@@ -280,7 +332,7 @@ const process_daggers_for_front_end = async (): Promise<void> => {
 		console.log(`Finish: ${sample.slide_finish ? `${sample.slide_finish} (${slide_finishes[sample.slide_finish as keyof typeof slide_finishes] || sample.slide_finish})` : "null"}`)
 		console.log(`Color: ${sample.color ? `${sample.color} (${colors[sample.color as keyof typeof colors] || sample.color})` : "null"}`)
 		console.log(`Optics: ${sample.optic_compatibility}`)
-		console.log(`Mags: ${sample.number_of_included_mags}`)
+		console.log(`Mags: ${sample.number_of_included_mags} x ${sample.mag_size ? `${sample.mag_size}rd` : "null"}`)
 	}
 	
 	console.log(`\nSlide finish mappings: ${Object.keys(slide_finishes).length} finishes available`)
