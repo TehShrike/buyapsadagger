@@ -12,7 +12,10 @@
     "4_parse_products": "node psa-parsers/4-parse-products.ts",
     "validate_products": "node psa-parsers/validate-products.ts",
     "5_process_daggers_for_front_end": "node psa-parsers/5-process-daggers-for-front-end.ts",
-    "update_daggers": "npm run 0_delete_psa_html_files && npm run 1_download_product_listings && npm run 2_scrape_product_listings && npm run 3_download_product_pages && npm run 4_parse_products && npm run 5_process_daggers_for_front_end"
+    "update_daggers": "npm run 0_delete_psa_html_files && npm run 1_download_product_listings && npm run 2_scrape_product_listings && npm run 3_download_product_pages && npm run 4_parse_products && npm run 5_process_daggers_for_front_end",
+    "dev": "run-p dev:*",
+    "dev:serve": "live-server public",
+    "dev:watch": "node esbuild.config.ts --watch"
   },
   "repository": {
     "type": "git",
@@ -32,10 +35,15 @@
   "devDependencies": {
     "@types/cheerio": "^0.22.35",
     "@types/node": "^24.3.0",
+    "esbuild": "^0.25.9",
+    "esbuild-svelte": "^0.9.3",
     "typescript": "^5.9.2"
   },
   "dependencies": {
     "cheerio": "^1.1.2",
-    "puppeteer": "^24.18.0"
+    "live-server": "^1.2.2",
+    "npm-run-all": "^4.1.5",
+    "puppeteer": "^24.18.0",
+    "svelte": "^5.38.10"
   }
 }

@@ -6,7 +6,8 @@
       "Bash(npm run parse_products:*)",
       "Bash(npm run scrape_product_listings:*)",
       "Bash(grep:*)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(pnpm run dev:*)"
     ],
     "deny": [],
     "ask": []
