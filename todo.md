@@ -1,0 +1,50 @@
+- [x] number the scripts so that order of operations is obvious
+- [x] the current daggers.json should be in the psa-parsers/products directory
+- [x] new script that reads it in and writes the simpler processed version to public
+- [ ] live Svelte component that displays items
+- [ ] checkboxes for micro/compact/full-size
+- [ ] checkboxes for extra-long barrel
+- [ ] uncheckable radio buttons rather than radio buttons with a "don't care" option?
+- [ ] checkboxes for optic compatibility (rmr, shield rmsc, don't care?)
+- [ ] checkbox for cover plate
+- [ ] download representative images for each product
+- [ ] resize the images to be small
+- [ ] sign up for PSA affiliate program
+- [ ] update the querystring on change
+- [ ] server-side render in CFW, rehydrate
+- [ ] make the checkbox buttons links for the benefit of scrapers
+
+## Output right now
+
+- psa product name
+- psa url
+- size name (micro, compact, full_size_s)
+- width (numeric, assume inches)
+- length (numeric, assume inches)
+- height (numeric, assume inches)
+- barrel length (numeric, assume inches)
+- longer_barrel (boolean, true for all the X variants)
+- threaded barrel (boolean)
+- night sight (boolean)
+- compensated_slide (boolean)
+- slide_finish
+- optic_compatibility (none, rmr, shield rmsc)
+- has cover plate (boolean)
+- mag+bag bonus (boolean)
+- number of included mags
+
+## UI
+
+Pistol size
+- Micro: It's pretty small
+- Compact: Several credit cards wider, more than half an inch longer
+- Full Size: Longer handle if you have big hands or want the extra 2 rounds per magazine
+
+- Longer barrel? Yes/No/Either: adds a little over half an inch to the barrel – makes it easier to hit what you're pointing at
+
+### Secondary
+
+- Threaded barrel: if you want to be able to stick a suppressor or flash hider or something on your gun
+- Optic compatibility: if you want to put an electronic reflex sight on your gun
+- If they chose yes
+	- Has a cover plate: if you're not going to put an electronic sight on right away

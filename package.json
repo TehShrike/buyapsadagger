@@ -5,14 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "download_product_listings": "node psa-parsers/download-listings.ts",
-    "scrape_product_listings": "node psa-parsers/parse-listings.ts",
-    "download_product_pages": "node psa-parsers/download-product-pages.ts",
-    "parse_products": "node psa-parsers/parse-products.ts",
+    "0_delete_psa_html_files": "rm -f psa-parsers/listing-pages/*.html psa-parsers/products/*.html",
+    "1_download_product_listings": "node psa-parsers/1-download-listings.ts",
+    "2_scrape_product_listings": "node psa-parsers/2-parse-listings.ts",
+    "3_download_product_pages": "node psa-parsers/3-download-product-pages.ts",
+    "4_parse_products": "node psa-parsers/4-parse-products.ts",
     "validate_products": "node psa-parsers/validate-products.ts",
-    "process_daggers_for_front_end": "node psa-parsers/process-daggers-for-front-end.ts",
-    "clean_html": "rm -f psa-parsers/listing-pages/*.html psa-parsers/products/*.html",
-    "update_daggers": "npm run clean_html &&npm run download_product_listings && npm run scrape_product_listings && npm run download_product_pages && process_daggers_for_front_end"
+    "5_process_daggers_for_front_end": "node psa-parsers/5-process-daggers-for-front-end.ts",
+    "update_daggers": "npm run 0_delete_psa_html_files && npm run 1_download_product_listings && npm run 2_scrape_product_listings && npm run 3_download_product_pages && npm run 4_parse_products && npm run 5_process_daggers_for_front_end"
   },
   "repository": {
     "type": "git",
