@@ -34,9 +34,9 @@ type ProcessedProduct = {
 	threaded_barrel: boolean
 	night_sight: boolean
 	compensated_slide: boolean
-	slide_finish: string | null
+	slide_color: string | null
 	cerakote_slide_coating: boolean
-	color: string | null
+	frame_color: string | null
 	optic_compatibility: "none" | "rmr" | "shield_rmsc"
 	has_cover_plate: boolean
 	mag_bag_bonus: boolean
@@ -56,10 +56,40 @@ const determine_size_name = (title: string, width: number, height: number): "mic
 	return "compact"
 }
 
+const apply_manual_fixes = (text: string): string => {
+	if (!text) return text
+	
+	// Manual fixes for typos and abbreviations
+	return text
+		.replace(/Sniper Greem/i, "Sniper Green")
+		.replace(/^FDE$/i, "Flat Dark Earth")
+}
+
+const strip_cerakote_from_finish = (slide_finish: string): string => {
+	if (!slide_finish) return slide_finish
+	
+	// Strip out "Cerakote" from the human-readable string
+	let cleaned = slide_finish
+		// Handle "Cerakote, [Rest of Color]" pattern
+		.replace(/^Cerakote,\s*/i, "")
+		// Handle "Cerakote [Rest of Color]" pattern (no comma)
+		.replace(/^Cerakote\s+/i, "")
+		// Handle "[Rest of Color], Cerakote" pattern
+		.replace(/,\s*Cerakote$/i, "")
+		// Handle "[Rest of Color] Cerakote" pattern  
+		.replace(/\s+Cerakote$/i, "")
+		// Handle "[Rest of Color] Cerakote Coating" pattern
+		.replace(/\s+Cerakote\s+Coating$/i, "")
+		.trim()
+	
+	// Apply manual fixes
+	return apply_manual_fixes(cleaned)
+}
+
 const normalize_slide_finish = (slide_finish: string): string | null => {
 	if (!slide_finish) return null
 	
-	// Simple normalization to snake_case
+	// Simple normalization to snake_case (no Cerakote stripping here)
 	return slide_finish
 		.toLowerCase()
 		.replace(/[^a-z0-9\s]/g, " ")  // Replace non-alphanumeric with spaces first
@@ -235,8 +265,12 @@ const process_product = (raw_product: RawProduct): ProcessedProduct => {
 	const barrel_length = extract_numeric_value(product_details.barrel_length || "")
 	
 	const size_name = determine_size_name(title, width, height)
-	const slide_finish = normalize_slide_finish(product_details.slide_finish || "")
-	const color = normalize_color(extract_color_from_title(title))
+	const original_slide_finish = product_details.slide_finish || ""
+	const stripped_slide_finish = strip_cerakote_from_finish(original_slide_finish)
+	const slide_color = normalize_slide_finish(stripped_slide_finish)
+	const original_frame_color = extract_color_from_title(title)
+	const fixed_frame_color = apply_manual_fixes(original_frame_color || "")
+	const frame_color = normalize_color(fixed_frame_color)
 	const optic_compatibility = determine_optic_compatibility(title, features)
 	const magazine_info = product_details.magazine || ""
 	const mag_info = extract_magazine_info(title, magazine_info, features)
@@ -253,9 +287,9 @@ const process_product = (raw_product: RawProduct): ProcessedProduct => {
 		threaded_barrel: has_threaded_barrel(title, product_details),
 		night_sight: has_night_sights(product_details),
 		compensated_slide: has_compensated_slide(title, features),
-		slide_finish,
-		cerakote_slide_coating: has_cerakote_coating(slide_finish),
-		color,
+		slide_color,
+		cerakote_slide_coating: has_cerakote_coating(original_slide_finish),
+		frame_color,
 		optic_compatibility,
 		has_cover_plate: optic_compatibility !== "none",
 		mag_bag_bonus: has_mag_bag_bonus(title, features, magazine_info),
@@ -281,45 +315,47 @@ const process_daggers_for_front_end = async (): Promise<void> => {
 	
 	console.log(`Processing ${raw_data.length} products...`)
 	
-	// Build slide_finishes mapping from original data before processing
-	const finish_mapping = new Map<string, string>()
-	const color_mapping = new Map<string, string>()
+	// Build slide_colors and frame_colors mappings from original data before processing
+	const slide_color_mapping = new Map<string, string>()
+	const frame_color_mapping = new Map<string, string>()
 	
 	for (const product of raw_data) {
-		// Process slide finishes
+		// Process slide colors
 		const original_finish = product.product_details.slide_finish || ""
-		const normalized_finish = normalize_slide_finish(original_finish)
+		const stripped_finish = strip_cerakote_from_finish(original_finish)
+		const normalized_slide_color = normalize_slide_finish(stripped_finish)
 		
-		if (normalized_finish && !finish_mapping.has(normalized_finish)) {
-			finish_mapping.set(normalized_finish, original_finish)
+		if (normalized_slide_color && !slide_color_mapping.has(normalized_slide_color)) {
+			slide_color_mapping.set(normalized_slide_color, stripped_finish)
 		}
 		
-		// Process colors
-		const original_color = extract_color_from_title(product.title)
-		const normalized_color = normalize_color(original_color)
+		// Process frame colors
+		const original_frame_color = extract_color_from_title(product.title)
+		const fixed_frame_color = apply_manual_fixes(original_frame_color || "")
+		const normalized_frame_color = normalize_color(fixed_frame_color)
 		
-		if (normalized_color && !color_mapping.has(normalized_color)) {
-			color_mapping.set(normalized_color, original_color!)
+		if (normalized_frame_color && !frame_color_mapping.has(normalized_frame_color)) {
+			frame_color_mapping.set(normalized_frame_color, fixed_frame_color)
 		}
 	}
 	
 	const processed_products = raw_data.map(process_product)
 	
-	// Build final slide_finishes and colors objects from the mappings
-	const slide_finishes: Record<string, string> = {}
-	for (const [normalized, original] of finish_mapping.entries()) {
-		slide_finishes[normalized] = original
+	// Build final slide_colors and frame_colors objects from the mappings
+	const slide_colors: Record<string, string> = {}
+	for (const [normalized, original] of slide_color_mapping.entries()) {
+		slide_colors[normalized] = original
 	}
 	
-	const colors: Record<string, string> = {}
-	for (const [normalized, original] of color_mapping.entries()) {
-		colors[normalized] = original
+	const frame_colors: Record<string, string> = {}
+	for (const [normalized, original] of frame_color_mapping.entries()) {
+		frame_colors[normalized] = original
 	}
 	
 	const output_data = {
 		daggers: processed_products,
-		slide_finishes,
-		colors
+		slide_colors,
+		frame_colors
 	}
 	
 	await fs.mkdir(output_dir, { recursive: true })
@@ -336,14 +372,14 @@ const process_daggers_for_front_end = async (): Promise<void> => {
 		console.log(`Size: ${sample.size_name}`)
 		console.log(`Dimensions: ${sample.width}" x ${sample.length}" x ${sample.height}"`)
 		console.log(`Barrel: ${sample.barrel_length}" ${sample.threaded_barrel ? "(threaded)" : "(non-threaded)"}`)
-		console.log(`Finish: ${sample.slide_finish ? `${sample.slide_finish} (${slide_finishes[sample.slide_finish as keyof typeof slide_finishes] || sample.slide_finish})` : "null"}`)
-		console.log(`Color: ${sample.color ? `${sample.color} (${colors[sample.color as keyof typeof colors] || sample.color})` : "null"}`)
+		console.log(`Slide Color: ${sample.slide_color ? `${sample.slide_color} (${slide_colors[sample.slide_color as keyof typeof slide_colors] || sample.slide_color})` : "null"}`)
+		console.log(`Frame Color: ${sample.frame_color ? `${sample.frame_color} (${frame_colors[sample.frame_color as keyof typeof frame_colors] || sample.frame_color})` : "null"}`)
 		console.log(`Optics: ${sample.optic_compatibility}`)
 		console.log(`Mags: ${sample.number_of_included_mags} x ${sample.mag_size ? `${sample.mag_size}rd` : "null"}`)
 	}
 	
-	console.log(`\nSlide finish mappings: ${Object.keys(slide_finishes).length} finishes available`)
-	console.log(`Color mappings: ${Object.keys(colors).length} colors available`)
+	console.log(`\nSlide color mappings: ${Object.keys(slide_colors).length} colors available`)
+	console.log(`Frame color mappings: ${Object.keys(frame_colors).length} colors available`)
 	
 	// Summary statistics
 	const size_counts = processed_products.reduce((acc, p) => {
