@@ -35,6 +35,7 @@ type ProcessedProduct = {
 	night_sight: boolean
 	compensated_slide: boolean
 	slide_finish: string | null
+	cerakote_slide_coating: boolean
 	color: string | null
 	optic_compatibility: "none" | "rmr" | "shield_rmsc"
 	has_cover_plate: boolean
@@ -220,6 +221,11 @@ const has_mag_bag_bonus = (title: string, features: string, magazine_info: strin
 		   combined_text.includes("magazine") && (combined_text.includes("10") || combined_text.includes("multiple"))
 }
 
+const has_cerakote_coating = (slide_finish: string | null): boolean => {
+	if (!slide_finish) return false
+	return slide_finish.toLowerCase().includes("cerakote")
+}
+
 const process_product = (raw_product: RawProduct): ProcessedProduct => {
 	const { title, url, product_details, features } = raw_product
 	
@@ -248,6 +254,7 @@ const process_product = (raw_product: RawProduct): ProcessedProduct => {
 		night_sight: has_night_sights(product_details),
 		compensated_slide: has_compensated_slide(title, features),
 		slide_finish,
+		cerakote_slide_coating: has_cerakote_coating(slide_finish),
 		color,
 		optic_compatibility,
 		has_cover_plate: optic_compatibility !== "none",
