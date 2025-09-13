@@ -2,11 +2,12 @@
 - [x] the current daggers.json should be in the psa-parsers/products directory
 - [x] new script that reads it in and writes the simpler processed version to public
 - [ ] live Svelte component that displays items
-- [ ] checkboxes for micro/compact/full-size
-- [ ] checkboxes for extra-long barrel
-- [ ] uncheckable radio buttons rather than radio buttons with a "don't care" option?
-- [ ] checkboxes for optic compatibility (rmr, shield rmsc, don't care?)
-- [ ] checkbox for cover plate
+- [ ] Filtering UI
+	- [ ] checkboxes for micro/compact/full-size
+	- [ ] checkboxes for extra-long barrel
+	- [ ] uncheckable radio buttons rather than radio buttons with a "don't care" option?
+	- [ ] checkboxes for optic compatibility (rmr, shield rmsc, don't care?)
+	- [ ] checkbox for cover plate
 - [ ] download representative images for each product
 - [ ] resize the images to be small
 - [ ] sign up for PSA affiliate program
