@@ -45,6 +45,8 @@ Pistol size
 ### Secondary
 
 - Threaded barrel: if you want to be able to stick a suppressor or flash hider or something on your gun
+- Night sight: they glow in the dark
 - Optic compatibility: if you want to put an electronic reflex sight on your gun
+	- Any/None/RMR/Shield RMSc
 - If they chose yes
 	- Has a cover plate: if you're not going to put an electronic sight on right away
