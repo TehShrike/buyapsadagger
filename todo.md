@@ -1,7 +1,12 @@
 - [x] number the scripts so that order of operations is obvious
 - [x] the current daggers.json should be in the psa-parsers/products directory
 - [x] new script that reads it in and writes the simpler processed version to public
-- [ ] live Svelte component that displays items
+- [x] live Svelte component that displays items
+- [ ] need to describe all the behaviors
+	- `a` element, so it's a clickable link
+	- needs to take a property/value, to determine the querystring update caused by the link
+	- needs to take whatever the current value of the property is, to determine active status
+		- or maybe just take an "active" boolean?
 - [ ] Filtering UI
 	- [ ] checkboxes for micro/compact/full-size
 	- [ ] checkboxes for extra-long barrel

@@ -1,0 +1,29 @@
+/* fakecss:/Users/joshduff/code/buyapsadagger/client/index.esbuild-svelte-fake-css */
+.container.svelte-15huzto {
+  --spacing: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  width: 100%;
+  max-width: 1200px;
+  gap: var(--spacing);
+}
+.filters-and-results.svelte-15huzto {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: var(--spacing);
+}
+@media (max-width: 800px) {
+  .filters-and-results.svelte-15huzto {
+    flex-direction: column;
+  }
+}
+.filters.svelte-15huzto {
+  width: 300px;
+}
+.results.svelte-15huzto {
+  flex: 1;
+}

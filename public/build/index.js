@@ -75,34 +75,9 @@ var STALE_REACTION = new class StaleReactionError extends Error {
     __publicField(this, "message", "The reaction that called `getAbortSignal()` was re-run or destroyed");
   }
 }();
-var ELEMENT_NODE = 1;
-var TEXT_NODE = 3;
 var COMMENT_NODE = 8;
-var DOCUMENT_FRAGMENT_NODE = 11;
 
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/errors.js
-function component_api_changed(method, component2) {
-  if (dev_fallback_default) {
-    const error = new Error(`component_api_changed
-Calling \`${method}\` on a component instance (of ${component2}) is no longer valid in Svelte 5
-https://svelte.dev/e/component_api_changed`);
-    error.name = "Svelte error";
-    throw error;
-  } else {
-    throw new Error(`https://svelte.dev/e/component_api_changed`);
-  }
-}
-function component_api_invalid_new(component2, name) {
-  if (dev_fallback_default) {
-    const error = new Error(`component_api_invalid_new
-Attempted to instantiate ${component2} with \`new ${name}\`, which is no longer valid in Svelte 5. If this component is not under your control, set the \`compatibility.componentApi\` compiler option to \`4\` to keep it working.
-https://svelte.dev/e/component_api_invalid_new`);
-    error.name = "Svelte error";
-    throw error;
-  } else {
-    throw new Error(`https://svelte.dev/e/component_api_invalid_new`);
-  }
-}
 function derived_references_self() {
   if (dev_fallback_default) {
     const error = new Error(`derived_references_self
@@ -208,7 +183,6 @@ var TEMPLATE_USE_IMPORT_NODE = 1 << 1;
 var TEMPLATE_USE_SVG = 1 << 2;
 var TEMPLATE_USE_MATHML = 1 << 3;
 var HYDRATION_START = "[";
-var HYDRATION_START_ELSE = "[!";
 var HYDRATION_END = "]";
 var HYDRATION_ERROR = {};
 var ELEMENT_PRESERVE_ATTRIBUTE_CASE = 1 << 1;
@@ -279,17 +253,6 @@ function hydrate_next() {
     /** @type {TemplateNode} */
     get_next_sibling(hydrate_node)
   );
-}
-function next(count = 1) {
-  if (hydrating) {
-    var i = count;
-    var node = hydrate_node;
-    while (i--) {
-      node = /** @type {TemplateNode} */
-      get_next_sibling(node);
-    }
-    hydrate_node = node;
-  }
 }
 
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/reactivity/equality.js
@@ -1588,26 +1551,6 @@ function get_first_child(node) {
 function get_next_sibling(node) {
   return next_sibling_getter.call(node);
 }
-function first_child(fragment, is_text) {
-  if (!hydrating) {
-    var first = (
-      /** @type {DocumentFragment} */
-      /* @__PURE__ */ get_first_child(
-        /** @type {Node} */
-        fragment
-      )
-    );
-    if (first instanceof Comment && first.data === "") return /* @__PURE__ */ get_next_sibling(first);
-    return first;
-  }
-  if (is_text && hydrate_node?.nodeType !== TEXT_NODE) {
-    var text2 = create_text();
-    hydrate_node?.before(text2);
-    set_hydrate_node(text2);
-    return text2;
-  }
-  return hydrate_node;
-}
 function clear_text_content(node) {
   node.textContent = "";
 }
@@ -2386,48 +2329,6 @@ var RUNES = (
   ]
 );
 
-// node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dev/elements.js
-function add_locations(fn, filename, locations) {
-  return (...args) => {
-    const dom = fn(...args);
-    var node = hydrating ? dom : dom.nodeType === DOCUMENT_FRAGMENT_NODE ? dom.firstChild : dom;
-    assign_locations(node, filename, locations);
-    return dom;
-  };
-}
-function assign_location(element2, filename, location) {
-  element2.__svelte_meta = {
-    parent: dev_stack,
-    loc: { file: filename, line: location[0], column: location[1] }
-  };
-  if (location[2]) {
-    assign_locations(element2.firstChild, filename, location[2]);
-  }
-}
-function assign_locations(node, filename, locations) {
-  var i = 0;
-  var depth = 0;
-  while (node && i < locations.length) {
-    if (hydrating && node.nodeType === COMMENT_NODE) {
-      var comment2 = (
-        /** @type {Comment} */
-        node
-      );
-      if (comment2.data === HYDRATION_START || comment2.data === HYDRATION_START_ELSE) depth += 1;
-      else if (comment2.data[0] === HYDRATION_END) depth -= 1;
-    }
-    if (depth === 0 && node.nodeType === ELEMENT_NODE) {
-      assign_location(
-        /** @type {Element} */
-        node,
-        filename,
-        locations[i++]
-      );
-    }
-    node = node.nextSibling;
-  }
-}
-
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dom/elements/events.js
 var all_registered_events = /* @__PURE__ */ new Set();
 var root_event_handles = /* @__PURE__ */ new Set();
@@ -2746,24 +2647,6 @@ function unmount(component2, options) {
     lifecycle_double_unmount();
   }
   return Promise.resolve();
-}
-
-// node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dev/legacy.js
-function check_target(target) {
-  if (target) {
-    component_api_invalid_new(target[FILENAME] ?? "a component", target.name);
-  }
-}
-function legacy_api() {
-  const component2 = component_context?.function;
-  function error(method) {
-    component_api_changed(method, component2[FILENAME]);
-  }
-  return {
-    $destroy: () => error("$destroy()"),
-    $on: () => error("$on(...)"),
-    $set: () => error("$set(...)")
-  };
 }
 
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/shared/attributes.js
@@ -3137,19 +3020,11 @@ if (typeof window !== "undefined") {
 enable_legacy_mode_flag();
 
 // client/index.svelte
-Client[FILENAME] = "client/index.svelte";
-var root = add_locations(from_html(`<h1></h1> <p>Welcome to Svelte</p> <p>hell yeah baby</p>`, 1), Client[FILENAME], [[5, 0], [6, 0], [7, 0]]);
-function Client($$anchor, $$props) {
-  check_target(new.target);
-  push($$props, false, Client);
+var root = from_html(`<div class="container svelte-15huzto"><div class="intro"><h1>Buy a PSA Dagger</h1> <p>First three choices go here</p></div> <div class="filters-and-results svelte-15huzto"><div class="filters svelte-15huzto"><h2>Filters</h2></div> <div class="results svelte-15huzto"><h2>Results</h2></div></div></div>`);
+function Client($$anchor) {
   let name = "world";
-  var $$exports = { ...legacy_api() };
-  var fragment = root();
-  var h1 = first_child(fragment);
-  h1.textContent = "Hello world!";
-  next(4);
-  append($$anchor, fragment);
-  return pop($$exports);
+  var div = root();
+  append($$anchor, div);
 }
 
 // client/index.ts
