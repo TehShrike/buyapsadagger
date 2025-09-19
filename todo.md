@@ -7,6 +7,7 @@
 	- needs to take a property/value, to determine the querystring update caused by the link
 	- needs to take whatever the current value of the property is, to determine active status
 		- or maybe just take an "active" boolean?
+- [ ] Get the pistol silhouettes looking reasonable in the buttons
 - [ ] Filtering UI
 	- [ ] checkboxes for micro/compact/full-size
 	- [ ] checkboxes for extra-long barrel
@@ -43,8 +44,14 @@
 
 Pistol size
 - Micro: It's pretty small
+	- barrel width: 3.41
+	- width factor: 1
 - Compact: Several credit cards wider, more than half an inch longer
+	- barrel width: 3.9
+	- width factor: 1.14369501
 - Full Size: Longer handle if you have big hands or want the extra 2 rounds per magazine
+	- barrel length: 3.9
+	- width factor: 1.14369501
 
 - Longer barrel? Yes/No/Either: adds a little over half an inch to the barrel – makes it easier to hit what you're pointing at
 
