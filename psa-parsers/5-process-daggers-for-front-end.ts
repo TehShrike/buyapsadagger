@@ -200,11 +200,15 @@ const has_threaded_barrel = (
 	const title_lower = title.toLowerCase()
 	const barrel_thread = product_details.barrel_thread || ''
 	const barrel_length = product_details.barrel_length || ''
+	const barrel_profile = product_details.barrel_profile || ''
+	const thread_pitch = product_details.thread_pitch || ''
 
 	return (
 		title_lower.includes('threaded') ||
 		barrel_thread.includes('TPI') ||
-		barrel_length.includes('TPI')
+		thread_pitch.includes('TPI') ||
+		barrel_length.includes('TPI') ||
+		barrel_profile.includes('Threaded')
 	)
 }
 

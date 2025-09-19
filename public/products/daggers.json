@@ -261,7 +261,7 @@
       "height": 4.78,
       "barrel_length": 4.5,
       "longer_barrel": false,
-      "threaded_barrel": false,
+      "threaded_barrel": true,
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "flat_dark_earth",
