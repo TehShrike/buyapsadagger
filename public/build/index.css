@@ -1,4 +1,35 @@
+/* fakecss:/Users/joshduff/code/buyapsadagger/client/RadioLink.esbuild-svelte-fake-css */
+a.svelte-eew6ub {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 12px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+a.svelte-eew6ub:hover {
+  border-color: #b0b0b0;
+}
+a.svelte-eew6ub:focus {
+  outline: 2px solid #007acc;
+  outline-offset: 2px;
+}
+a[data-active=true].svelte-eew6ub {
+  border-color: #007acc;
+  background-color: #f8f9ff;
+}
+
 /* fakecss:/Users/joshduff/code/buyapsadagger/client/index.esbuild-svelte-fake-css */
+.pistol-size.svelte-15huzto {
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacing);
+  justify-content: center;
+}
 .container.svelte-15huzto {
   --spacing: 16px;
   display: flex;
