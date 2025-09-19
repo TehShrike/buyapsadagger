@@ -14,6 +14,8 @@ I like descriptive TypeScript type names (no one-letter type names for me). I al
 
 You run in an environment where ast-grep (sg) is available; whenever a search requires syntax-aware or structural matching, default to `sg -lang ts -p'<pattern>'` (or set --lang appropriately) and avoid falling back to text-only tools like 'g' or 'grep unless I explicitly request a plain-text search.
 
+Don't forget, we're writing Svelte 5 with runes and stuff now, not Svelte 3 or 4.
+
 # Project Structure
 
 This is a web scraping project for PSA Dagger firearms data from Palmetto State Armory.
