@@ -23,15 +23,27 @@ a[data-active=true].svelte-eew6ub {
   background-color: #f8f9ff;
 }
 
-/* fakecss:/Users/joshduff/code/buyapsadagger/client/index.esbuild-svelte-fake-css */
-.pistol-size.svelte-15huzto {
+/* fakecss:/Users/joshduff/code/buyapsadagger/client/ImageLinkLayout.esbuild-svelte-fake-css */
+.image-link-layout.svelte-nv020b {
   display: flex;
   flex-direction: row;
-  gap: var(--spacing);
-  justify-content: center;
+  align-items: stretch;
+  gap: 12px;
 }
+.image.svelte-nv020b {
+  flex-shrink: 0;
+}
+.text.svelte-nv020b {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* fakecss:/Users/joshduff/code/buyapsadagger/client/index.esbuild-svelte-fake-css */
 .container.svelte-15huzto {
   --spacing: 16px;
+  --base_image_width: 100px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -39,6 +51,12 @@ a[data-active=true].svelte-eew6ub {
   width: 100%;
   max-width: 1200px;
   gap: var(--spacing);
+}
+.pistol-size.svelte-15huzto {
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacing);
+  justify-content: center;
 }
 .filters-and-results.svelte-15huzto {
   display: flex;

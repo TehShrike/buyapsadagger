@@ -976,8 +976,8 @@ var _Batch = class _Batch {
         }
       }
     }
-    for (const root3 of root_effects) {
-      __privateMethod(this, _Batch_instances, traverse_effect_tree_fn).call(this, root3);
+    for (const root4 of root_effects) {
+      __privateMethod(this, _Batch_instances, traverse_effect_tree_fn).call(this, root4);
     }
     if (__privateGet(this, _async_effects).length === 0 && __privateGet(this, _pending) === 0) {
       __privateMethod(this, _Batch_instances, commit_fn).call(this);
@@ -1127,9 +1127,9 @@ _Batch_instances = new WeakSet();
  * them for later execution as appropriate
  * @param {Effect} root
  */
-traverse_effect_tree_fn = function(root3) {
-  root3.f ^= CLEAN;
-  var effect2 = root3.first;
+traverse_effect_tree_fn = function(root4) {
+  root4.f ^= CLEAN;
+  var effect2 = root4.first;
   while (effect2 !== null) {
     var flags2 = effect2.f;
     var is_branch = (flags2 & (BRANCH_EFFECT | ROOT_EFFECT)) !== 0;
@@ -2273,7 +2273,7 @@ function is_dirty(reaction) {
   }
   return false;
 }
-function schedule_possible_effect_self_invalidation(signal, effect2, root3 = true) {
+function schedule_possible_effect_self_invalidation(signal, effect2, root4 = true) {
   var reactions = signal.reactions;
   if (reactions === null) return;
   if (!async_mode_flag && current_sources?.includes(signal)) {
@@ -2289,7 +2289,7 @@ function schedule_possible_effect_self_invalidation(signal, effect2, root3 = tru
         false
       );
     } else if (effect2 === reaction) {
-      if (root3) {
+      if (root4) {
         set_signal_status(reaction, DIRTY);
       } else if ((reaction.f & CLEAN) !== 0) {
         set_signal_status(reaction, MAYBE_DIRTY);
@@ -3666,14 +3666,37 @@ function RadioLink($$anchor, $$props) {
 }
 delegate(["click"]);
 
+// client/ImageLinkLayout.svelte
+var root2 = from_html(`<div class="image-link-layout svelte-nv020b"><div class="image svelte-nv020b"><!></div> <div class="text svelte-nv020b"><!></div></div>`);
+function ImageLinkLayout($$anchor, $$props) {
+  var div = root2();
+  var div_1 = child(div);
+  var node = child(div_1);
+  snippet(node, () => $$props.image);
+  reset(div_1);
+  var div_2 = sibling(div_1, 2);
+  var node_1 = child(div_2);
+  snippet(node_1, () => $$props.text);
+  reset(div_2);
+  reset(div);
+  append($$anchor, div);
+}
+
 // client/index.svelte
-var root_1 = from_html(`<img src="silhouettes/micro.svg" alt="Micro pistol silhouette"/> Micro`, 1);
-var root_2 = from_html(`<img src="silhouettes/compact.svg" alt="Compact pistol silhouette"/> Compact`, 1);
-var root_3 = from_html(`<img src="silhouettes/full_size_s.svg" alt="Full size pistol silhouette"/> Full Size`, 1);
-var root2 = from_html(`<div class="container svelte-15huzto"><div class="intro"><h1>Buy a PSA Dagger</h1> <div class="pistol-size svelte-15huzto"><!> <!> <!></div></div> <div class="filters-and-results svelte-15huzto"><div class="filters svelte-15huzto"><h2>Filters</h2></div> <div class="results svelte-15huzto"><h2>Results</h2></div></div></div>`);
+var root_2 = from_html(`<img src="silhouettes/micro.svg" alt="Micro pistol silhouette" style="width: var(--base_image_width);"/>`);
+var root_3 = from_html(`Micro <small>It's pretty small</small>`, 1);
+var root_5 = from_html(`<img src="silhouettes/compact.svg" alt="Compact pistol silhouette" style="width: calc(var(--base_image_width) * 1.14369501);"/>`);
+var root_6 = from_html(`Compact <small>Several credit cards wider, more than half an inch longer</small>`, 1);
+var root_8 = from_html(`<img src="silhouettes/full_size_s.svg" alt="Full size pistol silhouette" style="width: calc(var(--base_image_width) * 1.14369501);"/>`);
+var root_9 = from_html(
+  `Full Size <small>Longer handle if you have big hands or want the extra 2 rounds per
+							magazine</small>`,
+  1
+);
+var root3 = from_html(`<div class="container svelte-15huzto"><div class="intro"><h1>Buy a PSA Dagger</h1> <div class="pistol-size svelte-15huzto"><!> <!> <!></div></div> <div class="filters-and-results svelte-15huzto"><div class="filters svelte-15huzto"><h2>Filters</h2></div> <div class="results svelte-15huzto"><h2>Results</h2></div></div></div>`);
 function Client($$anchor) {
   let size = state(null);
-  var div = root2();
+  var div = root3();
   var div_1 = child(div);
   var div_2 = sibling(child(div_1), 2);
   var node = child(div_2);
@@ -3687,9 +3710,19 @@ function Client($$anchor) {
       set(size, $$value, true);
     },
     children: ($$anchor2, $$slotProps) => {
-      var fragment = root_1();
-      next();
-      append($$anchor2, fragment);
+      {
+        const image = ($$anchor3) => {
+          var img = root_2();
+          append($$anchor3, img);
+        };
+        const text2 = ($$anchor3) => {
+          next();
+          var fragment_1 = root_3();
+          next();
+          append($$anchor3, fragment_1);
+        };
+        ImageLinkLayout($$anchor2, { image, text: text2, $$slots: { image: true, text: true } });
+      }
     },
     $$slots: { default: true }
   });
@@ -3704,9 +3737,19 @@ function Client($$anchor) {
       set(size, $$value, true);
     },
     children: ($$anchor2, $$slotProps) => {
-      var fragment_1 = root_2();
-      next();
-      append($$anchor2, fragment_1);
+      {
+        const image = ($$anchor3) => {
+          var img_1 = root_5();
+          append($$anchor3, img_1);
+        };
+        const text2 = ($$anchor3) => {
+          next();
+          var fragment_3 = root_6();
+          next();
+          append($$anchor3, fragment_3);
+        };
+        ImageLinkLayout($$anchor2, { image, text: text2, $$slots: { image: true, text: true } });
+      }
     },
     $$slots: { default: true }
   });
@@ -3721,9 +3764,19 @@ function Client($$anchor) {
       set(size, $$value, true);
     },
     children: ($$anchor2, $$slotProps) => {
-      var fragment_2 = root_3();
-      next();
-      append($$anchor2, fragment_2);
+      {
+        const image = ($$anchor3) => {
+          var img_2 = root_8();
+          append($$anchor3, img_2);
+        };
+        const text2 = ($$anchor3) => {
+          next();
+          var fragment_5 = root_9();
+          next();
+          append($$anchor3, fragment_5);
+        };
+        ImageLinkLayout($$anchor2, { image, text: text2, $$slots: { image: true, text: true } });
+      }
     },
     $$slots: { default: true }
   });
