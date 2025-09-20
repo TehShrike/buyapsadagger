@@ -14,6 +14,65 @@ I like descriptive TypeScript type names (no one-letter type names for me). I al
 
 You run in an environment where ast-grep (sg) is available; whenever a search requires syntax-aware or structural matching, default to `sg -lang ts -p'<pattern>'` (or set --lang appropriately) and avoid falling back to text-only tools like 'g' or 'grep unless I explicitly request a plain-text search.
 
+# Svelte 5 State Management Best Practices
+
+## Core Runes
+- `$state()` - Creates reactive state. Use for local component state.
+- `$derived()` - Creates computed values that update when dependencies change. Use for calculations based on other state.
+- `$effect()` - Runs side effects when dependencies change. Use sparingly - prefer derived state when possible.
+- `$props()` - Declares component props. Always destructure: `let { prop1, prop2 = 'default' } = $props()`
+- `$bindable()` - Makes props two-way bindable. Use for form inputs and shared state between parent/child.
+
+## State Patterns
+- Local state: `let count = $state(0)`
+- Deep reactive objects: `let user = $state({ name: 'John', settings: { theme: 'dark' } })`
+- Non-reactive state: `let data = $state.raw(largeArray)` - use when you don't need deep reactivity
+- Computed values: `let doubled = $derived(count * 2)`
+- Complex computations: `let result = $derived.by(() => { /* complex logic */ })`
+
+## Component Communication
+- Props down: Use `$props()` with destructuring
+- Events up: Pass callback functions as props, not event dispatchers
+- Two-way binding: Use `$bindable()` for form inputs and shared state
+- Example: `let { value = $bindable(), onchange } = $props()`
+
+## Sharing State Across Components
+- Create `.svelte.js` files for shared reactive state
+- Export functions that return state, not the state directly
+- Example pattern:
+  ```js
+  // state.svelte.js
+  let count = $state(0)
+  export const get_count = () => count
+  export const set_count = (value) => { count = value }
+  export const increment = () => count++
+  ```
+
+## Effect Guidelines
+- Use `$effect()` only for side effects (DOM manipulation, network calls, subscriptions)
+- Don't update state inside effects unless absolutely necessary
+- Return cleanup functions for subscriptions/timers
+- Use `$effect.pre()` for DOM updates that need to happen before rendering
+- Use `untrack()` to exclude dependencies from tracking: `untrack(() => someState)`
+- Avoid infinite loops by using `untrack()` when reading state you also write to
+
+## Advanced State Utilities
+- `$state.raw()` - Non-reactive state for performance with large objects/arrays that won't be mutated
+- `$state.snapshot()` - Take a static snapshot of reactive state for logging or external APIs
+- `untrack()` - Read state without creating a dependency in effects/derived values
+- Reactive built-ins: Import reactive `Set`, `Map`, `Date`, `URL` from `svelte/reactivity`
+
+## Performance Tips
+- Use `$state.raw()` for large data that doesn't need reactivity
+- Use `$derived()` instead of `$effect()` for computed values (90% of the time you want derived)
+- Avoid deep nesting in reactive objects if not needed
+- Use `$state.snapshot()` when passing state to external libraries
+
+## Debugging State
+- Use `$inspect(value)` to log state changes during development
+- Use `$state.snapshot()` for one-off logging instead of `console.log(state)`
+- Browser devtools show proxies, not actual values - snapshots show real values
+
 Don't forget, we're writing Svelte 5 with runes and stuff now, not Svelte 3 or 4.
 
 # Project Structure
