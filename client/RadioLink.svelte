@@ -22,12 +22,11 @@
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
-		padding: 12px 16px;
+		padding: 12px var(--spacing);
 		border: 2px solid #e0e0e0;
 		border-radius: 8px;
 		text-decoration: none;
 		color: inherit;
-		transition: all 0.2s ease;
 		cursor: pointer;
 	}
 

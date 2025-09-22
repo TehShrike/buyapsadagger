@@ -35,7 +35,9 @@
 					{/snippet}
 					{#snippet text()}
 						Compact
-						<small>Several credit cards wider, more than half an inch longer</small>
+						<small>
+							Several credit cards wider, more than half an inch longer
+						</small>
 					{/snippet}
 				</ImageLinkLayout>
 			</RadioLink>
@@ -74,13 +76,20 @@
 		--spacing: 16px;
 		--base_image_width: 100px;
 
+		@media (max-width: 800px) {
+			--spacing: 8px;
+			--base_image_width: 80px;
+		}
+
 		display: flex;
 		flex-direction: column;
 		align-items: stretch;
 		justify-content: center;
 		width: 100%;
 		max-width: 1200px;
+		box-sizing: border-box;
 		gap: var(--spacing);
+		padding: var(--spacing);
 	}
 
 	.pistol-size {
@@ -88,6 +97,15 @@
 		flex-direction: row;
 		gap: var(--spacing);
 		justify-content: center;
+
+		& > :global(*) {
+			flex-basis: 0;
+			flex-grow: 1;
+		}
+
+		@media (max-width: 800px) {
+			flex-direction: column;
+		}
 	}
 
 	.filters-and-results {

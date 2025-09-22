@@ -15,17 +15,19 @@
 	.image-link-layout {
 		display: flex;
 		flex-direction: row;
-		align-items: stretch;
+		align-items: flex-start;
 		gap: 12px;
 	}
 
 	.image {
-		flex-shrink: 0;
+		flex-shrink: 1;
+		flex-grow: 0;
+		flex-basis: content;
 	}
 
 	.text {
-		flex: 1;
 		display: flex;
+		flex-grow: 1;
 		flex-direction: column;
 		justify-content: flex-start;
 	}
