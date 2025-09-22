@@ -78,8 +78,10 @@ var STALE_REACTION = new class StaleReactionError extends Error {
     __publicField(this, "message", "The reaction that called `getAbortSignal()` was re-run or destroyed");
   }
 }();
+var ELEMENT_NODE = 1;
 var TEXT_NODE = 3;
 var COMMENT_NODE = 8;
+var DOCUMENT_FRAGMENT_NODE = 11;
 
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/shared/errors.js
 function await_outside_boundary() {
@@ -93,6 +95,28 @@ https://svelte.dev/e/await_outside_boundary`);
     throw new Error(`https://svelte.dev/e/await_outside_boundary`);
   }
 }
+function invalid_snippet_arguments() {
+  if (dev_fallback_default) {
+    const error = new Error(`invalid_snippet_arguments
+A snippet function was passed invalid arguments. Snippets should only be instantiated via \`{@render ...}\`
+https://svelte.dev/e/invalid_snippet_arguments`);
+    error.name = "Svelte error";
+    throw error;
+  } else {
+    throw new Error(`https://svelte.dev/e/invalid_snippet_arguments`);
+  }
+}
+function snippet_without_render_tag() {
+  if (dev_fallback_default) {
+    const error = new Error(`snippet_without_render_tag
+Attempted to render a snippet without a \`{@render}\` block. This would cause the snippet code to be stringified instead of its content being rendered to the DOM. To fix this, change \`{snippet}\` to \`{@render snippet()}\`.
+https://svelte.dev/e/snippet_without_render_tag`);
+    error.name = "Svelte error";
+    throw error;
+  } else {
+    throw new Error(`https://svelte.dev/e/snippet_without_render_tag`);
+  }
+}
 
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/errors.js
 function async_derived_orphan() {
@@ -104,6 +128,28 @@ https://svelte.dev/e/async_derived_orphan`);
     throw error;
   } else {
     throw new Error(`https://svelte.dev/e/async_derived_orphan`);
+  }
+}
+function component_api_changed(method, component2) {
+  if (dev_fallback_default) {
+    const error = new Error(`component_api_changed
+Calling \`${method}\` on a component instance (of ${component2}) is no longer valid in Svelte 5
+https://svelte.dev/e/component_api_changed`);
+    error.name = "Svelte error";
+    throw error;
+  } else {
+    throw new Error(`https://svelte.dev/e/component_api_changed`);
+  }
+}
+function component_api_invalid_new(component2, name) {
+  if (dev_fallback_default) {
+    const error = new Error(`component_api_invalid_new
+Attempted to instantiate ${component2} with \`new ${name}\`, which is no longer valid in Svelte 5. If this component is not under your control, set the \`compatibility.componentApi\` compiler option to \`4\` to keep it working.
+https://svelte.dev/e/component_api_invalid_new`);
+    error.name = "Svelte error";
+    throw error;
+  } else {
+    throw new Error(`https://svelte.dev/e/component_api_invalid_new`);
   }
 }
 function derived_references_self() {
@@ -234,6 +280,7 @@ var TEMPLATE_USE_IMPORT_NODE = 1 << 1;
 var TEMPLATE_USE_SVG = 1 << 2;
 var TEMPLATE_USE_MATHML = 1 << 3;
 var HYDRATION_START = "[";
+var HYDRATION_START_ELSE = "[!";
 var HYDRATION_END = "]";
 var HYDRATION_ERROR = {};
 var ELEMENT_PRESERVE_ATTRIBUTE_CASE = 1 << 1;
@@ -414,6 +461,22 @@ function set_component_context(context) {
 var dev_stack = null;
 function set_dev_stack(stack2) {
   dev_stack = stack2;
+}
+function add_svelte_meta(callback, type, component2, line, column, additional) {
+  const parent = dev_stack;
+  dev_stack = {
+    type,
+    file: component2[FILENAME],
+    line,
+    column,
+    parent,
+    ...additional
+  };
+  try {
+    return callback();
+  } finally {
+    dev_stack = parent;
+  }
 }
 var dev_current_component_function = null;
 function set_dev_current_component_function(fn) {
@@ -1807,6 +1870,15 @@ function init_array_prototype_warnings() {
     array_prototype2.includes = includes;
   };
 }
+function strict_equals(a, b, equal = true) {
+  try {
+    if (a === b !== (get_proxied_value(a) === get_proxied_value(b))) {
+      state_proxy_equality_mismatch(equal ? "===" : "!==");
+    }
+  } catch {
+  }
+  return a === b === equal;
+}
 
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dom/operations.js
 var $window;
@@ -2700,6 +2772,48 @@ var RUNES = (
   ]
 );
 
+// node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dev/elements.js
+function add_locations(fn, filename, locations) {
+  return (...args) => {
+    const dom = fn(...args);
+    var node = hydrating ? dom : dom.nodeType === DOCUMENT_FRAGMENT_NODE ? dom.firstChild : dom;
+    assign_locations(node, filename, locations);
+    return dom;
+  };
+}
+function assign_location(element2, filename, location) {
+  element2.__svelte_meta = {
+    parent: dev_stack,
+    loc: { file: filename, line: location[0], column: location[1] }
+  };
+  if (location[2]) {
+    assign_locations(element2.firstChild, filename, location[2]);
+  }
+}
+function assign_locations(node, filename, locations) {
+  var i = 0;
+  var depth = 0;
+  while (node && i < locations.length) {
+    if (hydrating && node.nodeType === COMMENT_NODE) {
+      var comment2 = (
+        /** @type {Comment} */
+        node
+      );
+      if (comment2.data === HYDRATION_START || comment2.data === HYDRATION_START_ELSE) depth += 1;
+      else if (comment2.data[0] === HYDRATION_END) depth -= 1;
+    }
+    if (depth === 0 && node.nodeType === ELEMENT_NODE) {
+      assign_location(
+        /** @type {Element} */
+        node,
+        filename,
+        locations[i++]
+      );
+    }
+    node = node.nextSibling;
+  }
+}
+
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dom/elements/events.js
 var all_registered_events = /* @__PURE__ */ new Set();
 var root_event_handles = /* @__PURE__ */ new Set();
@@ -3028,6 +3142,45 @@ function unmount(component2, options) {
   return Promise.resolve();
 }
 
+// node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dev/legacy.js
+function check_target(target) {
+  if (target) {
+    component_api_invalid_new(target[FILENAME] ?? "a component", target.name);
+  }
+}
+function legacy_api() {
+  const component2 = component_context?.function;
+  function error(method) {
+    component_api_changed(method, component2[FILENAME]);
+  }
+  return {
+    $destroy: () => error("$destroy()"),
+    $on: () => error("$on(...)"),
+    $set: () => error("$set(...)")
+  };
+}
+
+// node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dev/validation.js
+function validate_snippet_args(anchor, ...args) {
+  if (typeof anchor !== "object" || !(anchor instanceof Node)) {
+    invalid_snippet_arguments();
+  }
+  for (let arg of args) {
+    if (typeof arg !== "function") {
+      invalid_snippet_arguments();
+    }
+  }
+}
+
+// node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/shared/validate.js
+function prevent_snippet_stringification(fn) {
+  fn.toString = () => {
+    snippet_without_render_tag();
+    return "";
+  };
+  return fn;
+}
+
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dom/blocks/snippet.js
 function snippet(node, get_snippet, ...args) {
   var anchor = node;
@@ -3050,6 +3203,19 @@ function snippet(node, get_snippet, ...args) {
   if (hydrating) {
     anchor = hydrate_node;
   }
+}
+function wrap_snippet(component2, fn) {
+  const snippet2 = (node, ...args) => {
+    var previous_component_function = dev_current_component_function;
+    set_dev_current_component_function(component2);
+    try {
+      return fn(node, ...args);
+    } finally {
+      set_dev_current_component_function(previous_component_function);
+    }
+  };
+  prevent_snippet_stringification(snippet2);
+  return snippet2;
 }
 
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/shared/attributes.js
@@ -3640,21 +3806,24 @@ var get_altered_query_string = (param, value) => {
 };
 
 // client/RadioLink.svelte
+RadioLink[FILENAME] = "client/RadioLink.svelte";
 var onclick = (event2, href, group_value, $$props) => {
   event2.preventDefault();
   history.replaceState(null, "", get(href));
   group_value($$props.name);
 };
-var root = from_html(`<a role="radio" class="svelte-eew6ub"><!></a>`);
+var root = add_locations(from_html(`<a role="radio" class="svelte-eew6ub"><!></a>`), RadioLink[FILENAME], [[16, 0]]);
 function RadioLink($$anchor, $$props) {
-  push($$props, true);
+  check_target(new.target);
+  push($$props, true, RadioLink);
   let group_value = prop($$props, "group_value", 15);
-  let active = user_derived(() => group_value() === $$props.name);
-  let href = user_derived(() => get_altered_query_string($$props.group_name, $$props.name));
+  let active = tag(user_derived(() => strict_equals(group_value(), $$props.name)), "active");
+  let href = tag(user_derived(() => get_altered_query_string($$props.group_name, $$props.name)), "href");
+  var $$exports = { ...legacy_api() };
   var a = root();
   a.__click = [onclick, href, group_value, $$props];
   var node = child(a);
-  snippet(node, () => $$props.children);
+  add_svelte_meta(() => snippet(node, () => $$props.children), "render", RadioLink, 17, 1);
   reset(a);
   template_effect(() => {
     set_attribute2(a, "href", get(href));
@@ -3662,129 +3831,179 @@ function RadioLink($$anchor, $$props) {
     set_attribute2(a, "aria-checked", get(active));
   });
   append($$anchor, a);
-  pop();
+  return pop($$exports);
 }
 delegate(["click"]);
 
 // client/ImageLinkLayout.svelte
-var root2 = from_html(`<div class="image-link-layout svelte-nv020b"><div class="image svelte-nv020b"><!></div> <div class="text svelte-nv020b"><!></div></div>`);
+ImageLinkLayout[FILENAME] = "client/ImageLinkLayout.svelte";
+var root2 = add_locations(from_html(`<div class="image-link-layout svelte-nv020b"><div class="image svelte-nv020b"><!></div> <div class="text svelte-nv020b"><!></div></div>`), ImageLinkLayout[FILENAME], [[5, 0, [[6, 1], [9, 1]]]]);
 function ImageLinkLayout($$anchor, $$props) {
+  check_target(new.target);
+  push($$props, true, ImageLinkLayout);
+  var $$exports = { ...legacy_api() };
   var div = root2();
   var div_1 = child(div);
   var node = child(div_1);
-  snippet(node, () => $$props.image);
+  add_svelte_meta(() => snippet(node, () => $$props.image), "render", ImageLinkLayout, 7, 2);
   reset(div_1);
   var div_2 = sibling(div_1, 2);
   var node_1 = child(div_2);
-  snippet(node_1, () => $$props.text);
+  add_svelte_meta(() => snippet(node_1, () => $$props.text), "render", ImageLinkLayout, 10, 2);
   reset(div_2);
   reset(div);
   append($$anchor, div);
+  return pop($$exports);
 }
 
 // client/index.svelte
-var root_2 = from_html(`<img src="silhouettes/micro.svg" alt="Micro pistol silhouette" style="width: var(--base_image_width);"/>`);
-var root_3 = from_html(`Micro <small>It's pretty small</small>`, 1);
-var root_5 = from_html(`<img src="silhouettes/compact.svg" alt="Compact pistol silhouette" style="width: calc(var(--base_image_width) * 1.14369501);"/>`);
-var root_6 = from_html(`Compact <small>Several credit cards wider, more than half an inch longer</small>`, 1);
-var root_8 = from_html(`<img src="silhouettes/full_size_s.svg" alt="Full size pistol silhouette" style="width: calc(var(--base_image_width) * 1.14369501);"/>`);
-var root_9 = from_html(
-  `Full Size <small>Longer handle if you have big hands or want the extra 2 rounds per
+Client[FILENAME] = "client/index.svelte";
+var root_2 = add_locations(from_html(`<img src="silhouettes/micro.svg" alt="Micro pistol silhouette" style="width: var(--base_image_width);"/>`), Client[FILENAME], [[15, 6]]);
+var root_3 = add_locations(from_html(`Micro <small>It's pretty small</small>`, 1), Client[FILENAME], [[23, 6]]);
+var root_5 = add_locations(from_html(`<img src="silhouettes/compact.svg" alt="Compact pistol silhouette" style="width: calc(var(--base_image_width) * 1.14369501);"/>`), Client[FILENAME], [[30, 6]]);
+var root_6 = add_locations(from_html(`Compact <small>Several credit cards wider, more than half an inch longer</small>`, 1), Client[FILENAME], [[38, 6]]);
+var root_8 = add_locations(from_html(`<img src="silhouettes/full_size_s.svg" alt="Full size pistol silhouette" style="width: calc(var(--base_image_width) * 1.14369501);"/>`), Client[FILENAME], [[47, 6]]);
+var root_9 = add_locations(
+  from_html(
+    `Full Size <small>Longer handle if you have big hands or want the extra 2 rounds per
 							magazine</small>`,
-  1
+    1
+  ),
+  Client[FILENAME],
+  [[55, 6]]
 );
-var root3 = from_html(`<div class="container svelte-15huzto"><div class="intro"><h1>Buy a PSA Dagger</h1> <div class="pistol-size svelte-15huzto"><!> <!> <!></div></div> <div class="filters-and-results svelte-15huzto"><div class="filters svelte-15huzto"><h2>Filters</h2></div> <div class="results svelte-15huzto"><h2>Results</h2></div></div></div>`);
-function Client($$anchor) {
-  let size = state(null);
+var root3 = add_locations(from_html(`<div class="container svelte-15huzto"><div class="intro"><h1>Buy a PSA Dagger</h1> <div class="pistol-size svelte-15huzto"><!> <!> <!></div></div> <div class="filters-and-results svelte-15huzto"><div class="filters svelte-15huzto"><h2>Filters</h2></div> <div class="results svelte-15huzto"><h2>Results</h2></div></div></div>`), Client[FILENAME], [
+  [
+    8,
+    0,
+    [
+      [9, 1, [[10, 2], [11, 2]]],
+      [64, 1, [[65, 2, [[66, 3]]], [68, 2, [[69, 3]]]]]
+    ]
+  ]
+]);
+function Client($$anchor, $$props) {
+  check_target(new.target);
+  push($$props, true, Client);
+  let size = tag(state(null), "size");
+  var $$exports = { ...legacy_api() };
   var div = root3();
   var div_1 = child(div);
   var div_2 = sibling(child(div_1), 2);
   var node = child(div_2);
-  RadioLink(node, {
-    group_name: "size",
-    name: "micro",
-    get group_value() {
-      return get(size);
-    },
-    set group_value($$value) {
-      set(size, $$value, true);
-    },
-    children: ($$anchor2, $$slotProps) => {
-      {
-        const image = ($$anchor3) => {
-          var img = root_2();
-          append($$anchor3, img);
-        };
-        const text2 = ($$anchor3) => {
-          next();
-          var fragment_1 = root_3();
-          next();
-          append($$anchor3, fragment_1);
-        };
-        ImageLinkLayout($$anchor2, { image, text: text2, $$slots: { image: true, text: true } });
-      }
-    },
-    $$slots: { default: true }
-  });
+  add_svelte_meta(
+    () => RadioLink(node, {
+      group_name: "size",
+      name: "micro",
+      get group_value() {
+        return get(size);
+      },
+      set group_value($$value) {
+        set(size, $$value, true);
+      },
+      children: wrap_snippet(Client, ($$anchor2, $$slotProps) => {
+        {
+          const image = wrap_snippet(Client, function($$anchor3) {
+            validate_snippet_args(...arguments);
+            var img = root_2();
+            append($$anchor3, img);
+          });
+          const text2 = wrap_snippet(Client, function($$anchor3) {
+            validate_snippet_args(...arguments);
+            next();
+            var fragment_1 = root_3();
+            next();
+            append($$anchor3, fragment_1);
+          });
+          add_svelte_meta(() => ImageLinkLayout($$anchor2, { image, text: text2, $$slots: { image: true, text: true } }), "component", Client, 13, 4, { componentTag: "ImageLinkLayout" });
+        }
+      }),
+      $$slots: { default: true }
+    }),
+    "component",
+    Client,
+    12,
+    3,
+    { componentTag: "RadioLink" }
+  );
   var node_1 = sibling(node, 2);
-  RadioLink(node_1, {
-    group_name: "size",
-    name: "compact",
-    get group_value() {
-      return get(size);
-    },
-    set group_value($$value) {
-      set(size, $$value, true);
-    },
-    children: ($$anchor2, $$slotProps) => {
-      {
-        const image = ($$anchor3) => {
-          var img_1 = root_5();
-          append($$anchor3, img_1);
-        };
-        const text2 = ($$anchor3) => {
-          next();
-          var fragment_3 = root_6();
-          next();
-          append($$anchor3, fragment_3);
-        };
-        ImageLinkLayout($$anchor2, { image, text: text2, $$slots: { image: true, text: true } });
-      }
-    },
-    $$slots: { default: true }
-  });
+  add_svelte_meta(
+    () => RadioLink(node_1, {
+      group_name: "size",
+      name: "compact",
+      get group_value() {
+        return get(size);
+      },
+      set group_value($$value) {
+        set(size, $$value, true);
+      },
+      children: wrap_snippet(Client, ($$anchor2, $$slotProps) => {
+        {
+          const image = wrap_snippet(Client, function($$anchor3) {
+            validate_snippet_args(...arguments);
+            var img_1 = root_5();
+            append($$anchor3, img_1);
+          });
+          const text2 = wrap_snippet(Client, function($$anchor3) {
+            validate_snippet_args(...arguments);
+            next();
+            var fragment_3 = root_6();
+            next();
+            append($$anchor3, fragment_3);
+          });
+          add_svelte_meta(() => ImageLinkLayout($$anchor2, { image, text: text2, $$slots: { image: true, text: true } }), "component", Client, 28, 4, { componentTag: "ImageLinkLayout" });
+        }
+      }),
+      $$slots: { default: true }
+    }),
+    "component",
+    Client,
+    27,
+    3,
+    { componentTag: "RadioLink" }
+  );
   var node_2 = sibling(node_1, 2);
-  RadioLink(node_2, {
-    group_name: "size",
-    name: "full_size_s",
-    get group_value() {
-      return get(size);
-    },
-    set group_value($$value) {
-      set(size, $$value, true);
-    },
-    children: ($$anchor2, $$slotProps) => {
-      {
-        const image = ($$anchor3) => {
-          var img_2 = root_8();
-          append($$anchor3, img_2);
-        };
-        const text2 = ($$anchor3) => {
-          next();
-          var fragment_5 = root_9();
-          next();
-          append($$anchor3, fragment_5);
-        };
-        ImageLinkLayout($$anchor2, { image, text: text2, $$slots: { image: true, text: true } });
-      }
-    },
-    $$slots: { default: true }
-  });
+  add_svelte_meta(
+    () => RadioLink(node_2, {
+      group_name: "size",
+      name: "full_size_s",
+      get group_value() {
+        return get(size);
+      },
+      set group_value($$value) {
+        set(size, $$value, true);
+      },
+      children: wrap_snippet(Client, ($$anchor2, $$slotProps) => {
+        {
+          const image = wrap_snippet(Client, function($$anchor3) {
+            validate_snippet_args(...arguments);
+            var img_2 = root_8();
+            append($$anchor3, img_2);
+          });
+          const text2 = wrap_snippet(Client, function($$anchor3) {
+            validate_snippet_args(...arguments);
+            next();
+            var fragment_5 = root_9();
+            next();
+            append($$anchor3, fragment_5);
+          });
+          add_svelte_meta(() => ImageLinkLayout($$anchor2, { image, text: text2, $$slots: { image: true, text: true } }), "component", Client, 45, 4, { componentTag: "ImageLinkLayout" });
+        }
+      }),
+      $$slots: { default: true }
+    }),
+    "component",
+    Client,
+    44,
+    3,
+    { componentTag: "RadioLink" }
+  );
   reset(div_2);
   reset(div_1);
   next(2);
   reset(div);
   append($$anchor, div);
+  return pop($$exports);
 }
 
 // client/index.ts

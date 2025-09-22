@@ -3,12 +3,11 @@ a.svelte-eew6ub {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 12px 16px;
+  padding: 12px var(--spacing);
   border: 2px solid #e0e0e0;
   border-radius: 8px;
   text-decoration: none;
   color: inherit;
-  transition: all 0.2s ease;
   cursor: pointer;
 }
 a.svelte-eew6ub:hover {
@@ -27,15 +26,17 @@ a[data-active=true].svelte-eew6ub {
 .image-link-layout.svelte-nv020b {
   display: flex;
   flex-direction: row;
-  align-items: stretch;
+  align-items: flex-start;
   gap: 12px;
 }
 .image.svelte-nv020b {
-  flex-shrink: 0;
+  flex-shrink: 1;
+  flex-grow: 0;
+  flex-basis: content;
 }
 .text.svelte-nv020b {
-  flex: 1;
   display: flex;
+  flex-grow: 1;
   flex-direction: column;
   justify-content: flex-start;
 }
@@ -44,19 +45,32 @@ a[data-active=true].svelte-eew6ub {
 .container.svelte-15huzto {
   --spacing: 16px;
   --base_image_width: 100px;
+  @media (max-width: 800px) {
+    --spacing: 8px;
+    --base_image_width: 80px;
+  }
   display: flex;
   flex-direction: column;
   align-items: stretch;
   justify-content: center;
   width: 100%;
   max-width: 1200px;
+  box-sizing: border-box;
   gap: var(--spacing);
+  padding: var(--spacing);
 }
 .pistol-size.svelte-15huzto {
   display: flex;
   flex-direction: row;
   gap: var(--spacing);
   justify-content: center;
+  & > * {
+    flex-basis: 0;
+    flex-grow: 1;
+  }
+  @media (max-width: 800px) {
+    flex-direction: column;
+  }
 }
 .filters-and-results.svelte-15huzto {
   display: flex;
