@@ -2,12 +2,12 @@
 - [x] the current daggers.json should be in the psa-parsers/products directory
 - [x] new script that reads it in and writes the simpler processed version to public
 - [x] live Svelte component that displays items
-- [ ] need to describe all the behaviors
+- [x] need to describe all the behaviors for the radio links
 	- `a` element, so it's a clickable link
 	- needs to take a property/value, to determine the querystring update caused by the link
 	- needs to take whatever the current value of the property is, to determine active status
 		- or maybe just take an "active" boolean?
-- [ ] Get the pistol silhouettes looking reasonable in the buttons
+- [x] Get the pistol silhouettes looking reasonable in the buttons
 - [ ] Filtering UI
 	- [ ] checkboxes for micro/compact/full-size
 	- [ ] checkboxes for extra-long barrel
@@ -62,4 +62,4 @@ Pistol size
 - Optic compatibility: if you want to put an electronic reflex sight on your gun
 	- Any/None/RMR/Shield RMSc
 - If they chose yes
-	- Has a cover plate: if you're not going to put an electronic sight on right away
+	- Has a cover plate: if you're not going to put an optic on right away

@@ -1,7 +1,18 @@
-<script lang="ts">
+<script lang="ts" generics="PossibleValue extends string">
 	import { get_altered_query_string } from './query_string.ts'
+	import type { Snippet } from 'svelte'
 
-	let { group_name, name, group_value = $bindable(), children } = $props()
+	let {
+		group_name,
+		name,
+		group_value = $bindable<PossibleValue>(),
+		children,
+	}: {
+		group_name: string
+		name: PossibleValue
+		group_value: PossibleValue
+		children: Snippet
+	} = $props()
 
 	let active = $derived(group_value === name)
 	let href = $derived(get_altered_query_string(group_name, name))
