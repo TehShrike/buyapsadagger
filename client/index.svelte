@@ -1,14 +1,31 @@
 <script lang="ts">
-	import type { Size } from './option_types.d.ts'
 	import PistolSizeSelector from './PistolSizeSelector.svelte'
+	import { create_querystring_store } from './querystring_store.svelte.ts'
+	import type { OpticCompatibility, Size } from './option_types.d.ts'
 
-	let size = $state<Size>('compact')
+	type TrueFalseOrAny = 'true' | 'false' | 'any'
+
+	const querystring_instance = create_querystring_store<{
+		size: Size
+		threaded_barrel: TrueFalseOrAny
+		night_sight: TrueFalseOrAny
+		optic_compatibility: OpticCompatibility
+		has_cover_plate: TrueFalseOrAny
+	}>({
+		size: 'compact',
+		threaded_barrel: 'true',
+		night_sight: 'true',
+		optic_compatibility: 'none',
+		has_cover_plate: 'true',
+	})
 </script>
 
 <div class="container">
 	<div class="intro">
 		<h1>Buy a PSA Dagger</h1>
-		<PistolSizeSelector bind:size />
+		<PistolSizeSelector
+			bind:size={querystring_instance.params_with_defaults.size}
+		/>
 	</div>
 	<div class="filters-and-results">
 		<div class="filters">
