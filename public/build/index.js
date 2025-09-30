@@ -28,6 +28,9 @@ var get_prototype_of = Object.getPrototypeOf;
 var is_extensible = Object.isExtensible;
 var noop = () => {
 };
+function run(fn) {
+  return fn();
+}
 function run_all(arr) {
   for (var i = 0; i < arr.length; i++) {
     arr[i]();
@@ -161,6 +164,39 @@ https://svelte.dev/e/derived_references_self`);
     throw error;
   } else {
     throw new Error(`https://svelte.dev/e/derived_references_self`);
+  }
+}
+function effect_in_teardown(rune) {
+  if (dev_fallback_default) {
+    const error = new Error(`effect_in_teardown
+\`${rune}\` cannot be used inside an effect cleanup function
+https://svelte.dev/e/effect_in_teardown`);
+    error.name = "Svelte error";
+    throw error;
+  } else {
+    throw new Error(`https://svelte.dev/e/effect_in_teardown`);
+  }
+}
+function effect_in_unowned_derived() {
+  if (dev_fallback_default) {
+    const error = new Error(`effect_in_unowned_derived
+Effect cannot be created inside a \`$derived\` value that was not itself created inside an effect
+https://svelte.dev/e/effect_in_unowned_derived`);
+    error.name = "Svelte error";
+    throw error;
+  } else {
+    throw new Error(`https://svelte.dev/e/effect_in_unowned_derived`);
+  }
+}
+function effect_orphan(rune) {
+  if (dev_fallback_default) {
+    const error = new Error(`effect_orphan
+\`${rune}\` can only be used inside an effect (e.g. during component initialisation)
+https://svelte.dev/e/effect_orphan`);
+    error.name = "Svelte error";
+    throw error;
+  } else {
+    throw new Error(`https://svelte.dev/e/effect_orphan`);
   }
 }
 function effect_update_depth_exceeded() {
@@ -342,6 +378,24 @@ https://svelte.dev/e/lifecycle_double_unmount`, bold, normal);
     console.warn(`https://svelte.dev/e/lifecycle_double_unmount`);
   }
 }
+function ownership_invalid_binding(parent, prop2, child2, owner) {
+  if (dev_fallback_default) {
+    console.warn(`%c[svelte] ownership_invalid_binding
+%c${parent} passed property \`${prop2}\` to ${child2} with \`bind:\`, but its parent component ${owner} did not declare \`${prop2}\` as a binding. Consider creating a binding between ${owner} and ${parent} (e.g. \`bind:${prop2}={...}\` instead of \`${prop2}={...}\`)
+https://svelte.dev/e/ownership_invalid_binding`, bold, normal);
+  } else {
+    console.warn(`https://svelte.dev/e/ownership_invalid_binding`);
+  }
+}
+function ownership_invalid_mutation(name, location, prop2, parent) {
+  if (dev_fallback_default) {
+    console.warn(`%c[svelte] ownership_invalid_mutation
+%cMutating unbound props (\`${name}\`, at ${location}) is strongly discouraged. Consider using \`bind:${prop2}={...}\` in ${parent} (or using a callback) instead
+https://svelte.dev/e/ownership_invalid_mutation`, bold, normal);
+  } else {
+    console.warn(`https://svelte.dev/e/ownership_invalid_mutation`);
+  }
+}
 function state_proxy_equality_mismatch(operator) {
   if (dev_fallback_default) {
     console.warn(`%c[svelte] state_proxy_equality_mismatch
@@ -406,6 +460,9 @@ function safe_equals(value) {
 var async_mode_flag = false;
 var legacy_mode_flag = false;
 var tracing_mode_flag = false;
+function enable_legacy_mode_flag() {
+  legacy_mode_flag = true;
+}
 
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dev/tracing.js
 var tracing_expressions = null;
@@ -1039,8 +1096,8 @@ var _Batch = class _Batch {
         }
       }
     }
-    for (const root4 of root_effects) {
-      __privateMethod(this, _Batch_instances, traverse_effect_tree_fn).call(this, root4);
+    for (const root5 of root_effects) {
+      __privateMethod(this, _Batch_instances, traverse_effect_tree_fn).call(this, root5);
     }
     if (__privateGet(this, _async_effects).length === 0 && __privateGet(this, _pending) === 0) {
       __privateMethod(this, _Batch_instances, commit_fn).call(this);
@@ -1190,9 +1247,9 @@ _Batch_instances = new WeakSet();
  * them for later execution as appropriate
  * @param {Effect} root
  */
-traverse_effect_tree_fn = function(root4) {
-  root4.f ^= CLEAN;
-  var effect2 = root4.first;
+traverse_effect_tree_fn = function(root5) {
+  root5.f ^= CLEAN;
+  var effect2 = root5.first;
   while (effect2 !== null) {
     var flags2 = effect2.f;
     var is_branch = (flags2 & (BRANCH_EFFECT | ROOT_EFFECT)) !== 0;
@@ -1416,6 +1473,13 @@ function mutable_source(initial_value, immutable = false, trackable = true) {
     ((_a2 = component_context.l).s ?? (_a2.s = [])).push(s);
   }
   return s;
+}
+function mutate(source2, value) {
+  set(
+    source2,
+    untrack(() => get(source2))
+  );
+  return value;
 }
 function set(source2, value, should_proxy = false) {
   if (active_reaction !== null && // since we are untracking the function inside `$inspect.with` we need to add this check
@@ -1989,6 +2053,17 @@ function without_reactive_context(fn) {
 }
 
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/reactivity/effects.js
+function validate_effect(rune) {
+  if (active_effect === null && active_reaction === null) {
+    effect_orphan(rune);
+  }
+  if (active_reaction !== null && (active_reaction.f & UNOWNED) !== 0 && active_effect === null) {
+    effect_in_unowned_derived();
+  }
+  if (is_destroying_effect) {
+    effect_in_teardown(rune);
+  }
+}
 function push_effect(effect2, parent_effect) {
   var parent_last = parent_effect.last;
   if (parent_last === null) {
@@ -2063,8 +2138,39 @@ function create_effect(type, fn, sync, push2 = true) {
   }
   return effect2;
 }
+function user_effect(fn) {
+  validate_effect("$effect");
+  if (dev_fallback_default) {
+    define_property(fn, "name", {
+      value: "$effect"
+    });
+  }
+  var flags2 = (
+    /** @type {Effect} */
+    active_effect.f
+  );
+  var defer = !active_reaction && (flags2 & BRANCH_EFFECT) !== 0 && (flags2 & EFFECT_RAN) === 0;
+  if (defer) {
+    var context = (
+      /** @type {ComponentContext} */
+      component_context
+    );
+    (context.e ?? (context.e = [])).push(fn);
+  } else {
+    return create_user_effect(fn);
+  }
+}
 function create_user_effect(fn) {
   return create_effect(EFFECT | USER_EFFECT, fn, false);
+}
+function user_pre_effect(fn) {
+  validate_effect("$effect.pre");
+  if (dev_fallback_default) {
+    define_property(fn, "name", {
+      value: "$effect.pre"
+    });
+  }
+  return create_effect(RENDER_EFFECT | USER_EFFECT, fn, true);
 }
 function effect_root(fn) {
   Batch.ensure();
@@ -2345,7 +2451,7 @@ function is_dirty(reaction) {
   }
   return false;
 }
-function schedule_possible_effect_self_invalidation(signal, effect2, root4 = true) {
+function schedule_possible_effect_self_invalidation(signal, effect2, root5 = true) {
   var reactions = signal.reactions;
   if (reactions === null) return;
   if (!async_mode_flag && current_sources?.includes(signal)) {
@@ -2361,7 +2467,7 @@ function schedule_possible_effect_self_invalidation(signal, effect2, root4 = tru
         false
       );
     } else if (effect2 === reaction) {
-      if (root4) {
+      if (root5) {
         set_signal_status(reaction, DIRTY);
       } else if ((reaction.f & CLEAN) !== 0) {
         set_signal_status(reaction, MAYBE_DIRTY);
@@ -2689,6 +2795,49 @@ var STATUS_MASK = ~(DIRTY | MAYBE_DIRTY | CLEAN);
 function set_signal_status(signal, status) {
   signal.f = signal.f & STATUS_MASK | status;
 }
+function deep_read_state(value) {
+  if (typeof value !== "object" || !value || value instanceof EventTarget) {
+    return;
+  }
+  if (STATE_SYMBOL in value) {
+    deep_read(value);
+  } else if (!Array.isArray(value)) {
+    for (let key2 in value) {
+      const prop2 = value[key2];
+      if (typeof prop2 === "object" && prop2 && STATE_SYMBOL in prop2) {
+        deep_read(prop2);
+      }
+    }
+  }
+}
+function deep_read(value, visited = /* @__PURE__ */ new Set()) {
+  if (typeof value === "object" && value !== null && // We don't want to traverse DOM elements
+  !(value instanceof EventTarget) && !visited.has(value)) {
+    visited.add(value);
+    if (value instanceof Date) {
+      value.getTime();
+    }
+    for (let key2 in value) {
+      try {
+        deep_read(value[key2], visited);
+      } catch (e) {
+      }
+    }
+    const proto = get_prototype_of(value);
+    if (proto !== Object.prototype && proto !== Array.prototype && proto !== Map.prototype && proto !== Set.prototype && proto !== Date.prototype) {
+      const descriptors = get_descriptors(proto);
+      for (let key2 in descriptors) {
+        const get3 = descriptors[key2].get;
+        if (get3) {
+          try {
+            get3.call(value);
+          } catch (e) {
+          }
+        }
+      }
+    }
+  }
+}
 
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/utils.js
 var DOM_BOOLEAN_ATTRIBUTES = [
@@ -2771,6 +2920,12 @@ var RUNES = (
     "$host"
   ]
 );
+function sanitize_location(location) {
+  return (
+    /** @type {T} */
+    location?.replace(/\//g, "/\u200B")
+  );
+}
 
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dev/elements.js
 function add_locations(fn, filename, locations) {
@@ -3142,6 +3297,56 @@ function unmount(component2, options) {
   return Promise.resolve();
 }
 
+// node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dev/ownership.js
+function create_ownership_validator(props) {
+  const component2 = component_context?.function;
+  const parent = component_context?.p?.function;
+  return {
+    /**
+     * @param {string} prop
+     * @param {any[]} path
+     * @param {any} result
+     * @param {number} line
+     * @param {number} column
+     */
+    mutation: (prop2, path, result, line, column) => {
+      const name = path[0];
+      if (is_bound_or_unset(props, name) || !parent) {
+        return result;
+      }
+      let value = props;
+      for (let i = 0; i < path.length - 1; i++) {
+        value = value[path[i]];
+        if (!value?.[STATE_SYMBOL]) {
+          return result;
+        }
+      }
+      const location = sanitize_location(`${component2[FILENAME]}:${line}:${column}`);
+      ownership_invalid_mutation(name, location, prop2, parent[FILENAME]);
+      return result;
+    },
+    /**
+     * @param {any} key
+     * @param {any} child_component
+     * @param {() => any} value
+     */
+    binding: (key2, child_component, value) => {
+      if (!is_bound_or_unset(props, key2) && parent && value()?.[STATE_SYMBOL]) {
+        ownership_invalid_binding(
+          component2[FILENAME],
+          key2,
+          child_component[FILENAME],
+          parent[FILENAME]
+        );
+      }
+    }
+  };
+}
+function is_bound_or_unset(props, prop_name) {
+  const is_entry_props = STATE_SYMBOL in props || LEGACY_PROPS in props;
+  return !!get_descriptor(props, prop_name)?.set || is_entry_props && prop_name in props || !(prop_name in props);
+}
+
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dev/legacy.js
 function check_target(target) {
   if (target) {
@@ -3307,6 +3512,65 @@ function srcset_url_equal(element2, srcset) {
     // contain relative or absolute URLs.
     (src_url_equal(element_urls[i][0], url) || src_url_equal(url, element_urls[i][0]))
   );
+}
+
+// node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dom/legacy/lifecycle.js
+function init(immutable = false) {
+  const context = (
+    /** @type {ComponentContextLegacy} */
+    component_context
+  );
+  const callbacks = context.l.u;
+  if (!callbacks) return;
+  let props = () => deep_read_state(context.s);
+  if (immutable) {
+    let version = 0;
+    let prev = (
+      /** @type {Record<string, any>} */
+      {}
+    );
+    const d = derived(() => {
+      let changed = false;
+      const props2 = context.s;
+      for (const key2 in props2) {
+        if (props2[key2] !== prev[key2]) {
+          prev[key2] = props2[key2];
+          changed = true;
+        }
+      }
+      if (changed) version++;
+      return version;
+    });
+    props = () => get(d);
+  }
+  if (callbacks.b.length) {
+    user_pre_effect(() => {
+      observe_all(context, props);
+      run_all(callbacks.b);
+    });
+  }
+  user_effect(() => {
+    const fns = untrack(() => callbacks.m.map(run));
+    return () => {
+      for (const fn of fns) {
+        if (typeof fn === "function") {
+          fn();
+        }
+      }
+    };
+  });
+  if (callbacks.a.length) {
+    user_effect(() => {
+      observe_all(context, props);
+      run_all(callbacks.a);
+    });
+  }
+}
+function observe_all(context, props) {
+  if (context.l.s) {
+    for (const signal of context.l.s) get(signal);
+  }
+  props();
 }
 
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/reactivity/store.js
@@ -3798,6 +4062,9 @@ if (typeof window !== "undefined") {
   ((_a = window.__svelte ?? (window.__svelte = {})).v ?? (_a.v = /* @__PURE__ */ new Set())).add(PUBLIC_VERSION);
 }
 
+// node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/flags/legacy.js
+enable_legacy_mode_flag();
+
 // client/query_string.ts
 var get_altered_query_string = (param, value) => {
   const params = new URLSearchParams(window.location.search);
@@ -3812,7 +4079,7 @@ var onclick = (event2, href, group_value, $$props) => {
   history.replaceState(null, "", get(href));
   group_value($$props.name);
 };
-var root = add_locations(from_html(`<a role="radio" class="svelte-eew6ub"><!></a>`), RadioLink[FILENAME], [[16, 0]]);
+var root = add_locations(from_html(`<a role="radio" class="svelte-eew6ub"><!></a>`), RadioLink[FILENAME], [[27, 0]]);
 function RadioLink($$anchor, $$props) {
   check_target(new.target);
   push($$props, true, RadioLink);
@@ -3823,7 +4090,7 @@ function RadioLink($$anchor, $$props) {
   var a = root();
   a.__click = [onclick, href, group_value, $$props];
   var node = child(a);
-  add_svelte_meta(() => snippet(node, () => $$props.children), "render", RadioLink, 17, 1);
+  add_svelte_meta(() => snippet(node, () => $$props.children), "render", RadioLink, 28, 1);
   reset(a);
   template_effect(() => {
     set_attribute2(a, "href", get(href));
@@ -3856,149 +4123,247 @@ function ImageLinkLayout($$anchor, $$props) {
   return pop($$exports);
 }
 
-// client/index.svelte
-Client[FILENAME] = "client/index.svelte";
-var root_2 = add_locations(from_html(`<img src="silhouettes/micro.svg" alt="Micro pistol silhouette" style="width: var(--base_image_width);"/>`), Client[FILENAME], [[15, 6]]);
-var root_3 = add_locations(from_html(`Micro <small>It's pretty small</small>`, 1), Client[FILENAME], [[23, 6]]);
-var root_5 = add_locations(from_html(`<img src="silhouettes/compact.svg" alt="Compact pistol silhouette" style="width: calc(var(--base_image_width) * 1.14369501);"/>`), Client[FILENAME], [[30, 6]]);
-var root_6 = add_locations(from_html(`Compact <small>Several credit cards wider, more than half an inch longer</small>`, 1), Client[FILENAME], [[38, 6]]);
-var root_8 = add_locations(from_html(`<img src="silhouettes/full_size_s.svg" alt="Full size pistol silhouette" style="width: calc(var(--base_image_width) * 1.14369501);"/>`), Client[FILENAME], [[47, 6]]);
+// client/PistolSizeSelector.svelte
+PistolSizeSelector[FILENAME] = "client/PistolSizeSelector.svelte";
+var root_2 = add_locations(from_html(`<img src="silhouettes/micro.svg" alt="Micro pistol silhouette" style="width: var(--base_image_width);"/>`), PistolSizeSelector[FILENAME], [[17, 4]]);
+var root_3 = add_locations(from_html(`Micro <small>It's pretty small</small>`, 1), PistolSizeSelector[FILENAME], [[25, 4]]);
+var root_5 = add_locations(from_html(`<img src="silhouettes/compact.svg" alt="Compact pistol silhouette" style="width: calc(var(--base_image_width) * 1.14369501);"/>`), PistolSizeSelector[FILENAME], [[32, 4]]);
+var root_6 = add_locations(from_html(`Compact <small>Several credit cards wider, more than half an inch longer</small>`, 1), PistolSizeSelector[FILENAME], [[40, 4]]);
+var root_8 = add_locations(from_html(`<img src="silhouettes/full_size_s.svg" alt="Full size pistol silhouette" style="width: calc(var(--base_image_width) * 1.14369501);"/>`), PistolSizeSelector[FILENAME], [[49, 4]]);
 var root_9 = add_locations(
   from_html(
     `Full Size <small>Longer handle if you have big hands or want the extra 2 rounds per
-							magazine</small>`,
+					magazine</small>`,
     1
   ),
-  Client[FILENAME],
-  [[55, 6]]
+  PistolSizeSelector[FILENAME],
+  [[57, 4]]
 );
-var root3 = add_locations(from_html(`<div class="container svelte-15huzto"><div class="intro"><h1>Buy a PSA Dagger</h1> <div class="pistol-size svelte-15huzto"><!> <!> <!></div></div> <div class="filters-and-results svelte-15huzto"><div class="filters svelte-15huzto"><h2>Filters</h2></div> <div class="results svelte-15huzto"><h2>Results</h2></div></div></div>`), Client[FILENAME], [
-  [
-    8,
-    0,
-    [
-      [9, 1, [[10, 2], [11, 2]]],
-      [64, 1, [[65, 2, [[66, 3]]], [68, 2, [[69, 3]]]]]
-    ]
-  ]
-]);
-function Client($$anchor, $$props) {
+var root3 = add_locations(from_html(`<div class="pistol-size svelte-11eufp1"><!> <!> <!></div>`), PistolSizeSelector[FILENAME], [[13, 0]]);
+function PistolSizeSelector($$anchor, $$props) {
   check_target(new.target);
-  push($$props, true, Client);
-  let size = tag(state(null), "size");
+  push($$props, true, PistolSizeSelector);
+  var $$ownership_validator = create_ownership_validator($$props);
+  let size = prop($$props, "size", 15);
   var $$exports = { ...legacy_api() };
   var div = root3();
-  var div_1 = child(div);
-  var div_2 = sibling(child(div_1), 2);
-  var node = child(div_2);
-  add_svelte_meta(
-    () => RadioLink(node, {
-      group_name: "size",
-      name: "micro",
-      get group_value() {
-        return get(size);
-      },
-      set group_value($$value) {
-        set(size, $$value, true);
-      },
-      children: wrap_snippet(Client, ($$anchor2, $$slotProps) => {
-        {
-          const image = wrap_snippet(Client, function($$anchor3) {
-            validate_snippet_args(...arguments);
-            var img = root_2();
-            append($$anchor3, img);
-          });
-          const text2 = wrap_snippet(Client, function($$anchor3) {
-            validate_snippet_args(...arguments);
-            next();
-            var fragment_1 = root_3();
-            next();
-            append($$anchor3, fragment_1);
-          });
-          add_svelte_meta(() => ImageLinkLayout($$anchor2, { image, text: text2, $$slots: { image: true, text: true } }), "component", Client, 13, 4, { componentTag: "ImageLinkLayout" });
-        }
+  var node = child(div);
+  {
+    $$ownership_validator.binding("size", RadioLink, size);
+    add_svelte_meta(
+      () => RadioLink(node, {
+        group_name: "size",
+        name: "micro",
+        get group_value() {
+          return size();
+        },
+        set group_value($$value) {
+          size($$value);
+        },
+        children: wrap_snippet(PistolSizeSelector, ($$anchor2, $$slotProps) => {
+          {
+            const image = wrap_snippet(PistolSizeSelector, function($$anchor3) {
+              validate_snippet_args(...arguments);
+              var img = root_2();
+              append($$anchor3, img);
+            });
+            const text2 = wrap_snippet(PistolSizeSelector, function($$anchor3) {
+              validate_snippet_args(...arguments);
+              next();
+              var fragment_1 = root_3();
+              next();
+              append($$anchor3, fragment_1);
+            });
+            add_svelte_meta(() => ImageLinkLayout($$anchor2, { image, text: text2, $$slots: { image: true, text: true } }), "component", PistolSizeSelector, 15, 2, { componentTag: "ImageLinkLayout" });
+          }
+        }),
+        $$slots: { default: true }
       }),
-      $$slots: { default: true }
-    }),
-    "component",
-    Client,
-    12,
-    3,
-    { componentTag: "RadioLink" }
-  );
+      "component",
+      PistolSizeSelector,
+      14,
+      1,
+      { componentTag: "RadioLink" }
+    );
+  }
   var node_1 = sibling(node, 2);
-  add_svelte_meta(
-    () => RadioLink(node_1, {
-      group_name: "size",
-      name: "compact",
-      get group_value() {
-        return get(size);
-      },
-      set group_value($$value) {
-        set(size, $$value, true);
-      },
-      children: wrap_snippet(Client, ($$anchor2, $$slotProps) => {
-        {
-          const image = wrap_snippet(Client, function($$anchor3) {
-            validate_snippet_args(...arguments);
-            var img_1 = root_5();
-            append($$anchor3, img_1);
-          });
-          const text2 = wrap_snippet(Client, function($$anchor3) {
-            validate_snippet_args(...arguments);
-            next();
-            var fragment_3 = root_6();
-            next();
-            append($$anchor3, fragment_3);
-          });
-          add_svelte_meta(() => ImageLinkLayout($$anchor2, { image, text: text2, $$slots: { image: true, text: true } }), "component", Client, 28, 4, { componentTag: "ImageLinkLayout" });
-        }
+  {
+    $$ownership_validator.binding("size", RadioLink, size);
+    add_svelte_meta(
+      () => RadioLink(node_1, {
+        group_name: "size",
+        name: "compact",
+        get group_value() {
+          return size();
+        },
+        set group_value($$value) {
+          size($$value);
+        },
+        children: wrap_snippet(PistolSizeSelector, ($$anchor2, $$slotProps) => {
+          {
+            const image = wrap_snippet(PistolSizeSelector, function($$anchor3) {
+              validate_snippet_args(...arguments);
+              var img_1 = root_5();
+              append($$anchor3, img_1);
+            });
+            const text2 = wrap_snippet(PistolSizeSelector, function($$anchor3) {
+              validate_snippet_args(...arguments);
+              next();
+              var fragment_3 = root_6();
+              next();
+              append($$anchor3, fragment_3);
+            });
+            add_svelte_meta(() => ImageLinkLayout($$anchor2, { image, text: text2, $$slots: { image: true, text: true } }), "component", PistolSizeSelector, 30, 2, { componentTag: "ImageLinkLayout" });
+          }
+        }),
+        $$slots: { default: true }
       }),
-      $$slots: { default: true }
-    }),
-    "component",
-    Client,
-    27,
-    3,
-    { componentTag: "RadioLink" }
-  );
+      "component",
+      PistolSizeSelector,
+      29,
+      1,
+      { componentTag: "RadioLink" }
+    );
+  }
   var node_2 = sibling(node_1, 2);
-  add_svelte_meta(
-    () => RadioLink(node_2, {
-      group_name: "size",
-      name: "full_size_s",
-      get group_value() {
-        return get(size);
-      },
-      set group_value($$value) {
-        set(size, $$value, true);
-      },
-      children: wrap_snippet(Client, ($$anchor2, $$slotProps) => {
-        {
-          const image = wrap_snippet(Client, function($$anchor3) {
-            validate_snippet_args(...arguments);
-            var img_2 = root_8();
-            append($$anchor3, img_2);
-          });
-          const text2 = wrap_snippet(Client, function($$anchor3) {
-            validate_snippet_args(...arguments);
-            next();
-            var fragment_5 = root_9();
-            next();
-            append($$anchor3, fragment_5);
-          });
-          add_svelte_meta(() => ImageLinkLayout($$anchor2, { image, text: text2, $$slots: { image: true, text: true } }), "component", Client, 45, 4, { componentTag: "ImageLinkLayout" });
-        }
+  {
+    $$ownership_validator.binding("size", RadioLink, size);
+    add_svelte_meta(
+      () => RadioLink(node_2, {
+        group_name: "size",
+        name: "full_size_s",
+        get group_value() {
+          return size();
+        },
+        set group_value($$value) {
+          size($$value);
+        },
+        children: wrap_snippet(PistolSizeSelector, ($$anchor2, $$slotProps) => {
+          {
+            const image = wrap_snippet(PistolSizeSelector, function($$anchor3) {
+              validate_snippet_args(...arguments);
+              var img_2 = root_8();
+              append($$anchor3, img_2);
+            });
+            const text2 = wrap_snippet(PistolSizeSelector, function($$anchor3) {
+              validate_snippet_args(...arguments);
+              next();
+              var fragment_5 = root_9();
+              next();
+              append($$anchor3, fragment_5);
+            });
+            add_svelte_meta(() => ImageLinkLayout($$anchor2, { image, text: text2, $$slots: { image: true, text: true } }), "component", PistolSizeSelector, 47, 2, { componentTag: "ImageLinkLayout" });
+          }
+        }),
+        $$slots: { default: true }
       }),
-      $$slots: { default: true }
+      "component",
+      PistolSizeSelector,
+      46,
+      1,
+      { componentTag: "RadioLink" }
+    );
+  }
+  reset(div);
+  append($$anchor, div);
+  return pop($$exports);
+}
+
+// client/querystring_store.svelte.ts
+var in_browser = typeof window !== "undefined" && window.location;
+var parse_query_string = () => {
+  const params = new URLSearchParams(window.location.search);
+  return Object.fromEntries(params.entries());
+};
+var update_browser_url = (state2) => {
+  const query_string = new URLSearchParams(state2).toString();
+  const new_url = query_string ? "?" + query_string : "";
+  if (new_url) {
+    window.history.replaceState({}, "", new_url);
+  }
+};
+var create_querystring_store = (defaults) => {
+  const initial_params = in_browser ? parse_query_string() : {};
+  const params = proxy(initial_params);
+  const params_with_defaults = proxy({ ...defaults, ...initial_params });
+  user_effect(() => {
+    update_browser_url(params);
+  });
+  return {
+    params,
+    params_with_defaults,
+    get_altered_query_string: (param, value) => {
+      update_browser_url(params);
+      return "?" + new URLSearchParams({ ...params, [param]: String(value) }).toString();
+    }
+  };
+};
+
+// client/index.svelte
+Client[FILENAME] = "client/index.svelte";
+var root4 = add_locations(
+  from_html(`<div class="container svelte-15huzto"><div class="intro"><h1>Buy a PSA Dagger</h1> <!></div> <div class="filters-and-results svelte-15huzto"><div class="filters svelte-15huzto"><h2>Filters</h2> <div><strong>Threaded Barrel</strong> <small>If you want to be able to stick a suppressor or flash hider or
+					something on your gun</small></div> <div><strong>Night Sight</strong> <small>they glow in the dark</small></div> <div><strong>Optic Compatibility</strong></div> <div><strong>Has Cover Plate</strong> <small>if you're not going to put an optic on right away</small></div></div> <div class="results svelte-15huzto"><h2>Results</h2></div></div></div>`),
+  Client[FILENAME],
+  [
+    [
+      23,
+      0,
+      [
+        [24, 1, [[25, 2]]],
+        [
+          30,
+          1,
+          [
+            [
+              31,
+              2,
+              [
+                [32, 3],
+                [33, 3, [[34, 4], [35, 4]]],
+                [40, 3, [[41, 4], [42, 4]]],
+                [44, 3, [[45, 4]]],
+                [47, 3, [[48, 4], [49, 4]]]
+              ]
+            ],
+            [52, 2, [[53, 3]]]
+          ]
+        ]
+      ]
+    ]
+  ]
+);
+function Client($$anchor, $$props) {
+  check_target(new.target);
+  push($$props, false, Client);
+  const querystring_instance = mutable_source(create_querystring_store({
+    size: "compact",
+    threaded_barrel: "true",
+    night_sight: "true",
+    optic_compatibility: "none",
+    has_cover_plate: "true"
+  }));
+  var $$exports = { ...legacy_api() };
+  init();
+  var div = root4();
+  var div_1 = child(div);
+  var node = sibling(child(div_1), 2);
+  add_svelte_meta(
+    () => PistolSizeSelector(node, {
+      get size() {
+        return get(querystring_instance).params_with_defaults.size;
+      },
+      set size($$value) {
+        mutate(querystring_instance, get(querystring_instance).params_with_defaults.size = $$value);
+      },
+      $$legacy: true
     }),
     "component",
     Client,
-    44,
-    3,
-    { componentTag: "RadioLink" }
+    26,
+    2,
+    { componentTag: "PistolSizeSelector" }
   );
-  reset(div_2);
   reset(div_1);
   next(2);
   reset(div);
