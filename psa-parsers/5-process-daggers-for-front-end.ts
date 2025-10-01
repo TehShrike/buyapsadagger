@@ -486,12 +486,17 @@ const process_daggers_for_front_end = async (): Promise<void> => {
 
 		if (barrel_is_four_and_a_half_inches) {
 			const barrel_is_expected_to_be_that_long =
-				(p.longer_barrel || p.threaded_barrel) &&
-				p.longer_barrel !== p.threaded_barrel
+				p.longer_barrel || p.threaded_barrel
 
 			if (!barrel_is_expected_to_be_that_long) {
 				console.log(
-					`🔴 ${p.psa_product_name} has a 4.5" barrel even though we would not expect it to be long – threaded barrel: "${p.threaded_barrel}", longer barrel: "${p.longer_barrel}", `
+					`🔴 ${p.psa_product_name} has a 4.5" barrel even though we would not expect it to be long – threaded barrel: "${p.threaded_barrel}", longer barrel: "${p.longer_barrel}"`
+				)
+			}
+
+			if (p.longer_barrel === p.threaded_barrel) {
+				console.log(
+					`🔴 ${p.psa_product_name} has a 4.5" barrel and should not have longer_barrel and threaded_barrel being the same value! threaded barrel: "${p.threaded_barrel}", longer barrel: "${p.longer_barrel}"`
 				)
 			}
 		}
