@@ -9,7 +9,7 @@
 		- or maybe just take an "active" boolean?
 - [x] Get the pistol silhouettes looking reasonable in the buttons
 - [ ] Filtering UI
-	- [ ] checkboxes for micro/compact/full-size
+	- [x] checkboxes for micro/compact/full-size
 	- [ ] checkboxes for extra-long barrel
 	- [ ] uncheckable radio buttons rather than radio buttons with a "don't care" option?
 	- [ ] checkboxes for optic compatibility (rmr, shield rmsc, don't care?)

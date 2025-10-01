@@ -7,12 +7,14 @@
 
 	const querystring_instance = create_querystring_store<{
 		size: Size
+		extra_long_barrel: TrueFalseOrAny
 		threaded_barrel: TrueFalseOrAny
 		night_sight: TrueFalseOrAny
 		optic_compatibility: OpticCompatibility
 		has_cover_plate: TrueFalseOrAny
 	}>({
 		size: 'compact',
+		extra_long_barrel: 'false',
 		threaded_barrel: 'true',
 		night_sight: 'true',
 		optic_compatibility: 'none',
