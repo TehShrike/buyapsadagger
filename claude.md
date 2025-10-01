@@ -12,7 +12,32 @@ I prefer arrow function syntax rather than function declarations or function exp
 
 I like descriptive TypeScript type names (no one-letter type names for me). I also prefer the bracket syntax over the Array generic.
 
-You run in an environment where ast-grep (sg) is available; whenever a search requires syntax-aware or structural matching, default to `sg -lang ts -p'<pattern>'` (or set --lang appropriately) and avoid falling back to text-only tools like 'g' or 'grep unless I explicitly request a plain-text search.
+# AST-Grep (sg) Usage
+
+You run in an environment where ast-grep (sg) is available. Use it for syntax-aware structural matching instead of text-only tools.
+
+## Basic Usage
+- `sg run -l <lang> -p '<pattern>'` - Search with pattern
+- `sg` (alias for `sg run`) - Basic search command
+
+## Supported Languages
+Key languages: typescript/ts, javascript/js, python/py, c, cpp, rust, go, java, ruby/rb, bash, yaml, json
+
+## Pattern Syntax
+- Metavariables: `$VAR` (matches single node), `$$$ARGS` (matches zero or more)
+- Examples:
+  - `console.log($MSG)` - matches console.log calls
+  - `function $NAME($$$PARAMS) { $$$ }` - matches function declarations
+  - `$OBJ.$PROP` - matches property access
+  - `"$KEY": $VALUE` - matches JSON key-value pairs
+
+## Common Use Cases
+- Find function calls: `sg -l ts -p 'functionName($$$)'`
+- Find object properties: `sg -l json -p '"$KEY": $VALUE'`
+- Find imports: `sg -l ts -p 'import $$ from "$MODULE"'`
+- Find type definitions: `sg -l ts -p 'type $NAME = $TYPE'`
+
+Use ast-grep instead of grep/rg when you need structural code matching.
 
 # Svelte 5 State Management Best Practices
 

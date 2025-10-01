@@ -8,7 +8,9 @@
       "Bash(grep:*)",
       "Bash(npm run:*)",
       "Bash(pnpm run dev:*)",
-      "WebFetch(domain:svelte.dev)"
+      "WebFetch(domain:svelte.dev)",
+      "Bash(sg:*)",
+      "WebFetch(domain:ast-grep.github.io)"
     ],
     "deny": [],
     "ask": []

@@ -11,6 +11,7 @@
 import * as fs from 'fs/promises'
 import * as path from 'path'
 import { fileURLToPath } from 'url'
+import type { Product } from '../client/product.d.ts'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -20,28 +21,6 @@ type RawProduct = {
 	title: string
 	product_details: Record<string, string>
 	features: string
-}
-
-type ProcessedProduct = {
-	psa_product_name: string
-	psa_url: string
-	size_name: 'micro' | 'compact' | 'full_size_s'
-	width: number
-	length: number
-	height: number
-	barrel_length: number
-	longer_barrel: boolean
-	threaded_barrel: boolean
-	night_sight: boolean
-	compensated_slide: boolean
-	slide_color: string | null
-	cerakote_slide_coating: boolean
-	frame_color: string | null
-	optic_compatibility: 'none' | 'rmr' | 'shield_rmsc'
-	has_cover_plate: boolean
-	mag_bag_bonus: boolean
-	number_of_included_mags: number
-	mag_size: number | null
 }
 
 const extract_numeric_value = (value: string): number => {
@@ -320,7 +299,7 @@ const has_cerakote_coating = (slide_finish: string | null): boolean => {
 	return slide_finish.toLowerCase().includes('cerakote')
 }
 
-const process_product = (raw_product: RawProduct): ProcessedProduct => {
+const process_product = (raw_product: RawProduct): Product => {
 	const { title, url, product_details, features } = raw_product
 
 	const width = extract_numeric_value(product_details.overall_width || '')
