@@ -25,40 +25,41 @@ const create_proxy_with_default_values_proxying_to_querystring_params = <
 	defaults: Defaults
 	initial_params: { [key: string]: string }
 }) => {
-	return new Proxy(
-		$state<{ [key: string]: string | undefined } & Defaults>({
-			...defaults,
-			...initial_params,
-		}),
-		{
-			set(target, prop, value) {
-				if (prop in defaults && defaults[prop as keyof Defaults] === value) {
-					delete params[prop as keyof typeof params]
-				} else {
-					params[prop as keyof typeof params] = value
-				}
+	const proxy_params_with_defaults = $state<
+		{ [key: string]: string | undefined } & Defaults
+	>({
+		...defaults,
+		...initial_params,
+	})
 
-				target[prop as keyof typeof target] = value
-				return true
-			},
-			deleteProperty(target, prop) {
+	return new Proxy(proxy_params_with_defaults, {
+		set(target, prop, value) {
+			if (prop in defaults && defaults[prop as keyof Defaults] === value) {
 				delete params[prop as keyof typeof params]
+			} else {
+				params[prop as keyof typeof params] = value
+			}
 
-				if (prop in defaults) {
-					type ReasonableTargetProperty = keyof typeof target
-					const default_value = defaults[
-						prop as keyof Defaults
-					] as (typeof target)[ReasonableTargetProperty]
+			target[prop as keyof typeof target] = value
+			return true
+		},
+		deleteProperty(target, prop) {
+			delete params[prop as keyof typeof params]
 
-					target[prop as ReasonableTargetProperty] = default_value
-				} else {
-					delete target[prop as keyof typeof target]
-				}
+			if (prop in defaults) {
+				type ReasonableTargetProperty = keyof typeof target
+				const default_value = defaults[
+					prop as keyof Defaults
+				] as (typeof target)[ReasonableTargetProperty]
 
-				return true
-			},
-		}
-	)
+				target[prop as ReasonableTargetProperty] = default_value
+			} else {
+				delete target[prop as keyof typeof target]
+			}
+
+			return true
+		},
+	})
 }
 
 export const create_querystring_store = <
