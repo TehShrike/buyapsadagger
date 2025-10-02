@@ -33,6 +33,14 @@
 		<div class="filters">
 			<h2>Filters</h2>
 			<div>
+				<strong>Longer Barrel</strong>
+				<small>
+					Adds about half an inch to the barrel. Makes it easier to hit what
+					you're aiming at.
+				</small>
+				>
+			</div>
+			<div>
 				<strong>Threaded Barrel</strong>
 				<small>
 					If you want to be able to stick a suppressor or flash hider or

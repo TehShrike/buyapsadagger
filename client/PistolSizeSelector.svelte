@@ -37,9 +37,7 @@
 			{/snippet}
 			{#snippet text()}
 				Compact
-				<small>
-					Several credit cards wider, more than half an inch longer
-				</small>
+				<small>About half an inch longer, several credit cards wider</small>
 			{/snippet}
 		</ImageLinkLayout>
 	</RadioLink>
