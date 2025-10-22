@@ -81,10 +81,8 @@ var STALE_REACTION = new class StaleReactionError extends Error {
     __publicField(this, "message", "The reaction that called `getAbortSignal()` was re-run or destroyed");
   }
 }();
-var ELEMENT_NODE = 1;
 var TEXT_NODE = 3;
 var COMMENT_NODE = 8;
-var DOCUMENT_FRAGMENT_NODE = 11;
 
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/shared/errors.js
 function await_outside_boundary() {
@@ -98,28 +96,6 @@ https://svelte.dev/e/await_outside_boundary`);
     throw new Error(`https://svelte.dev/e/await_outside_boundary`);
   }
 }
-function invalid_snippet_arguments() {
-  if (dev_fallback_default) {
-    const error = new Error(`invalid_snippet_arguments
-A snippet function was passed invalid arguments. Snippets should only be instantiated via \`{@render ...}\`
-https://svelte.dev/e/invalid_snippet_arguments`);
-    error.name = "Svelte error";
-    throw error;
-  } else {
-    throw new Error(`https://svelte.dev/e/invalid_snippet_arguments`);
-  }
-}
-function snippet_without_render_tag() {
-  if (dev_fallback_default) {
-    const error = new Error(`snippet_without_render_tag
-Attempted to render a snippet without a \`{@render}\` block. This would cause the snippet code to be stringified instead of its content being rendered to the DOM. To fix this, change \`{snippet}\` to \`{@render snippet()}\`.
-https://svelte.dev/e/snippet_without_render_tag`);
-    error.name = "Svelte error";
-    throw error;
-  } else {
-    throw new Error(`https://svelte.dev/e/snippet_without_render_tag`);
-  }
-}
 
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/errors.js
 function async_derived_orphan() {
@@ -131,28 +107,6 @@ https://svelte.dev/e/async_derived_orphan`);
     throw error;
   } else {
     throw new Error(`https://svelte.dev/e/async_derived_orphan`);
-  }
-}
-function component_api_changed(method, component2) {
-  if (dev_fallback_default) {
-    const error = new Error(`component_api_changed
-Calling \`${method}\` on a component instance (of ${component2}) is no longer valid in Svelte 5
-https://svelte.dev/e/component_api_changed`);
-    error.name = "Svelte error";
-    throw error;
-  } else {
-    throw new Error(`https://svelte.dev/e/component_api_changed`);
-  }
-}
-function component_api_invalid_new(component2, name) {
-  if (dev_fallback_default) {
-    const error = new Error(`component_api_invalid_new
-Attempted to instantiate ${component2} with \`new ${name}\`, which is no longer valid in Svelte 5. If this component is not under your control, set the \`compatibility.componentApi\` compiler option to \`4\` to keep it working.
-https://svelte.dev/e/component_api_invalid_new`);
-    error.name = "Svelte error";
-    throw error;
-  } else {
-    throw new Error(`https://svelte.dev/e/component_api_invalid_new`);
   }
 }
 function derived_references_self() {
@@ -316,7 +270,6 @@ var TEMPLATE_USE_IMPORT_NODE = 1 << 1;
 var TEMPLATE_USE_SVG = 1 << 2;
 var TEMPLATE_USE_MATHML = 1 << 3;
 var HYDRATION_START = "[";
-var HYDRATION_START_ELSE = "[!";
 var HYDRATION_END = "]";
 var HYDRATION_ERROR = {};
 var ELEMENT_PRESERVE_ATTRIBUTE_CASE = 1 << 1;
@@ -376,24 +329,6 @@ function lifecycle_double_unmount() {
 https://svelte.dev/e/lifecycle_double_unmount`, bold, normal);
   } else {
     console.warn(`https://svelte.dev/e/lifecycle_double_unmount`);
-  }
-}
-function ownership_invalid_binding(parent, prop2, child2, owner) {
-  if (dev_fallback_default) {
-    console.warn(`%c[svelte] ownership_invalid_binding
-%c${parent} passed property \`${prop2}\` to ${child2} with \`bind:\`, but its parent component ${owner} did not declare \`${prop2}\` as a binding. Consider creating a binding between ${owner} and ${parent} (e.g. \`bind:${prop2}={...}\` instead of \`${prop2}={...}\`)
-https://svelte.dev/e/ownership_invalid_binding`, bold, normal);
-  } else {
-    console.warn(`https://svelte.dev/e/ownership_invalid_binding`);
-  }
-}
-function ownership_invalid_mutation(name, location, prop2, parent) {
-  if (dev_fallback_default) {
-    console.warn(`%c[svelte] ownership_invalid_mutation
-%cMutating unbound props (\`${name}\`, at ${location}) is strongly discouraged. Consider using \`bind:${prop2}={...}\` in ${parent} (or using a callback) instead
-https://svelte.dev/e/ownership_invalid_mutation`, bold, normal);
-  } else {
-    console.warn(`https://svelte.dev/e/ownership_invalid_mutation`);
   }
 }
 function state_proxy_equality_mismatch(operator) {
@@ -518,22 +453,6 @@ function set_component_context(context) {
 var dev_stack = null;
 function set_dev_stack(stack2) {
   dev_stack = stack2;
-}
-function add_svelte_meta(callback, type, component2, line, column, additional) {
-  const parent = dev_stack;
-  dev_stack = {
-    type,
-    file: component2[FILENAME],
-    line,
-    column,
-    parent,
-    ...additional
-  };
-  try {
-    return callback();
-  } finally {
-    dev_stack = parent;
-  }
 }
 var dev_current_component_function = null;
 function set_dev_current_component_function(fn) {
@@ -1934,15 +1853,6 @@ function init_array_prototype_warnings() {
     array_prototype2.includes = includes;
   };
 }
-function strict_equals(a, b, equal = true) {
-  try {
-    if (a === b !== (get_proxied_value(a) === get_proxied_value(b))) {
-      state_proxy_equality_mismatch(equal ? "===" : "!==");
-    }
-  } catch {
-  }
-  return a === b === equal;
-}
 
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dom/operations.js
 var $window;
@@ -2920,54 +2830,6 @@ var RUNES = (
     "$host"
   ]
 );
-function sanitize_location(location) {
-  return (
-    /** @type {T} */
-    location?.replace(/\//g, "/\u200B")
-  );
-}
-
-// node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dev/elements.js
-function add_locations(fn, filename, locations) {
-  return (...args) => {
-    const dom = fn(...args);
-    var node = hydrating ? dom : dom.nodeType === DOCUMENT_FRAGMENT_NODE ? dom.firstChild : dom;
-    assign_locations(node, filename, locations);
-    return dom;
-  };
-}
-function assign_location(element2, filename, location) {
-  element2.__svelte_meta = {
-    parent: dev_stack,
-    loc: { file: filename, line: location[0], column: location[1] }
-  };
-  if (location[2]) {
-    assign_locations(element2.firstChild, filename, location[2]);
-  }
-}
-function assign_locations(node, filename, locations) {
-  var i = 0;
-  var depth = 0;
-  while (node && i < locations.length) {
-    if (hydrating && node.nodeType === COMMENT_NODE) {
-      var comment2 = (
-        /** @type {Comment} */
-        node
-      );
-      if (comment2.data === HYDRATION_START || comment2.data === HYDRATION_START_ELSE) depth += 1;
-      else if (comment2.data[0] === HYDRATION_END) depth -= 1;
-    }
-    if (depth === 0 && node.nodeType === ELEMENT_NODE) {
-      assign_location(
-        /** @type {Element} */
-        node,
-        filename,
-        locations[i++]
-      );
-    }
-    node = node.nextSibling;
-  }
-}
 
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dom/elements/events.js
 var all_registered_events = /* @__PURE__ */ new Set();
@@ -3297,95 +3159,6 @@ function unmount(component2, options) {
   return Promise.resolve();
 }
 
-// node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dev/ownership.js
-function create_ownership_validator(props) {
-  const component2 = component_context?.function;
-  const parent = component_context?.p?.function;
-  return {
-    /**
-     * @param {string} prop
-     * @param {any[]} path
-     * @param {any} result
-     * @param {number} line
-     * @param {number} column
-     */
-    mutation: (prop2, path, result, line, column) => {
-      const name = path[0];
-      if (is_bound_or_unset(props, name) || !parent) {
-        return result;
-      }
-      let value = props;
-      for (let i = 0; i < path.length - 1; i++) {
-        value = value[path[i]];
-        if (!value?.[STATE_SYMBOL]) {
-          return result;
-        }
-      }
-      const location = sanitize_location(`${component2[FILENAME]}:${line}:${column}`);
-      ownership_invalid_mutation(name, location, prop2, parent[FILENAME]);
-      return result;
-    },
-    /**
-     * @param {any} key
-     * @param {any} child_component
-     * @param {() => any} value
-     */
-    binding: (key2, child_component, value) => {
-      if (!is_bound_or_unset(props, key2) && parent && value()?.[STATE_SYMBOL]) {
-        ownership_invalid_binding(
-          component2[FILENAME],
-          key2,
-          child_component[FILENAME],
-          parent[FILENAME]
-        );
-      }
-    }
-  };
-}
-function is_bound_or_unset(props, prop_name) {
-  const is_entry_props = STATE_SYMBOL in props || LEGACY_PROPS in props;
-  return !!get_descriptor(props, prop_name)?.set || is_entry_props && prop_name in props || !(prop_name in props);
-}
-
-// node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dev/legacy.js
-function check_target(target) {
-  if (target) {
-    component_api_invalid_new(target[FILENAME] ?? "a component", target.name);
-  }
-}
-function legacy_api() {
-  const component2 = component_context?.function;
-  function error(method) {
-    component_api_changed(method, component2[FILENAME]);
-  }
-  return {
-    $destroy: () => error("$destroy()"),
-    $on: () => error("$on(...)"),
-    $set: () => error("$set(...)")
-  };
-}
-
-// node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dev/validation.js
-function validate_snippet_args(anchor, ...args) {
-  if (typeof anchor !== "object" || !(anchor instanceof Node)) {
-    invalid_snippet_arguments();
-  }
-  for (let arg of args) {
-    if (typeof arg !== "function") {
-      invalid_snippet_arguments();
-    }
-  }
-}
-
-// node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/shared/validate.js
-function prevent_snippet_stringification(fn) {
-  fn.toString = () => {
-    snippet_without_render_tag();
-    return "";
-  };
-  return fn;
-}
-
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dom/blocks/snippet.js
 function snippet(node, get_snippet, ...args) {
   var anchor = node;
@@ -3408,19 +3181,6 @@ function snippet(node, get_snippet, ...args) {
   if (hydrating) {
     anchor = hydrate_node;
   }
-}
-function wrap_snippet(component2, fn) {
-  const snippet2 = (node, ...args) => {
-    var previous_component_function = dev_current_component_function;
-    set_dev_current_component_function(component2);
-    try {
-      return fn(node, ...args);
-    } finally {
-      set_dev_current_component_function(previous_component_function);
-    }
-  };
-  prevent_snippet_stringification(snippet2);
-  return snippet2;
 }
 
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/shared/attributes.js
@@ -4073,24 +3833,21 @@ var get_altered_query_string = (param, value) => {
 };
 
 // client/RadioLink.svelte
-RadioLink[FILENAME] = "client/RadioLink.svelte";
 var onclick = (event2, href, group_value, $$props) => {
   event2.preventDefault();
   history.replaceState(null, "", get(href));
   group_value($$props.name);
 };
-var root = add_locations(from_html(`<a role="radio" class="svelte-eew6ub"><!></a>`), RadioLink[FILENAME], [[27, 0]]);
+var root = from_html(`<a role="radio" class="svelte-eew6ub"><!></a>`);
 function RadioLink($$anchor, $$props) {
-  check_target(new.target);
-  push($$props, true, RadioLink);
+  push($$props, true);
   let group_value = prop($$props, "group_value", 15);
-  let active = tag(user_derived(() => strict_equals(group_value(), $$props.name)), "active");
-  let href = tag(user_derived(() => get_altered_query_string($$props.group_name, $$props.name)), "href");
-  var $$exports = { ...legacy_api() };
+  let active = user_derived(() => group_value() === $$props.name);
+  let href = user_derived(() => get_altered_query_string($$props.group_name, $$props.name));
   var a = root();
   a.__click = [onclick, href, group_value, $$props];
   var node = child(a);
-  add_svelte_meta(() => snippet(node, () => $$props.children), "render", RadioLink, 28, 1);
+  snippet(node, () => $$props.children);
   reset(a);
   template_effect(() => {
     set_attribute2(a, "href", get(href));
@@ -4098,175 +3855,126 @@ function RadioLink($$anchor, $$props) {
     set_attribute2(a, "aria-checked", get(active));
   });
   append($$anchor, a);
-  return pop($$exports);
+  pop();
 }
 delegate(["click"]);
 
 // client/ImageLinkLayout.svelte
-ImageLinkLayout[FILENAME] = "client/ImageLinkLayout.svelte";
-var root2 = add_locations(from_html(`<div class="image-link-layout svelte-nv020b"><div class="image svelte-nv020b"><!></div> <div class="text svelte-nv020b"><!></div></div>`), ImageLinkLayout[FILENAME], [[5, 0, [[6, 1], [9, 1]]]]);
+var root2 = from_html(`<div class="image-link-layout svelte-nv020b"><div class="image svelte-nv020b"><!></div> <div class="text svelte-nv020b"><!></div></div>`);
 function ImageLinkLayout($$anchor, $$props) {
-  check_target(new.target);
-  push($$props, true, ImageLinkLayout);
-  var $$exports = { ...legacy_api() };
   var div = root2();
   var div_1 = child(div);
   var node = child(div_1);
-  add_svelte_meta(() => snippet(node, () => $$props.image), "render", ImageLinkLayout, 7, 2);
+  snippet(node, () => $$props.image);
   reset(div_1);
   var div_2 = sibling(div_1, 2);
   var node_1 = child(div_2);
-  add_svelte_meta(() => snippet(node_1, () => $$props.text), "render", ImageLinkLayout, 10, 2);
+  snippet(node_1, () => $$props.text);
   reset(div_2);
   reset(div);
   append($$anchor, div);
-  return pop($$exports);
 }
 
 // client/PistolSizeSelector.svelte
-PistolSizeSelector[FILENAME] = "client/PistolSizeSelector.svelte";
-var root_2 = add_locations(from_html(`<img src="silhouettes/micro.svg" alt="Micro pistol silhouette" style="width: var(--base_image_width);"/>`), PistolSizeSelector[FILENAME], [[17, 4]]);
-var root_3 = add_locations(from_html(`Micro <small>It's pretty small</small>`, 1), PistolSizeSelector[FILENAME], [[25, 4]]);
-var root_5 = add_locations(from_html(`<img src="silhouettes/compact.svg" alt="Compact pistol silhouette" style="width: calc(var(--base_image_width) * 1.14369501);"/>`), PistolSizeSelector[FILENAME], [[32, 4]]);
-var root_6 = add_locations(from_html(`Compact <small>Several credit cards wider, more than half an inch longer</small>`, 1), PistolSizeSelector[FILENAME], [[40, 4]]);
-var root_8 = add_locations(from_html(`<img src="silhouettes/full_size_s.svg" alt="Full size pistol silhouette" style="width: calc(var(--base_image_width) * 1.14369501);"/>`), PistolSizeSelector[FILENAME], [[49, 4]]);
-var root_9 = add_locations(
-  from_html(
-    `Full Size <small>Longer handle if you have big hands or want the extra 2 rounds per
+var root_2 = from_html(`<img src="silhouettes/micro.svg" alt="Micro pistol silhouette" style="width: var(--base_image_width);"/>`);
+var root_3 = from_html(`Micro <small>It's pretty small</small>`, 1);
+var root_5 = from_html(`<img src="silhouettes/compact.svg" alt="Compact pistol silhouette" style="width: calc(var(--base_image_width) * 1.14369501);"/>`);
+var root_6 = from_html(`Compact <small>About half an inch longer, several credit cards wider</small>`, 1);
+var root_8 = from_html(`<img src="silhouettes/full_size_s.svg" alt="Full size pistol silhouette" style="width: calc(var(--base_image_width) * 1.14369501);"/>`);
+var root_9 = from_html(
+  `Full Size <small>Longer handle if you have big hands or want the extra 2 rounds per
 					magazine</small>`,
-    1
-  ),
-  PistolSizeSelector[FILENAME],
-  [[57, 4]]
+  1
 );
-var root3 = add_locations(from_html(`<div class="pistol-size svelte-11eufp1"><!> <!> <!></div>`), PistolSizeSelector[FILENAME], [[13, 0]]);
+var root3 = from_html(`<div class="pistol-size svelte-11eufp1"><!> <!> <!></div>`);
 function PistolSizeSelector($$anchor, $$props) {
-  check_target(new.target);
-  push($$props, true, PistolSizeSelector);
-  var $$ownership_validator = create_ownership_validator($$props);
+  push($$props, true);
   let size = prop($$props, "size", 15);
-  var $$exports = { ...legacy_api() };
   var div = root3();
   var node = child(div);
-  {
-    $$ownership_validator.binding("size", RadioLink, size);
-    add_svelte_meta(
-      () => RadioLink(node, {
-        group_name: "size",
-        name: "micro",
-        get group_value() {
-          return size();
-        },
-        set group_value($$value) {
-          size($$value);
-        },
-        children: wrap_snippet(PistolSizeSelector, ($$anchor2, $$slotProps) => {
-          {
-            const image = wrap_snippet(PistolSizeSelector, function($$anchor3) {
-              validate_snippet_args(...arguments);
-              var img = root_2();
-              append($$anchor3, img);
-            });
-            const text2 = wrap_snippet(PistolSizeSelector, function($$anchor3) {
-              validate_snippet_args(...arguments);
-              next();
-              var fragment_1 = root_3();
-              next();
-              append($$anchor3, fragment_1);
-            });
-            add_svelte_meta(() => ImageLinkLayout($$anchor2, { image, text: text2, $$slots: { image: true, text: true } }), "component", PistolSizeSelector, 15, 2, { componentTag: "ImageLinkLayout" });
-          }
-        }),
-        $$slots: { default: true }
-      }),
-      "component",
-      PistolSizeSelector,
-      14,
-      1,
-      { componentTag: "RadioLink" }
-    );
-  }
+  RadioLink(node, {
+    group_name: "size",
+    name: "micro",
+    get group_value() {
+      return size();
+    },
+    set group_value($$value) {
+      size($$value);
+    },
+    children: ($$anchor2, $$slotProps) => {
+      {
+        const image = ($$anchor3) => {
+          var img = root_2();
+          append($$anchor3, img);
+        };
+        const text2 = ($$anchor3) => {
+          next();
+          var fragment_1 = root_3();
+          next();
+          append($$anchor3, fragment_1);
+        };
+        ImageLinkLayout($$anchor2, { image, text: text2, $$slots: { image: true, text: true } });
+      }
+    },
+    $$slots: { default: true }
+  });
   var node_1 = sibling(node, 2);
-  {
-    $$ownership_validator.binding("size", RadioLink, size);
-    add_svelte_meta(
-      () => RadioLink(node_1, {
-        group_name: "size",
-        name: "compact",
-        get group_value() {
-          return size();
-        },
-        set group_value($$value) {
-          size($$value);
-        },
-        children: wrap_snippet(PistolSizeSelector, ($$anchor2, $$slotProps) => {
-          {
-            const image = wrap_snippet(PistolSizeSelector, function($$anchor3) {
-              validate_snippet_args(...arguments);
-              var img_1 = root_5();
-              append($$anchor3, img_1);
-            });
-            const text2 = wrap_snippet(PistolSizeSelector, function($$anchor3) {
-              validate_snippet_args(...arguments);
-              next();
-              var fragment_3 = root_6();
-              next();
-              append($$anchor3, fragment_3);
-            });
-            add_svelte_meta(() => ImageLinkLayout($$anchor2, { image, text: text2, $$slots: { image: true, text: true } }), "component", PistolSizeSelector, 30, 2, { componentTag: "ImageLinkLayout" });
-          }
-        }),
-        $$slots: { default: true }
-      }),
-      "component",
-      PistolSizeSelector,
-      29,
-      1,
-      { componentTag: "RadioLink" }
-    );
-  }
+  RadioLink(node_1, {
+    group_name: "size",
+    name: "compact",
+    get group_value() {
+      return size();
+    },
+    set group_value($$value) {
+      size($$value);
+    },
+    children: ($$anchor2, $$slotProps) => {
+      {
+        const image = ($$anchor3) => {
+          var img_1 = root_5();
+          append($$anchor3, img_1);
+        };
+        const text2 = ($$anchor3) => {
+          next();
+          var fragment_3 = root_6();
+          next();
+          append($$anchor3, fragment_3);
+        };
+        ImageLinkLayout($$anchor2, { image, text: text2, $$slots: { image: true, text: true } });
+      }
+    },
+    $$slots: { default: true }
+  });
   var node_2 = sibling(node_1, 2);
-  {
-    $$ownership_validator.binding("size", RadioLink, size);
-    add_svelte_meta(
-      () => RadioLink(node_2, {
-        group_name: "size",
-        name: "full_size_s",
-        get group_value() {
-          return size();
-        },
-        set group_value($$value) {
-          size($$value);
-        },
-        children: wrap_snippet(PistolSizeSelector, ($$anchor2, $$slotProps) => {
-          {
-            const image = wrap_snippet(PistolSizeSelector, function($$anchor3) {
-              validate_snippet_args(...arguments);
-              var img_2 = root_8();
-              append($$anchor3, img_2);
-            });
-            const text2 = wrap_snippet(PistolSizeSelector, function($$anchor3) {
-              validate_snippet_args(...arguments);
-              next();
-              var fragment_5 = root_9();
-              next();
-              append($$anchor3, fragment_5);
-            });
-            add_svelte_meta(() => ImageLinkLayout($$anchor2, { image, text: text2, $$slots: { image: true, text: true } }), "component", PistolSizeSelector, 47, 2, { componentTag: "ImageLinkLayout" });
-          }
-        }),
-        $$slots: { default: true }
-      }),
-      "component",
-      PistolSizeSelector,
-      46,
-      1,
-      { componentTag: "RadioLink" }
-    );
-  }
+  RadioLink(node_2, {
+    group_name: "size",
+    name: "full_size_s",
+    get group_value() {
+      return size();
+    },
+    set group_value($$value) {
+      size($$value);
+    },
+    children: ($$anchor2, $$slotProps) => {
+      {
+        const image = ($$anchor3) => {
+          var img_2 = root_8();
+          append($$anchor3, img_2);
+        };
+        const text2 = ($$anchor3) => {
+          next();
+          var fragment_5 = root_9();
+          next();
+          append($$anchor3, fragment_5);
+        };
+        ImageLinkLayout($$anchor2, { image, text: text2, $$slots: { image: true, text: true } });
+      }
+    },
+    $$slots: { default: true }
+  });
   reset(div);
   append($$anchor, div);
-  return pop($$exports);
+  pop();
 }
 
 // client/querystring_store.svelte.ts
@@ -4282,15 +3990,40 @@ var update_browser_url = (state2) => {
     window.history.replaceState({}, "", new_url);
   }
 };
+var create_proxy_with_default_values_proxying_to_querystring_params = ({ params, defaults, initial_params }) => {
+  const proxy_params_with_defaults = proxy({ ...defaults, ...initial_params });
+  return new Proxy(proxy_params_with_defaults, {
+    set(target, prop2, value) {
+      if (prop2 in defaults && defaults[prop2] === value) {
+        delete params[prop2];
+      } else {
+        params[prop2] = value;
+      }
+      target[prop2] = value;
+      return true;
+    },
+    deleteProperty(target, prop2) {
+      delete params[prop2];
+      if (prop2 in defaults) {
+        const default_value = defaults[prop2];
+        target[prop2] = default_value;
+      } else {
+        delete target[prop2];
+      }
+      return true;
+    }
+  });
+};
 var create_querystring_store = (defaults) => {
   const initial_params = in_browser ? parse_query_string() : {};
   const params = proxy(initial_params);
-  const params_with_defaults = proxy({ ...defaults, ...initial_params });
+  const params_with_defaults = create_proxy_with_default_values_proxying_to_querystring_params({ params, defaults, initial_params });
   user_effect(() => {
     update_browser_url(params);
   });
   return {
-    params,
+    // params aren't mirrored back to params_with_defaults yet
+    // params,
     params_with_defaults,
     get_altered_query_string: (param, value) => {
       update_browser_url(params);
@@ -4300,75 +4033,37 @@ var create_querystring_store = (defaults) => {
 };
 
 // client/index.svelte
-Client[FILENAME] = "client/index.svelte";
-var root4 = add_locations(
-  from_html(`<div class="container svelte-15huzto"><div class="intro"><h1>Buy a PSA Dagger</h1> <!></div> <div class="filters-and-results svelte-15huzto"><div class="filters svelte-15huzto"><h2>Filters</h2> <div><strong>Threaded Barrel</strong> <small>If you want to be able to stick a suppressor or flash hider or
-					something on your gun</small></div> <div><strong>Night Sight</strong> <small>they glow in the dark</small></div> <div><strong>Optic Compatibility</strong></div> <div><strong>Has Cover Plate</strong> <small>if you're not going to put an optic on right away</small></div></div> <div class="results svelte-15huzto"><h2>Results</h2></div></div></div>`),
-  Client[FILENAME],
-  [
-    [
-      23,
-      0,
-      [
-        [24, 1, [[25, 2]]],
-        [
-          30,
-          1,
-          [
-            [
-              31,
-              2,
-              [
-                [32, 3],
-                [33, 3, [[34, 4], [35, 4]]],
-                [40, 3, [[41, 4], [42, 4]]],
-                [44, 3, [[45, 4]]],
-                [47, 3, [[48, 4], [49, 4]]]
-              ]
-            ],
-            [52, 2, [[53, 3]]]
-          ]
-        ]
-      ]
-    ]
-  ]
-);
+var root4 = from_html(`<div class="container svelte-15huzto"><div class="intro"><h1>Buy a PSA Dagger</h1> <!></div> <div class="filters-and-results svelte-15huzto"><div class="filters svelte-15huzto"><h2>Filters</h2> <div><strong>Longer Barrel</strong> <small>Adds about half an inch to the barrel. Makes it easier to hit what
+					you're aiming at.</small> ></div> <div><strong>Threaded Barrel</strong> <small>If you want to be able to stick a suppressor or flash hider or
+					something on your gun</small></div> <div><strong>Night Sight</strong> <small>they glow in the dark</small></div> <div><strong>Optic Compatibility</strong></div> <div><strong>Has Cover Plate</strong> <small>if you're not going to put an optic on right away</small></div></div> <div class="results svelte-15huzto"><h2>Results</h2></div></div></div>`);
 function Client($$anchor, $$props) {
-  check_target(new.target);
-  push($$props, false, Client);
+  push($$props, false);
   const querystring_instance = mutable_source(create_querystring_store({
     size: "compact",
+    extra_long_barrel: "false",
     threaded_barrel: "true",
     night_sight: "true",
     optic_compatibility: "none",
     has_cover_plate: "true"
   }));
-  var $$exports = { ...legacy_api() };
   init();
   var div = root4();
   var div_1 = child(div);
   var node = sibling(child(div_1), 2);
-  add_svelte_meta(
-    () => PistolSizeSelector(node, {
-      get size() {
-        return get(querystring_instance).params_with_defaults.size;
-      },
-      set size($$value) {
-        mutate(querystring_instance, get(querystring_instance).params_with_defaults.size = $$value);
-      },
-      $$legacy: true
-    }),
-    "component",
-    Client,
-    26,
-    2,
-    { componentTag: "PistolSizeSelector" }
-  );
+  PistolSizeSelector(node, {
+    get size() {
+      return get(querystring_instance).params_with_defaults.size;
+    },
+    set size($$value) {
+      mutate(querystring_instance, get(querystring_instance).params_with_defaults.size = $$value);
+    },
+    $$legacy: true
+  });
   reset(div_1);
   next(2);
   reset(div);
   append($$anchor, div);
-  return pop($$exports);
+  pop();
 }
 
 // client/index.ts
