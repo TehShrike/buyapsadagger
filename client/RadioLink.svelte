@@ -34,7 +34,7 @@
 		flex-direction: column;
 		align-items: flex-start;
 		padding: 12px var(--spacing);
-		border: 2px solid #e0e0e0;
+		border: 2px solid #ddd;
 		border-radius: 8px;
 		text-decoration: none;
 		color: inherit;
@@ -42,16 +42,16 @@
 	}
 
 	a:hover {
-		border-color: #b0b0b0;
+		border-color: #999;
 	}
 
 	a:focus {
-		outline: 2px solid #007acc;
+		outline: 2px solid var(--accent_color);
 		outline-offset: 2px;
 	}
 
 	a[data-active='true'] {
-		border-color: #007acc;
-		background-color: #f8f9ff;
+		border-color: var(--accent_color);
+		background-color: var(--selected_color);
 	}
 </style>

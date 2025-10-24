@@ -92,14 +92,10 @@ export const create_querystring_store = <
 			param: string,
 			value: string | boolean
 		): string => {
-			update_browser_url(params)
-			return (
-				'?' +
-				new URLSearchParams({
-					...params,
-					[param]: String(value),
-				}).toString()
-			)
+			const { [param]: _, ...rest } = params
+			const altered_value_is_the_same_as_the_default = value === defaults[param]
+			const new_params = altered_value_is_the_same_as_the_default ? rest : { ...rest, [param]: String(value) }
+			return '?' + new URLSearchParams(new_params).toString()
 		},
 	}
 }

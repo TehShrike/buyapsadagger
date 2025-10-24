@@ -1,16 +1,18 @@
 <script lang="ts">
 	import PistolSizeSelector from './PistolSizeSelector.svelte'
+	import FilterSelection from './FilterSelection.svelte'
 	import { create_querystring_store } from './querystring_store.svelte.ts'
 	import type { OpticCompatibility, Size } from './option_types.d.ts'
 
 	type TrueFalseOrAny = 'true' | 'false' | 'any'
+	type OpticCompatibilityOrAny = OpticCompatibility | 'any'
 
 	const querystring_instance = create_querystring_store<{
 		size: Size
 		extra_long_barrel: TrueFalseOrAny
 		threaded_barrel: TrueFalseOrAny
 		night_sight: TrueFalseOrAny
-		optic_compatibility: OpticCompatibility
+		optic_compatibility: OpticCompatibilityOrAny
 		has_cover_plate: TrueFalseOrAny
 	}>({
 		size: 'compact',
@@ -32,32 +34,57 @@
 	<div class="filters-and-results">
 		<div class="filters">
 			<h2>Filters</h2>
-			<div>
-				<strong>Longer Barrel</strong>
-				<small>
-					Adds about half an inch to the barrel. Makes it easier to hit what
-					you're aiming at.
-				</small>
-				>
-			</div>
-			<div>
-				<strong>Threaded Barrel</strong>
-				<small>
-					If you want to be able to stick a suppressor or flash hider or
-					something on your gun
-				</small>
-			</div>
-			<div>
-				<strong>Night Sight</strong>
-				<small>they glow in the dark</small>
-			</div>
-			<div>
-				<strong>Optic Compatibility</strong>
-			</div>
-			<div>
-				<strong>Has Cover Plate</strong>
-				<small>if you're not going to put an optic on right away</small>
-			</div>
+			<FilterSelection
+				title="Longer Barrel"
+				description="Adds about half an inch to the barrel. Makes it easier to hit what you're aiming at."
+				options={[
+					{ label: 'Either', value: 'any' },
+					{ label: 'Yes', value: 'true' },
+					{ label: 'No', value: 'false' },
+				]}
+				bind:selected_value={querystring_instance.params_with_defaults.extra_long_barrel}
+			/>
+			<FilterSelection
+				title="Threaded Barrel"
+				description="If you want to be able to stick a suppressor or flash hider or something on your gun"
+				options={[
+					{ label: 'Either', value: 'any' },
+					{ label: 'Yes', value: 'true' },
+					{ label: 'No', value: 'false' },
+				]}
+				bind:selected_value={querystring_instance.params_with_defaults.threaded_barrel}
+			/>
+			<FilterSelection
+				title="Night Sight"
+				description="They glow in the dark"
+				options={[
+					{ label: 'Either', value: 'any' },
+					{ label: 'Yes', value: 'true' },
+					{ label: 'No', value: 'false' },
+				]}
+				bind:selected_value={querystring_instance.params_with_defaults.night_sight}
+			/>
+			<FilterSelection
+				title="Optic Compatibility"
+				description=""
+				options={[
+					{ label: 'Any', value: 'any' },
+					{ label: 'None', value: 'none' },
+					{ label: 'RMR', value: 'rmr' },
+					{ label: 'Shield RMSc', value: 'shield_rmsc' },
+				]}
+				bind:selected_value={querystring_instance.params_with_defaults.optic_compatibility}
+			/>
+			<FilterSelection
+				title="Has Cover Plate"
+				description="If you're not going to put an optic on right away"
+				options={[
+					{ label: 'Either', value: 'any' },
+					{ label: 'Yes', value: 'true' },
+					{ label: 'No', value: 'false' },
+				]}
+				bind:selected_value={querystring_instance.params_with_defaults.has_cover_plate}
+			/>
 		</div>
 		<div class="results">
 			<h2>Results</h2>
@@ -101,7 +128,12 @@
 	}
 
 	.filters {
-		width: 300px;
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing);
+		flex-basis: 250px;
+		flex-grow: 0;
+		flex-shrink: 0;
 	}
 
 	.results {
