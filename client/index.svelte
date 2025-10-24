@@ -37,6 +37,7 @@
 			<FilterSelection
 				title="Longer Barrel"
 				description="Adds about half an inch to the barrel. Makes it easier to hit what you're aiming at."
+				group_name="extra_long_barrel"
 				options={[
 					{ label: 'Either', value: 'any' },
 					{ label: 'Yes', value: 'true' },
@@ -47,6 +48,7 @@
 			<FilterSelection
 				title="Threaded Barrel"
 				description="If you want to be able to stick a suppressor or flash hider or something on your gun"
+				group_name="threaded_barrel"
 				options={[
 					{ label: 'Either', value: 'any' },
 					{ label: 'Yes', value: 'true' },
@@ -57,6 +59,7 @@
 			<FilterSelection
 				title="Night Sight"
 				description="They glow in the dark"
+				group_name="night_sight"
 				options={[
 					{ label: 'Either', value: 'any' },
 					{ label: 'Yes', value: 'true' },
@@ -67,6 +70,7 @@
 			<FilterSelection
 				title="Optic Compatibility"
 				description=""
+				group_name="optic_compatibility"
 				options={[
 					{ label: 'Any', value: 'any' },
 					{ label: 'None', value: 'none' },
@@ -78,6 +82,7 @@
 			<FilterSelection
 				title="Has Cover Plate"
 				description="If you're not going to put an optic on right away"
+				group_name="has_cover_plate"
 				options={[
 					{ label: 'Either', value: 'any' },
 					{ label: 'Yes', value: 'true' },

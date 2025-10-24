@@ -1,12 +1,16 @@
-<script lang="ts" generics="Value">
+<script lang="ts" generics="Value extends string">
+	import RadioLink from './RadioLink.svelte'
+
 	let {
 		title,
 		description,
+		group_name,
 		options,
 		selected_value = $bindable<Value>(),
 	}: {
 		title: string,
 		description: string,
+		group_name: string,
 		options: {
 			label: string,
 			value: Value,
@@ -20,10 +24,9 @@
 	<small>{description}</small>
 	<div class="filter-options">
 		{#each options as option}
-			<label data-active={selected_value === option.value}>
-				<input type="radio" bind:group={selected_value} value={option.value} />
+			<RadioLink {group_name} name={option.value} bind:group_value={selected_value}>
 				{option.label}
-			</label>
+			</RadioLink>
 		{/each}
 	</div>
 </div>
@@ -47,31 +50,5 @@
 	.filter-options {
 		display: flex;
 		gap: 6px;
-	}
-
-	label {
-		flex: 1;
-		padding: 6px 12px;
-		border: 1px solid #ddd;
-		background: white;
-		border-radius: 4px;
-		font-size: 13px;
-		cursor: pointer;
-		text-align: center;
-		white-space: nowrap;
-	}
-
-	label:hover {
-		border-color: #999;
-	}
-
-	label[data-active='true'] {
-		background: var(--selected_color);
-		color: var(--accent_color);
-		border-color: var(--accent_color);
-	}
-
-	input {
-		display: none;
 	}
 </style>
