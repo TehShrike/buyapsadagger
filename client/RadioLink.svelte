@@ -42,10 +42,12 @@
 		text-decoration: none;
 		color: inherit;
 		cursor: pointer;
+		white-space: nowrap;
 	}
 
 	a[data-large='true'] {
 		padding: 12px var(--spacing);
+		white-space: normal;
 	}
 
 	a:hover {
