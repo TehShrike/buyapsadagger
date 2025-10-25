@@ -4,26 +4,24 @@
 	import { create_querystring_store } from './querystring_store.svelte.ts'
 	import type { OpticCompatibility, Size } from './option_types.d.ts'
 	import daggers_data from './daggers-data.ts'
+	import { filter_daggers } from './filter-daggers.ts'
 
 
 	type TrueFalseOrAny = 'true' | 'false' | 'any'
 	type OpticCompatibilityOrAny = OpticCompatibility | 'any'
 
-	const querystring_instance = create_querystring_store<{
-		size: Size
-		extra_long_barrel: TrueFalseOrAny
-		threaded_barrel: TrueFalseOrAny
-		night_sight: TrueFalseOrAny
-		optic_compatibility: OpticCompatibilityOrAny
-		has_cover_plate: TrueFalseOrAny
-	}>({
+	const querystring_instance = create_querystring_store<FilterParams>({
 		size: 'compact',
-		extra_long_barrel: 'false',
-		threaded_barrel: 'true',
-		night_sight: 'true',
-		optic_compatibility: 'none',
-		has_cover_plate: 'true',
+		extra_long_barrel: 'any',
+		threaded_barrel: 'any',
+		night_sight: 'any',
+		optic_compatibility: 'any',
+		has_cover_plate: 'any',
 	})
+
+	const filtered_daggers = $derived(
+		filter_daggers(daggers_data.daggers, querystring_instance.params_with_defaults)
+	)
 </script>
 
 <div class="container">
@@ -102,7 +100,7 @@
 		<div class="results">
 			<h2>Results</h2>
 			<div class="products-grid">
-				{#each daggers_data.daggers as product}
+				{#each filtered_daggers as product}
 					<a href={product.psa_url} target="_blank" rel="noopener" class="product-card">
 						<h3>{product.psa_product_name}</h3>
 						<div class="price">${product.price.toFixed(2)}</div>
