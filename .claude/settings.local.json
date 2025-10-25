@@ -10,7 +10,10 @@
       "Bash(pnpm run dev:*)",
       "WebFetch(domain:svelte.dev)",
       "Bash(sg:*)",
-      "WebFetch(domain:ast-grep.github.io)"
+      "WebFetch(domain:ast-grep.github.io)",
+      "Bash(pnpm run update_daggers:*)",
+      "Bash(cat:*)",
+      "Bash(pnpm run validate_products:*)"
     ],
     "deny": [],
     "ask": []

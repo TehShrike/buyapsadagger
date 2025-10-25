@@ -1,82 +1,206 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import { fileURLToPath } from 'url'
+import type { Product, DaggersData } from '../client/product.d.ts'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-type ProductData = {
-	url: string
-	title: string
-	product_details: Record<string, string>
-	features: string
-}
-
 const validate_products = async (): Promise<void> => {
-	const public_dir = path.join(__dirname, '..', 'public', 'products')
-	const daggers_file = path.join(public_dir, 'daggers.json')
+	const client_dir = path.join(__dirname, '..', 'client')
+	const daggers_file = path.join(client_dir, 'daggers.json')
 
 	if (!fs.existsSync(daggers_file)) {
 		console.error('daggers.json file not found')
 		process.exit(1)
 	}
 
-	let products: ProductData[]
+	let data: DaggersData
 
 	try {
 		const file_content = fs.readFileSync(daggers_file, 'utf-8')
-		products = JSON.parse(file_content)
+		const parsed = JSON.parse(file_content)
+
+		if (!parsed.daggers || !Array.isArray(parsed.daggers)) {
+			console.error('daggers.json should contain a daggers array')
+			process.exit(1)
+		}
+
+		if (!parsed.slide_colors || typeof parsed.slide_colors !== 'object') {
+			console.error('daggers.json should contain a slide_colors object')
+			process.exit(1)
+		}
+
+		if (!parsed.frame_colors || typeof parsed.frame_colors !== 'object') {
+			console.error('daggers.json should contain a frame_colors object')
+			process.exit(1)
+		}
+
+		data = parsed
 	} catch (error) {
 		console.error('Failed to parse daggers.json:', error.message)
 		process.exit(1)
 	}
 
-	if (!Array.isArray(products)) {
-		console.error('daggers.json should contain an array')
-		process.exit(1)
-	}
+	const products = data.daggers
+	const slide_colors = data.slide_colors
+	const frame_colors = data.frame_colors
 
 	console.log(`Validating ${products.length} products...`)
 
-	// Test 1: Check that every entry has at least 5 product_details keys
-	let failed_product_details = false
-
-	for (const product of products) {
-		const details_count = Object.keys(product.product_details || {}).length
-
-		if (details_count < 5) {
-			console.log(product.url)
-			console.log(product.title)
-			failed_product_details = true
-		}
-	}
-
-	if (failed_product_details) {
+	const slide_colors_count = Object.keys(slide_colors).length
+	if (slide_colors_count < 2) {
 		console.error(
-			'\nValidation failed: Some products have fewer than 5 product detail keys'
+			`slide_colors should have at least 2 properties, found ${slide_colors_count}`
 		)
 		process.exit(1)
 	}
+	console.log(`✓ slide_colors has ${slide_colors_count} properties`)
 
-	console.log('✓ All products have at least 5 product detail keys')
+	const frame_colors_count = Object.keys(frame_colors).length
+	if (frame_colors_count < 2) {
+		console.error(
+			`frame_colors should have at least 2 properties, found ${frame_colors_count}`
+		)
+		process.exit(1)
+	}
+	console.log(`✓ frame_colors has ${frame_colors_count} properties`)
 
-	// Test 2: Check that every entry has non-empty features
-	let failed_features = false
+	const required_string_fields = [
+		'psa_product_name',
+		'psa_url',
+		'size_name',
+		'optic_compatibility',
+	]
+	const required_number_fields = [
+		'width',
+		'length',
+		'height',
+		'barrel_length',
+		'number_of_included_mags',
+	]
+	const required_boolean_fields = [
+		'longer_barrel',
+		'threaded_barrel',
+		'night_sight',
+		'compensated_slide',
+		'cerakote_slide_coating',
+		'has_cover_plate',
+		'mag_bag_bonus',
+	]
+
+	const nullable_string_fields = ['slide_color', 'frame_color']
+	const nullable_number_fields = ['mag_size']
+
+	let validation_failed = false
 
 	for (const product of products) {
-		if (!product.features || product.features.trim().length === 0) {
-			console.log(product.url)
-			console.log(product.title)
-			failed_features = true
+		for (const field of required_string_fields) {
+			if (
+				typeof product[field as keyof Product] !== 'string' ||
+				(product[field as keyof Product] as string).trim().length === 0
+			) {
+				console.error(
+					`Product missing or has empty ${field}: ${product.psa_url || 'unknown'}`
+				)
+				validation_failed = true
+			}
+		}
+
+		for (const field of required_number_fields) {
+			if (
+				typeof product[field as keyof Product] !== 'number' ||
+				isNaN(product[field as keyof Product] as number)
+			) {
+				console.error(
+					`Product missing or has invalid ${field}: ${product.psa_url || 'unknown'}`
+				)
+				validation_failed = true
+			}
+		}
+
+		for (const field of required_boolean_fields) {
+			if (typeof product[field as keyof Product] !== 'boolean') {
+				console.error(
+					`Product missing or has invalid ${field}: ${product.psa_url || 'unknown'}`
+				)
+				validation_failed = true
+			}
+		}
+
+		for (const field of nullable_string_fields) {
+			const value = product[field as keyof Product]
+			if (value === undefined) {
+				console.error(
+					`Product missing ${field} property (should be string or null): ${product.psa_url || 'unknown'}`
+				)
+				validation_failed = true
+			} else if (value !== null && (typeof value !== 'string' || value.trim().length === 0)) {
+				console.error(
+					`Product has invalid ${field} (should be non-empty string or null): ${product.psa_url || 'unknown'}`
+				)
+				validation_failed = true
+			}
+		}
+
+		for (const field of nullable_number_fields) {
+			const value = product[field as keyof Product]
+			if (value === undefined) {
+				console.error(
+					`Product missing ${field} property (should be number or null): ${product.psa_url || 'unknown'}`
+				)
+				validation_failed = true
+			} else if (value !== null && (typeof value !== 'number' || isNaN(value))) {
+				console.error(
+					`Product has invalid ${field} (should be number or null): ${product.psa_url || 'unknown'}`
+				)
+				validation_failed = true
+			}
 		}
 	}
 
-	if (failed_features) {
-		console.error('\nValidation failed: Some products have empty features')
+	if (validation_failed) {
+		console.error('\nValidation failed: Some products have missing or invalid fields')
 		process.exit(1)
 	}
 
-	console.log('✓ All products have non-empty features')
+	console.log('✓ All products have required fields with valid types')
+
+	for (const field of nullable_string_fields) {
+		const count = products.filter(
+			(p) => p[field as keyof Product] !== null
+		).length
+		const percentage = (count / products.length) * 100
+
+		if (percentage < 50) {
+			console.error(
+				`Sanity check failed: ${field} is non-null in only ${percentage.toFixed(1)}% of products (expected >50%)`
+			)
+			process.exit(1)
+		}
+
+		console.log(
+			`✓ ${field} is non-null in ${count}/${products.length} products (${percentage.toFixed(1)}%)`
+		)
+	}
+
+	for (const field of nullable_number_fields) {
+		const count = products.filter(
+			(p) => p[field as keyof Product] !== null
+		).length
+		const percentage = (count / products.length) * 100
+
+		if (percentage < 50) {
+			console.error(
+				`Sanity check failed: ${field} is non-null in only ${percentage.toFixed(1)}% of products (expected >50%)`
+			)
+			process.exit(1)
+		}
+
+		console.log(
+			`✓ ${field} is non-null in ${count}/${products.length} products (${percentage.toFixed(1)}%)`
+		)
+	}
 	console.log('\n✅ All validation tests passed!')
 }
 

@@ -121,6 +121,13 @@ This is a web scraping project for PSA Dagger firearms data from Palmetto State 
 ## Scripts Usage
 All scripts are executable with `node <script>.ts` thanks to Node's built-in TypeScript support.
 
+## Testing Workflow - IMPORTANT
+**After making ANY changes to parser scripts (in the `psa-parsers/` directory), you MUST:**
+1. Run `pnpm run update_daggers` to scrape and process all data with your changes
+2. Run `pnpm run validate_products` to verify data integrity and ensure nothing broke
+
+This is critical to ensure that parser changes work correctly and don't break the data pipeline.
+
 ## Dependencies
 - puppeteer - For web scraping
 - Standard Node.js fs/path modules for file operations

@@ -347,7 +347,7 @@ const process_product = (raw_product: RawProduct): Product => {
 
 const process_daggers_for_front_end = async (): Promise<void> => {
 	const input_file = path.join(__dirname, 'products', 'daggers2.json')
-	const output_dir = path.join(__dirname, '..', 'public', 'products')
+	const output_dir = path.join(__dirname, '..', 'client')
 	const output_file = path.join(output_dir, 'daggers.json')
 
 	try {
