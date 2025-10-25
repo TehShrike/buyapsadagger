@@ -4959,11 +4959,11 @@ var create_querystring_store = (defaults) => {
 Client[FILENAME] = "client/index.svelte";
 var root5 = add_locations(from_html(`<div class="container svelte-15huzto"><div class="intro"><h1>Buy a PSA Dagger</h1> <!></div> <div class="filters-and-results svelte-15huzto"><div class="filters svelte-15huzto"><h2>Filters</h2> <!> <!> <!> <!> <!></div> <div class="results svelte-15huzto"><h2>Results</h2></div></div></div>`), Client[FILENAME], [
   [
-    27,
+    29,
     0,
     [
-      [28, 1, [[29, 2]]],
-      [35, 1, [[36, 2, [[37, 3]]], [100, 2, [[101, 3]]]]]
+      [30, 1, [[31, 2]]],
+      [37, 1, [[38, 2, [[39, 3]]], [102, 2, [[103, 3]]]]]
     ]
   ]
 ]);
@@ -4998,7 +4998,7 @@ function Client($$anchor, $$props) {
     }),
     "component",
     Client,
-    30,
+    32,
     2,
     { componentTag: "PistolSizeSelector" }
   );
@@ -5029,7 +5029,7 @@ function Client($$anchor, $$props) {
     }),
     "component",
     Client,
-    38,
+    40,
     3,
     { componentTag: "FilterSelection" }
   );
@@ -5057,7 +5057,7 @@ function Client($$anchor, $$props) {
     }),
     "component",
     Client,
-    50,
+    52,
     3,
     { componentTag: "FilterSelection" }
   );
@@ -5085,7 +5085,7 @@ function Client($$anchor, $$props) {
     }),
     "component",
     Client,
-    62,
+    64,
     3,
     { componentTag: "FilterSelection" }
   );
@@ -5114,7 +5114,7 @@ function Client($$anchor, $$props) {
     }),
     "component",
     Client,
-    74,
+    76,
     3,
     { componentTag: "FilterSelection" }
   );
@@ -5142,7 +5142,7 @@ function Client($$anchor, $$props) {
     }),
     "component",
     Client,
-    87,
+    89,
     3,
     { componentTag: "FilterSelection" }
   );
