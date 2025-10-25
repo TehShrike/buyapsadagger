@@ -11,7 +11,7 @@
 import * as fs from 'fs/promises'
 import * as path from 'path'
 import { fileURLToPath } from 'url'
-import type { Product } from '../client/product.d.ts'
+import type { Product, DaggersData } from '../client/product.d.ts'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -348,7 +348,7 @@ const process_product = (raw_product: RawProduct): Product => {
 const process_daggers_for_front_end = async (): Promise<void> => {
 	const input_file = path.join(__dirname, 'products', 'daggers2.json')
 	const output_dir = path.join(__dirname, '..', 'client')
-	const output_file = path.join(output_dir, 'daggers.json')
+	const output_file = path.join(output_dir, 'daggers-data.ts')
 
 	try {
 		await fs.access(input_file)
@@ -407,14 +407,21 @@ const process_daggers_for_front_end = async (): Promise<void> => {
 		frame_colors[normalized] = original
 	}
 
-	const output_data = {
+	const output_data: DaggersData = {
 		daggers: processed_products,
 		slide_colors,
 		frame_colors,
 	}
 
+	const typescript_content = `import type { DaggersData } from './product.d.ts'
+
+const data: DaggersData = ${JSON.stringify(output_data, null, '\t')} as const
+
+export default data
+`
+
 	await fs.mkdir(output_dir, { recursive: true })
-	await fs.writeFile(output_file, JSON.stringify(output_data, null, 2), 'utf-8')
+	await fs.writeFile(output_file, typescript_content, 'utf-8')
 
 	console.log(`Processed ${processed_products.length} products successfully`)
 	console.log(`Results saved to: ${output_file}`)
