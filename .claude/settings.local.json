@@ -13,7 +13,9 @@
       "WebFetch(domain:ast-grep.github.io)",
       "Bash(pnpm run update_daggers:*)",
       "Bash(cat:*)",
-      "Bash(pnpm run validate_products:*)"
+      "Bash(pnpm run validate_products:*)",
+      "Bash(pnpm run build)",
+      "Bash(pnpm run test_parsers:*)"
     ],
     "deny": [],
     "ask": []

@@ -1,44 +1,21 @@
-import * as fs from 'fs'
-import * as path from 'path'
-import { fileURLToPath } from 'url'
 import type { Product, DaggersData } from '../client/product.d.ts'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+import daggers_data from '../client/daggers-data.ts'
 
 const validate_products = async (): Promise<void> => {
-	const client_dir = path.join(__dirname, '..', 'client')
-	const daggers_file = path.join(client_dir, 'daggers.json')
+	const data: DaggersData = daggers_data
 
-	if (!fs.existsSync(daggers_file)) {
-		console.error('daggers.json file not found')
+	if (!data.daggers || !Array.isArray(data.daggers)) {
+		console.error('daggers-data should contain a daggers array')
 		process.exit(1)
 	}
 
-	let data: DaggersData
+	if (!data.slide_colors || typeof data.slide_colors !== 'object') {
+		console.error('daggers-data should contain a slide_colors object')
+		process.exit(1)
+	}
 
-	try {
-		const file_content = fs.readFileSync(daggers_file, 'utf-8')
-		const parsed = JSON.parse(file_content)
-
-		if (!parsed.daggers || !Array.isArray(parsed.daggers)) {
-			console.error('daggers.json should contain a daggers array')
-			process.exit(1)
-		}
-
-		if (!parsed.slide_colors || typeof parsed.slide_colors !== 'object') {
-			console.error('daggers.json should contain a slide_colors object')
-			process.exit(1)
-		}
-
-		if (!parsed.frame_colors || typeof parsed.frame_colors !== 'object') {
-			console.error('daggers.json should contain a frame_colors object')
-			process.exit(1)
-		}
-
-		data = parsed
-	} catch (error) {
-		console.error('Failed to parse daggers.json:', error.message)
+	if (!data.frame_colors || typeof data.frame_colors !== 'object') {
+		console.error('daggers-data should contain a frame_colors object')
 		process.exit(1)
 	}
 

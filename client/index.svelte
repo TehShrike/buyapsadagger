@@ -3,6 +3,8 @@
 	import FilterSelection from './FilterSelection.svelte'
 	import { create_querystring_store } from './querystring_store.svelte.ts'
 	import type { OpticCompatibility, Size } from './option_types.d.ts'
+	import daggers_data from './daggers-data.ts'
+
 
 	type TrueFalseOrAny = 'true' | 'false' | 'any'
 	type OpticCompatibilityOrAny = OpticCompatibility | 'any'
