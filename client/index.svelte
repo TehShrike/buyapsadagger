@@ -101,6 +101,14 @@
 		</div>
 		<div class="results">
 			<h2>Results</h2>
+			<div class="products-grid">
+				{#each daggers_data.daggers as product}
+					<a href={product.psa_url} target="_blank" rel="noopener" class="product-card">
+						<h3>{product.psa_product_name}</h3>
+						<div class="price">${product.price.toFixed(2)}</div>
+					</a>
+				{/each}
+			</div>
 		</div>
 	</div>
 </div>
@@ -151,5 +159,45 @@
 
 	.results {
 		flex: 1;
+	}
+
+	.products-grid {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		gap: var(--spacing);
+		align-items: stretch;
+	}
+
+	.product-card {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		width: 200px;
+		height: 200px;
+		padding: var(--spacing);
+		border: 1px solid #ccc;
+		border-radius: 8px;
+		text-decoration: none;
+		color: inherit;
+	}
+
+	.product-card:hover {
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	}
+
+	.product-card h3 {
+		font-size: 14px;
+		margin: 0 0 8px 0;
+		overflow: hidden;
+		display: -webkit-box;
+		line-clamp: 4;
+		-webkit-line-clamp: 4;
+		-webkit-box-orient: vertical;
+	}
+
+	.product-card .price {
+		font-weight: bold;
+		margin-top: auto;
 	}
 </style>

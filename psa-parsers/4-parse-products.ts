@@ -9,6 +9,7 @@ const __dirname = path.dirname(__filename)
 type ParsedProduct = {
 	url: string
 	title: string
+	price: number
 	product_details: Record<string, string>
 	features: string
 }
@@ -105,6 +106,16 @@ const extract_features = ($: cheerio.CheerioAPI): string => {
 	return extract_text(features_section)
 }
 
+const extract_price = ($: cheerio.CheerioAPI): number => {
+	const price_text = $('.product-info-price .price').text().trim()
+	const price_match = price_text.match(/[\d,]+\.?\d*/)
+	if (!price_match) {
+		return 0
+	}
+	const price_string = price_match[0].replace(/,/g, '')
+	return parseFloat(price_string)
+}
+
 const parse_product_file = async (
 	file_path: string
 ): Promise<ParsedProduct | null> => {
@@ -120,12 +131,14 @@ const parse_product_file = async (
 
 		const url = extract_url($)
 		const title = extract_title($)
+		const price = extract_price($)
 		const product_details = extract_product_details($)
 		const features = extract_features($)
 
 		return {
 			url,
 			title,
+			price,
 			product_details,
 			features,
 		}

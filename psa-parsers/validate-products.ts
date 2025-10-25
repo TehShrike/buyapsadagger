@@ -50,6 +50,7 @@ const validate_products = async (): Promise<void> => {
 		'optic_compatibility',
 	]
 	const required_number_fields = [
+		'price',
 		'width',
 		'length',
 		'height',
@@ -133,6 +134,13 @@ const validate_products = async (): Promise<void> => {
 				)
 				validation_failed = true
 			}
+		}
+
+		if (product.price <= 0) {
+			console.error(
+				`Product has invalid price (must be greater than 0): ${product.psa_url || 'unknown'} (price: ${product.price})`
+			)
+			validation_failed = true
 		}
 	}
 

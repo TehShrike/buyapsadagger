@@ -1,6 +1,7 @@
 export type Product = {
 	psa_product_name: string
 	psa_url: string
+	price: number
 	size_name: 'micro' | 'compact' | 'full_size_s'
 	width: number
 	length: number

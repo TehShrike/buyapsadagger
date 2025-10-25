@@ -19,6 +19,7 @@ const __dirname = path.dirname(__filename)
 type RawProduct = {
 	url: string
 	title: string
+	price: number
 	product_details: Record<string, string>
 	features: string
 }
@@ -300,7 +301,7 @@ const has_cerakote_coating = (slide_finish: string | null): boolean => {
 }
 
 const process_product = (raw_product: RawProduct): Product => {
-	const { title, url, product_details, features } = raw_product
+	const { title, url, price, product_details, features } = raw_product
 
 	const width = extract_numeric_value(product_details.overall_width || '')
 	const length = extract_numeric_value(product_details.overall_length || '')
@@ -325,6 +326,7 @@ const process_product = (raw_product: RawProduct): Product => {
 	return {
 		psa_product_name: title,
 		psa_url: url,
+		price,
 		size_name,
 		width,
 		length,
