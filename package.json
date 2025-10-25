@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "run-p test:*",
+		"test:types": "tsc --noEmit",
     "0_delete_psa_html_files": "rm -f psa-parsers/listing-pages/*.html psa-parsers/products/*.html",
     "1_download_product_listings": "node psa-parsers/1-download-listings.ts",
     "2_scrape_product_listings": "node psa-parsers/2-parse-listings.ts",
