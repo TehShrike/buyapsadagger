@@ -81,8 +81,10 @@ var STALE_REACTION = new class StaleReactionError extends Error {
     __publicField(this, "message", "The reaction that called `getAbortSignal()` was re-run or destroyed");
   }
 }();
+var ELEMENT_NODE = 1;
 var TEXT_NODE = 3;
 var COMMENT_NODE = 8;
+var DOCUMENT_FRAGMENT_NODE = 11;
 
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/shared/errors.js
 function await_outside_boundary() {
@@ -96,6 +98,28 @@ https://svelte.dev/e/await_outside_boundary`);
     throw new Error(`https://svelte.dev/e/await_outside_boundary`);
   }
 }
+function invalid_snippet_arguments() {
+  if (dev_fallback_default) {
+    const error = new Error(`invalid_snippet_arguments
+A snippet function was passed invalid arguments. Snippets should only be instantiated via \`{@render ...}\`
+https://svelte.dev/e/invalid_snippet_arguments`);
+    error.name = "Svelte error";
+    throw error;
+  } else {
+    throw new Error(`https://svelte.dev/e/invalid_snippet_arguments`);
+  }
+}
+function snippet_without_render_tag() {
+  if (dev_fallback_default) {
+    const error = new Error(`snippet_without_render_tag
+Attempted to render a snippet without a \`{@render}\` block. This would cause the snippet code to be stringified instead of its content being rendered to the DOM. To fix this, change \`{snippet}\` to \`{@render snippet()}\`.
+https://svelte.dev/e/snippet_without_render_tag`);
+    error.name = "Svelte error";
+    throw error;
+  } else {
+    throw new Error(`https://svelte.dev/e/snippet_without_render_tag`);
+  }
+}
 
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/errors.js
 function async_derived_orphan() {
@@ -107,6 +131,28 @@ https://svelte.dev/e/async_derived_orphan`);
     throw error;
   } else {
     throw new Error(`https://svelte.dev/e/async_derived_orphan`);
+  }
+}
+function component_api_changed(method, component2) {
+  if (dev_fallback_default) {
+    const error = new Error(`component_api_changed
+Calling \`${method}\` on a component instance (of ${component2}) is no longer valid in Svelte 5
+https://svelte.dev/e/component_api_changed`);
+    error.name = "Svelte error";
+    throw error;
+  } else {
+    throw new Error(`https://svelte.dev/e/component_api_changed`);
+  }
+}
+function component_api_invalid_new(component2, name) {
+  if (dev_fallback_default) {
+    const error = new Error(`component_api_invalid_new
+Attempted to instantiate ${component2} with \`new ${name}\`, which is no longer valid in Svelte 5. If this component is not under your control, set the \`compatibility.componentApi\` compiler option to \`4\` to keep it working.
+https://svelte.dev/e/component_api_invalid_new`);
+    error.name = "Svelte error";
+    throw error;
+  } else {
+    throw new Error(`https://svelte.dev/e/component_api_invalid_new`);
   }
 }
 function derived_references_self() {
@@ -254,6 +300,7 @@ https://svelte.dev/e/state_unsafe_mutation`);
 }
 
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/constants.js
+var EACH_ITEM_REACTIVE = 1;
 var EACH_INDEX_REACTIVE = 1 << 1;
 var EACH_IS_CONTROLLED = 1 << 2;
 var EACH_IS_ANIMATED = 1 << 3;
@@ -270,6 +317,7 @@ var TEMPLATE_USE_IMPORT_NODE = 1 << 1;
 var TEMPLATE_USE_SVG = 1 << 2;
 var TEMPLATE_USE_MATHML = 1 << 3;
 var HYDRATION_START = "[";
+var HYDRATION_START_ELSE = "[!";
 var HYDRATION_END = "]";
 var HYDRATION_ERROR = {};
 var ELEMENT_PRESERVE_ATTRIBUTE_CASE = 1 << 1;
@@ -331,6 +379,24 @@ https://svelte.dev/e/lifecycle_double_unmount`, bold, normal);
     console.warn(`https://svelte.dev/e/lifecycle_double_unmount`);
   }
 }
+function ownership_invalid_binding(parent, prop2, child2, owner) {
+  if (dev_fallback_default) {
+    console.warn(`%c[svelte] ownership_invalid_binding
+%c${parent} passed property \`${prop2}\` to ${child2} with \`bind:\`, but its parent component ${owner} did not declare \`${prop2}\` as a binding. Consider creating a binding between ${owner} and ${parent} (e.g. \`bind:${prop2}={...}\` instead of \`${prop2}={...}\`)
+https://svelte.dev/e/ownership_invalid_binding`, bold, normal);
+  } else {
+    console.warn(`https://svelte.dev/e/ownership_invalid_binding`);
+  }
+}
+function ownership_invalid_mutation(name, location, prop2, parent) {
+  if (dev_fallback_default) {
+    console.warn(`%c[svelte] ownership_invalid_mutation
+%cMutating unbound props (\`${name}\`, at ${location}) is strongly discouraged. Consider using \`bind:${prop2}={...}\` in ${parent} (or using a callback) instead
+https://svelte.dev/e/ownership_invalid_mutation`, bold, normal);
+  } else {
+    console.warn(`https://svelte.dev/e/ownership_invalid_mutation`);
+  }
+}
 function state_proxy_equality_mismatch(operator) {
   if (dev_fallback_default) {
     console.warn(`%c[svelte] state_proxy_equality_mismatch
@@ -378,6 +444,40 @@ function next(count = 1) {
     }
     hydrate_node = node;
   }
+}
+function remove_nodes() {
+  var depth = 0;
+  var node = hydrate_node;
+  while (true) {
+    if (node.nodeType === COMMENT_NODE) {
+      var data = (
+        /** @type {Comment} */
+        node.data
+      );
+      if (data === HYDRATION_END) {
+        if (depth === 0) return node;
+        depth -= 1;
+      } else if (data === HYDRATION_START || data === HYDRATION_START_ELSE) {
+        depth += 1;
+      }
+    }
+    var next2 = (
+      /** @type {TemplateNode} */
+      get_next_sibling(node)
+    );
+    node.remove();
+    node = next2;
+  }
+}
+function read_hydration_instruction(node) {
+  if (!node || node.nodeType !== COMMENT_NODE) {
+    hydration_mismatch();
+    throw HYDRATION_ERROR;
+  }
+  return (
+    /** @type {Comment} */
+    node.data
+  );
 }
 
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/reactivity/equality.js
@@ -453,6 +553,22 @@ function set_component_context(context) {
 var dev_stack = null;
 function set_dev_stack(stack2) {
   dev_stack = stack2;
+}
+function add_svelte_meta(callback, type, component2, line, column, additional) {
+  const parent = dev_stack;
+  dev_stack = {
+    type,
+    file: component2[FILENAME],
+    line,
+    column,
+    parent,
+    ...additional
+  };
+  try {
+    return callback();
+  } finally {
+    dev_stack = parent;
+  }
 }
 var dev_current_component_function = null;
 function set_dev_current_component_function(fn) {
@@ -1015,8 +1131,8 @@ var _Batch = class _Batch {
         }
       }
     }
-    for (const root5 of root_effects) {
-      __privateMethod(this, _Batch_instances, traverse_effect_tree_fn).call(this, root5);
+    for (const root6 of root_effects) {
+      __privateMethod(this, _Batch_instances, traverse_effect_tree_fn).call(this, root6);
     }
     if (__privateGet(this, _async_effects).length === 0 && __privateGet(this, _pending) === 0) {
       __privateMethod(this, _Batch_instances, commit_fn).call(this);
@@ -1166,9 +1282,9 @@ _Batch_instances = new WeakSet();
  * them for later execution as appropriate
  * @param {Effect} root
  */
-traverse_effect_tree_fn = function(root5) {
-  root5.f ^= CLEAN;
-  var effect2 = root5.first;
+traverse_effect_tree_fn = function(root6) {
+  root6.f ^= CLEAN;
+  var effect2 = root6.first;
   while (effect2 !== null) {
     var flags2 = effect2.f;
     var is_branch = (flags2 & (BRANCH_EFFECT | ROOT_EFFECT)) !== 0;
@@ -1853,6 +1969,15 @@ function init_array_prototype_warnings() {
     array_prototype2.includes = includes;
   };
 }
+function strict_equals(a, b, equal = true) {
+  try {
+    if (a === b !== (get_proxied_value(a) === get_proxied_value(b))) {
+      state_proxy_equality_mismatch(equal ? "===" : "!==");
+    }
+  } catch {
+  }
+  return a === b === equal;
+}
 
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dom/operations.js
 var $window;
@@ -1946,6 +2071,15 @@ function sibling(node, count = 1, is_text = false) {
 }
 function clear_text_content(node) {
   node.textContent = "";
+}
+function should_defer_append() {
+  if (!async_mode_flag) return false;
+  if (eager_block_effects !== null) return false;
+  var flags2 = (
+    /** @type {Effect} */
+    active_effect.f
+  );
+  return (flags2 & EFFECT_RAN) !== 0;
 }
 
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dom/elements/bindings/shared.js
@@ -2258,6 +2392,31 @@ function pause_children(effect2, transitions, local) {
     child2 = sibling2;
   }
 }
+function resume_effect(effect2) {
+  resume_children(effect2, true);
+}
+function resume_children(effect2, local) {
+  if ((effect2.f & INERT) === 0) return;
+  effect2.f ^= INERT;
+  if ((effect2.f & CLEAN) === 0) {
+    set_signal_status(effect2, DIRTY);
+    schedule_effect(effect2);
+  }
+  var child2 = effect2.first;
+  while (child2 !== null) {
+    var sibling2 = child2.next;
+    var transparent = (child2.f & EFFECT_TRANSPARENT) !== 0 || (child2.f & BRANCH_EFFECT) !== 0;
+    resume_children(child2, transparent ? local : false);
+    child2 = sibling2;
+  }
+  if (effect2.transitions !== null) {
+    for (const transition2 of effect2.transitions) {
+      if (transition2.is_global || local) {
+        transition2.in();
+      }
+    }
+  }
+}
 
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/legacy.js
 var captured_signals = null;
@@ -2361,7 +2520,7 @@ function is_dirty(reaction) {
   }
   return false;
 }
-function schedule_possible_effect_self_invalidation(signal, effect2, root5 = true) {
+function schedule_possible_effect_self_invalidation(signal, effect2, root6 = true) {
   var reactions = signal.reactions;
   if (reactions === null) return;
   if (!async_mode_flag && current_sources?.includes(signal)) {
@@ -2377,7 +2536,7 @@ function schedule_possible_effect_self_invalidation(signal, effect2, root5 = tru
         false
       );
     } else if (effect2 === reaction) {
-      if (root5) {
+      if (root6) {
         set_signal_status(reaction, DIRTY);
       } else if ((reaction.f & CLEAN) !== 0) {
         set_signal_status(reaction, MAYBE_DIRTY);
@@ -2830,6 +2989,54 @@ var RUNES = (
     "$host"
   ]
 );
+function sanitize_location(location) {
+  return (
+    /** @type {T} */
+    location?.replace(/\//g, "/\u200B")
+  );
+}
+
+// node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dev/elements.js
+function add_locations(fn, filename, locations) {
+  return (...args) => {
+    const dom = fn(...args);
+    var node = hydrating ? dom : dom.nodeType === DOCUMENT_FRAGMENT_NODE ? dom.firstChild : dom;
+    assign_locations(node, filename, locations);
+    return dom;
+  };
+}
+function assign_location(element2, filename, location) {
+  element2.__svelte_meta = {
+    parent: dev_stack,
+    loc: { file: filename, line: location[0], column: location[1] }
+  };
+  if (location[2]) {
+    assign_locations(element2.firstChild, filename, location[2]);
+  }
+}
+function assign_locations(node, filename, locations) {
+  var i = 0;
+  var depth = 0;
+  while (node && i < locations.length) {
+    if (hydrating && node.nodeType === COMMENT_NODE) {
+      var comment2 = (
+        /** @type {Comment} */
+        node
+      );
+      if (comment2.data === HYDRATION_START || comment2.data === HYDRATION_START_ELSE) depth += 1;
+      else if (comment2.data[0] === HYDRATION_END) depth -= 1;
+    }
+    if (depth === 0 && node.nodeType === ELEMENT_NODE) {
+      assign_location(
+        /** @type {Element} */
+        node,
+        filename,
+        locations[i++]
+      );
+    }
+    node = node.nextSibling;
+  }
+}
 
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dom/elements/events.js
 var all_registered_events = /* @__PURE__ */ new Set();
@@ -2993,6 +3200,20 @@ function from_html(content, flags2) {
     return clone;
   };
 }
+function text(value = "") {
+  if (!hydrating) {
+    var t = create_text(value + "");
+    assign_nodes(t, t);
+    return t;
+  }
+  var node = hydrate_node;
+  if (node.nodeType !== TEXT_NODE) {
+    node.before(node = create_text());
+    set_hydrate_node(node);
+  }
+  assign_nodes(node, node);
+  return node;
+}
 function append(anchor, dom) {
   if (hydrating) {
     active_effect.nodes_end = hydrate_node;
@@ -3010,6 +3231,13 @@ function append(anchor, dom) {
 
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/render.js
 var should_intro = true;
+function set_text(text2, value) {
+  var str = value == null ? "" : typeof value === "object" ? value + "" : value;
+  if (str !== (text2.__t ?? (text2.__t = text2.nodeValue))) {
+    text2.__t = str;
+    text2.nodeValue = str + "";
+  }
+}
 function mount(component2, options) {
   return _mount(component2, options);
 }
@@ -3159,6 +3387,559 @@ function unmount(component2, options) {
   return Promise.resolve();
 }
 
+// node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dev/ownership.js
+function create_ownership_validator(props) {
+  const component2 = component_context?.function;
+  const parent = component_context?.p?.function;
+  return {
+    /**
+     * @param {string} prop
+     * @param {any[]} path
+     * @param {any} result
+     * @param {number} line
+     * @param {number} column
+     */
+    mutation: (prop2, path, result, line, column) => {
+      const name = path[0];
+      if (is_bound_or_unset(props, name) || !parent) {
+        return result;
+      }
+      let value = props;
+      for (let i = 0; i < path.length - 1; i++) {
+        value = value[path[i]];
+        if (!value?.[STATE_SYMBOL]) {
+          return result;
+        }
+      }
+      const location = sanitize_location(`${component2[FILENAME]}:${line}:${column}`);
+      ownership_invalid_mutation(name, location, prop2, parent[FILENAME]);
+      return result;
+    },
+    /**
+     * @param {any} key
+     * @param {any} child_component
+     * @param {() => any} value
+     */
+    binding: (key2, child_component, value) => {
+      if (!is_bound_or_unset(props, key2) && parent && value()?.[STATE_SYMBOL]) {
+        ownership_invalid_binding(
+          component2[FILENAME],
+          key2,
+          child_component[FILENAME],
+          parent[FILENAME]
+        );
+      }
+    }
+  };
+}
+function is_bound_or_unset(props, prop_name) {
+  const is_entry_props = STATE_SYMBOL in props || LEGACY_PROPS in props;
+  return !!get_descriptor(props, prop_name)?.set || is_entry_props && prop_name in props || !(prop_name in props);
+}
+
+// node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dev/legacy.js
+function check_target(target) {
+  if (target) {
+    component_api_invalid_new(target[FILENAME] ?? "a component", target.name);
+  }
+}
+function legacy_api() {
+  const component2 = component_context?.function;
+  function error(method) {
+    component_api_changed(method, component2[FILENAME]);
+  }
+  return {
+    $destroy: () => error("$destroy()"),
+    $on: () => error("$on(...)"),
+    $set: () => error("$set(...)")
+  };
+}
+
+// node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dev/validation.js
+function validate_snippet_args(anchor, ...args) {
+  if (typeof anchor !== "object" || !(anchor instanceof Node)) {
+    invalid_snippet_arguments();
+  }
+  for (let arg of args) {
+    if (typeof arg !== "function") {
+      invalid_snippet_arguments();
+    }
+  }
+}
+
+// node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dom/blocks/each.js
+var current_each_item = null;
+function index(_, i) {
+  return i;
+}
+function pause_effects(state2, items, controlled_anchor) {
+  var items_map = state2.items;
+  var transitions = [];
+  var length = items.length;
+  for (var i = 0; i < length; i++) {
+    pause_children(items[i].e, transitions, true);
+  }
+  var is_controlled = length > 0 && transitions.length === 0 && controlled_anchor !== null;
+  if (is_controlled) {
+    var parent_node = (
+      /** @type {Element} */
+      /** @type {Element} */
+      controlled_anchor.parentNode
+    );
+    clear_text_content(parent_node);
+    parent_node.append(
+      /** @type {Element} */
+      controlled_anchor
+    );
+    items_map.clear();
+    link(state2, items[0].prev, items[length - 1].next);
+  }
+  run_out_transitions(transitions, () => {
+    for (var i2 = 0; i2 < length; i2++) {
+      var item = items[i2];
+      if (!is_controlled) {
+        items_map.delete(item.k);
+        link(state2, item.prev, item.next);
+      }
+      destroy_effect(item.e, !is_controlled);
+    }
+  });
+}
+function each(node, flags2, get_collection, get_key, render_fn, fallback_fn = null) {
+  var anchor = node;
+  var state2 = { flags: flags2, items: /* @__PURE__ */ new Map(), first: null };
+  var is_controlled = (flags2 & EACH_IS_CONTROLLED) !== 0;
+  if (is_controlled) {
+    var parent_node = (
+      /** @type {Element} */
+      node
+    );
+    anchor = hydrating ? set_hydrate_node(
+      /** @type {Comment | Text} */
+      get_first_child(parent_node)
+    ) : parent_node.appendChild(create_text());
+  }
+  if (hydrating) {
+    hydrate_next();
+  }
+  var fallback2 = null;
+  var was_empty = false;
+  var offscreen_items = /* @__PURE__ */ new Map();
+  var each_array = derived_safe_equal(() => {
+    var collection = get_collection();
+    return is_array(collection) ? collection : collection == null ? [] : array_from(collection);
+  });
+  var array;
+  var each_effect;
+  function commit() {
+    reconcile(
+      each_effect,
+      array,
+      state2,
+      offscreen_items,
+      anchor,
+      render_fn,
+      flags2,
+      get_key,
+      get_collection
+    );
+    if (fallback_fn !== null) {
+      if (array.length === 0) {
+        if (fallback2) {
+          resume_effect(fallback2);
+        } else {
+          fallback2 = branch(() => fallback_fn(anchor));
+        }
+      } else if (fallback2 !== null) {
+        pause_effect(fallback2, () => {
+          fallback2 = null;
+        });
+      }
+    }
+  }
+  block(() => {
+    each_effect ?? (each_effect = /** @type {Effect} */
+    active_effect);
+    array = /** @type {V[]} */
+    get(each_array);
+    var length = array.length;
+    if (was_empty && length === 0) {
+      return;
+    }
+    was_empty = length === 0;
+    let mismatch = false;
+    if (hydrating) {
+      var is_else = read_hydration_instruction(anchor) === HYDRATION_START_ELSE;
+      if (is_else !== (length === 0)) {
+        anchor = remove_nodes();
+        set_hydrate_node(anchor);
+        set_hydrating(false);
+        mismatch = true;
+      }
+    }
+    if (hydrating) {
+      var prev = null;
+      var item;
+      for (var i = 0; i < length; i++) {
+        if (hydrate_node.nodeType === COMMENT_NODE && /** @type {Comment} */
+        hydrate_node.data === HYDRATION_END) {
+          anchor = /** @type {Comment} */
+          hydrate_node;
+          mismatch = true;
+          set_hydrating(false);
+          break;
+        }
+        var value = array[i];
+        var key2 = get_key(value, i);
+        item = create_item(
+          hydrate_node,
+          state2,
+          prev,
+          null,
+          value,
+          key2,
+          i,
+          render_fn,
+          flags2,
+          get_collection
+        );
+        state2.items.set(key2, item);
+        prev = item;
+      }
+      if (length > 0) {
+        set_hydrate_node(remove_nodes());
+      }
+    }
+    if (hydrating) {
+      if (length === 0 && fallback_fn) {
+        fallback2 = branch(() => fallback_fn(anchor));
+      }
+    } else {
+      if (should_defer_append()) {
+        var keys = /* @__PURE__ */ new Set();
+        var batch = (
+          /** @type {Batch} */
+          current_batch
+        );
+        for (i = 0; i < length; i += 1) {
+          value = array[i];
+          key2 = get_key(value, i);
+          var existing = state2.items.get(key2) ?? offscreen_items.get(key2);
+          if (existing) {
+            if ((flags2 & (EACH_ITEM_REACTIVE | EACH_INDEX_REACTIVE)) !== 0) {
+              update_item(existing, value, i, flags2);
+            }
+          } else {
+            item = create_item(
+              null,
+              state2,
+              null,
+              null,
+              value,
+              key2,
+              i,
+              render_fn,
+              flags2,
+              get_collection,
+              true
+            );
+            offscreen_items.set(key2, item);
+          }
+          keys.add(key2);
+        }
+        for (const [key3, item2] of state2.items) {
+          if (!keys.has(key3)) {
+            batch.skipped_effects.add(item2.e);
+          }
+        }
+        batch.add_callback(commit);
+      } else {
+        commit();
+      }
+    }
+    if (mismatch) {
+      set_hydrating(true);
+    }
+    get(each_array);
+  });
+  if (hydrating) {
+    anchor = hydrate_node;
+  }
+}
+function reconcile(each_effect, array, state2, offscreen_items, anchor, render_fn, flags2, get_key, get_collection) {
+  var is_animated = (flags2 & EACH_IS_ANIMATED) !== 0;
+  var should_update = (flags2 & (EACH_ITEM_REACTIVE | EACH_INDEX_REACTIVE)) !== 0;
+  var length = array.length;
+  var items = state2.items;
+  var first = state2.first;
+  var current = first;
+  var seen;
+  var prev = null;
+  var to_animate;
+  var matched = [];
+  var stashed = [];
+  var value;
+  var key2;
+  var item;
+  var i;
+  if (is_animated) {
+    for (i = 0; i < length; i += 1) {
+      value = array[i];
+      key2 = get_key(value, i);
+      item = items.get(key2);
+      if (item !== void 0) {
+        item.a?.measure();
+        (to_animate ?? (to_animate = /* @__PURE__ */ new Set())).add(item);
+      }
+    }
+  }
+  for (i = 0; i < length; i += 1) {
+    value = array[i];
+    key2 = get_key(value, i);
+    item = items.get(key2);
+    if (item === void 0) {
+      var pending2 = offscreen_items.get(key2);
+      if (pending2 !== void 0) {
+        offscreen_items.delete(key2);
+        items.set(key2, pending2);
+        var next2 = prev ? prev.next : current;
+        link(state2, prev, pending2);
+        link(state2, pending2, next2);
+        move(pending2, next2, anchor);
+        prev = pending2;
+      } else {
+        var child_anchor = current ? (
+          /** @type {TemplateNode} */
+          current.e.nodes_start
+        ) : anchor;
+        prev = create_item(
+          child_anchor,
+          state2,
+          prev,
+          prev === null ? state2.first : prev.next,
+          value,
+          key2,
+          i,
+          render_fn,
+          flags2,
+          get_collection
+        );
+      }
+      items.set(key2, prev);
+      matched = [];
+      stashed = [];
+      current = prev.next;
+      continue;
+    }
+    if (should_update) {
+      update_item(item, value, i, flags2);
+    }
+    if ((item.e.f & INERT) !== 0) {
+      resume_effect(item.e);
+      if (is_animated) {
+        item.a?.unfix();
+        (to_animate ?? (to_animate = /* @__PURE__ */ new Set())).delete(item);
+      }
+    }
+    if (item !== current) {
+      if (seen !== void 0 && seen.has(item)) {
+        if (matched.length < stashed.length) {
+          var start = stashed[0];
+          var j;
+          prev = start.prev;
+          var a = matched[0];
+          var b = matched[matched.length - 1];
+          for (j = 0; j < matched.length; j += 1) {
+            move(matched[j], start, anchor);
+          }
+          for (j = 0; j < stashed.length; j += 1) {
+            seen.delete(stashed[j]);
+          }
+          link(state2, a.prev, b.next);
+          link(state2, prev, a);
+          link(state2, b, start);
+          current = start;
+          prev = b;
+          i -= 1;
+          matched = [];
+          stashed = [];
+        } else {
+          seen.delete(item);
+          move(item, current, anchor);
+          link(state2, item.prev, item.next);
+          link(state2, item, prev === null ? state2.first : prev.next);
+          link(state2, prev, item);
+          prev = item;
+        }
+        continue;
+      }
+      matched = [];
+      stashed = [];
+      while (current !== null && current.k !== key2) {
+        if ((current.e.f & INERT) === 0) {
+          (seen ?? (seen = /* @__PURE__ */ new Set())).add(current);
+        }
+        stashed.push(current);
+        current = current.next;
+      }
+      if (current === null) {
+        continue;
+      }
+      item = current;
+    }
+    matched.push(item);
+    prev = item;
+    current = item.next;
+  }
+  if (current !== null || seen !== void 0) {
+    var to_destroy = seen === void 0 ? [] : array_from(seen);
+    while (current !== null) {
+      if ((current.e.f & INERT) === 0) {
+        to_destroy.push(current);
+      }
+      current = current.next;
+    }
+    var destroy_length = to_destroy.length;
+    if (destroy_length > 0) {
+      var controlled_anchor = (flags2 & EACH_IS_CONTROLLED) !== 0 && length === 0 ? anchor : null;
+      if (is_animated) {
+        for (i = 0; i < destroy_length; i += 1) {
+          to_destroy[i].a?.measure();
+        }
+        for (i = 0; i < destroy_length; i += 1) {
+          to_destroy[i].a?.fix();
+        }
+      }
+      pause_effects(state2, to_destroy, controlled_anchor);
+    }
+  }
+  if (is_animated) {
+    queue_micro_task(() => {
+      if (to_animate === void 0) return;
+      for (item of to_animate) {
+        item.a?.apply();
+      }
+    });
+  }
+  each_effect.first = state2.first && state2.first.e;
+  each_effect.last = prev && prev.e;
+  for (var unused of offscreen_items.values()) {
+    destroy_effect(unused.e);
+  }
+  offscreen_items.clear();
+}
+function update_item(item, value, index2, type) {
+  if ((type & EACH_ITEM_REACTIVE) !== 0) {
+    internal_set(item.v, value);
+  }
+  if ((type & EACH_INDEX_REACTIVE) !== 0) {
+    internal_set(
+      /** @type {Value<number>} */
+      item.i,
+      index2
+    );
+  } else {
+    item.i = index2;
+  }
+}
+function create_item(anchor, state2, prev, next2, value, key2, index2, render_fn, flags2, get_collection, deferred2) {
+  var previous_each_item = current_each_item;
+  var reactive = (flags2 & EACH_ITEM_REACTIVE) !== 0;
+  var mutable = (flags2 & EACH_ITEM_IMMUTABLE) === 0;
+  var v = reactive ? mutable ? mutable_source(value, false, false) : source(value) : value;
+  var i = (flags2 & EACH_INDEX_REACTIVE) === 0 ? index2 : source(index2);
+  if (dev_fallback_default && reactive) {
+    v.trace = () => {
+      var collection_index = typeof i === "number" ? index2 : i.v;
+      get_collection()[collection_index];
+    };
+  }
+  var item = {
+    i,
+    v,
+    k: key2,
+    a: null,
+    // @ts-expect-error
+    e: null,
+    prev,
+    next: next2
+  };
+  current_each_item = item;
+  try {
+    if (anchor === null) {
+      var fragment = document.createDocumentFragment();
+      fragment.append(anchor = create_text());
+    }
+    item.e = branch(() => render_fn(
+      /** @type {Node} */
+      anchor,
+      v,
+      i,
+      get_collection
+    ), hydrating);
+    item.e.prev = prev && prev.e;
+    item.e.next = next2 && next2.e;
+    if (prev === null) {
+      if (!deferred2) {
+        state2.first = item;
+      }
+    } else {
+      prev.next = item;
+      prev.e.next = item.e;
+    }
+    if (next2 !== null) {
+      next2.prev = item;
+      next2.e.prev = item.e;
+    }
+    return item;
+  } finally {
+    current_each_item = previous_each_item;
+  }
+}
+function move(item, next2, anchor) {
+  var end = item.next ? (
+    /** @type {TemplateNode} */
+    item.next.e.nodes_start
+  ) : anchor;
+  var dest = next2 ? (
+    /** @type {TemplateNode} */
+    next2.e.nodes_start
+  ) : anchor;
+  var node = (
+    /** @type {TemplateNode} */
+    item.e.nodes_start
+  );
+  while (node !== null && node !== end) {
+    var next_node = (
+      /** @type {TemplateNode} */
+      get_next_sibling(node)
+    );
+    dest.before(node);
+    node = next_node;
+  }
+}
+function link(state2, prev, next2) {
+  if (prev === null) {
+    state2.first = next2;
+  } else {
+    prev.next = next2;
+    prev.e.next = next2 && next2.e;
+  }
+  if (next2 !== null) {
+    next2.prev = prev;
+    next2.e.prev = prev && prev.e;
+  }
+}
+
+// node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/shared/validate.js
+function prevent_snippet_stringification(fn) {
+  fn.toString = () => {
+    snippet_without_render_tag();
+    return "";
+  };
+  return fn;
+}
+
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dom/blocks/snippet.js
 function snippet(node, get_snippet, ...args) {
   var anchor = node;
@@ -3181,6 +3962,19 @@ function snippet(node, get_snippet, ...args) {
   if (hydrating) {
     anchor = hydrate_node;
   }
+}
+function wrap_snippet(component2, fn) {
+  const snippet2 = (node, ...args) => {
+    var previous_component_function = dev_current_component_function;
+    set_dev_current_component_function(component2);
+    try {
+      return fn(node, ...args);
+    } finally {
+      set_dev_current_component_function(previous_component_function);
+    }
+  };
+  prevent_snippet_stringification(snippet2);
+  return snippet2;
 }
 
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/shared/attributes.js
@@ -3825,156 +4619,283 @@ if (typeof window !== "undefined") {
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/flags/legacy.js
 enable_legacy_mode_flag();
 
-// client/query_string.ts
-var get_altered_query_string = (param, value) => {
-  const params = new URLSearchParams(window.location.search);
-  params.set(param, String(value));
-  return "?" + params.toString();
-};
-
 // client/RadioLink.svelte
+RadioLink[FILENAME] = "client/RadioLink.svelte";
 var onclick = (event2, href, group_value, $$props) => {
   event2.preventDefault();
   history.replaceState(null, "", get(href));
   group_value($$props.name);
 };
-var root = from_html(`<a role="radio" class="svelte-eew6ub"><!></a>`);
+var root = add_locations(from_html(`<a role="radio" class="svelte-eew6ub"><!></a>`), RadioLink[FILENAME], [[30, 0]]);
 function RadioLink($$anchor, $$props) {
-  push($$props, true);
-  let group_value = prop($$props, "group_value", 15);
-  let active = user_derived(() => group_value() === $$props.name);
-  let href = user_derived(() => get_altered_query_string($$props.group_name, $$props.name));
+  check_target(new.target);
+  push($$props, true, RadioLink);
+  let group_value = prop($$props, "group_value", 15), large = prop($$props, "large", 3, false);
+  let active = tag(user_derived(() => strict_equals(group_value(), $$props.name)), "active");
+  let href = tag(user_derived(() => $$props.get_altered_query_string($$props.group_name, $$props.name)), "href");
+  var $$exports = { ...legacy_api() };
   var a = root();
   a.__click = [onclick, href, group_value, $$props];
   var node = child(a);
-  snippet(node, () => $$props.children);
+  add_svelte_meta(() => snippet(node, () => $$props.children), "render", RadioLink, 31, 1);
   reset(a);
   template_effect(() => {
     set_attribute2(a, "href", get(href));
     set_attribute2(a, "data-active", get(active));
     set_attribute2(a, "aria-checked", get(active));
+    set_attribute2(a, "data-large", large());
   });
   append($$anchor, a);
-  pop();
+  return pop($$exports);
 }
 delegate(["click"]);
 
 // client/ImageLinkLayout.svelte
-var root2 = from_html(`<div class="image-link-layout svelte-nv020b"><div class="image svelte-nv020b"><!></div> <div class="text svelte-nv020b"><!></div></div>`);
+ImageLinkLayout[FILENAME] = "client/ImageLinkLayout.svelte";
+var root2 = add_locations(from_html(`<div class="image-link-layout svelte-nv020b"><div class="image svelte-nv020b"><!></div> <div class="text svelte-nv020b"><!></div></div>`), ImageLinkLayout[FILENAME], [[5, 0, [[6, 1], [9, 1]]]]);
 function ImageLinkLayout($$anchor, $$props) {
+  check_target(new.target);
+  push($$props, true, ImageLinkLayout);
+  var $$exports = { ...legacy_api() };
   var div = root2();
   var div_1 = child(div);
   var node = child(div_1);
-  snippet(node, () => $$props.image);
+  add_svelte_meta(() => snippet(node, () => $$props.image), "render", ImageLinkLayout, 7, 2);
   reset(div_1);
   var div_2 = sibling(div_1, 2);
   var node_1 = child(div_2);
-  snippet(node_1, () => $$props.text);
+  add_svelte_meta(() => snippet(node_1, () => $$props.text), "render", ImageLinkLayout, 10, 2);
   reset(div_2);
   reset(div);
   append($$anchor, div);
+  return pop($$exports);
 }
 
 // client/PistolSizeSelector.svelte
-var root_2 = from_html(`<img src="silhouettes/micro.svg" alt="Micro pistol silhouette" style="width: var(--base_image_width);"/>`);
-var root_3 = from_html(`Micro <small>It's pretty small</small>`, 1);
-var root_5 = from_html(`<img src="silhouettes/compact.svg" alt="Compact pistol silhouette" style="width: calc(var(--base_image_width) * 1.14369501);"/>`);
-var root_6 = from_html(`Compact <small>About half an inch longer, several credit cards wider</small>`, 1);
-var root_8 = from_html(`<img src="silhouettes/full_size_s.svg" alt="Full size pistol silhouette" style="width: calc(var(--base_image_width) * 1.14369501);"/>`);
-var root_9 = from_html(
-  `Full Size <small>Longer handle if you have big hands or want the extra 2 rounds per
+PistolSizeSelector[FILENAME] = "client/PistolSizeSelector.svelte";
+var root_2 = add_locations(from_html(`<img src="silhouettes/micro.svg" alt="Micro pistol silhouette" style="width: var(--base_image_width);"/>`), PistolSizeSelector[FILENAME], [[19, 4]]);
+var root_3 = add_locations(from_html(`Micro <small>It's pretty small</small>`, 1), PistolSizeSelector[FILENAME], [[27, 4]]);
+var root_5 = add_locations(from_html(`<img src="silhouettes/compact.svg" alt="Compact pistol silhouette" style="width: calc(var(--base_image_width) * 1.14369501);"/>`), PistolSizeSelector[FILENAME], [[34, 4]]);
+var root_6 = add_locations(from_html(`Compact <small>About half an inch longer, several credit cards wider</small>`, 1), PistolSizeSelector[FILENAME], [[42, 4]]);
+var root_8 = add_locations(from_html(`<img src="silhouettes/full_size_s.svg" alt="Full size pistol silhouette" style="width: calc(var(--base_image_width) * 1.14369501);"/>`), PistolSizeSelector[FILENAME], [[49, 4]]);
+var root_9 = add_locations(
+  from_html(
+    `Full Size <small>Longer handle if you have big hands or want the extra 2 rounds per
 					magazine</small>`,
-  1
+    1
+  ),
+  PistolSizeSelector[FILENAME],
+  [[57, 4]]
 );
-var root3 = from_html(`<div class="pistol-size svelte-11eufp1"><!> <!> <!></div>`);
+var root3 = add_locations(from_html(`<div class="pistol-size svelte-11eufp1"><!> <!> <!></div>`), PistolSizeSelector[FILENAME], [[15, 0]]);
 function PistolSizeSelector($$anchor, $$props) {
-  push($$props, true);
+  check_target(new.target);
+  push($$props, true, PistolSizeSelector);
+  var $$ownership_validator = create_ownership_validator($$props);
   let size = prop($$props, "size", 15);
+  var $$exports = { ...legacy_api() };
   var div = root3();
   var node = child(div);
-  RadioLink(node, {
-    group_name: "size",
-    name: "micro",
-    get group_value() {
-      return size();
-    },
-    set group_value($$value) {
-      size($$value);
-    },
-    children: ($$anchor2, $$slotProps) => {
-      {
-        const image = ($$anchor3) => {
-          var img = root_2();
-          append($$anchor3, img);
-        };
-        const text2 = ($$anchor3) => {
-          next();
-          var fragment_1 = root_3();
-          next();
-          append($$anchor3, fragment_1);
-        };
-        ImageLinkLayout($$anchor2, { image, text: text2, $$slots: { image: true, text: true } });
-      }
-    },
-    $$slots: { default: true }
-  });
+  {
+    $$ownership_validator.binding("size", RadioLink, size);
+    add_svelte_meta(
+      () => RadioLink(node, {
+        group_name: "size",
+        name: "micro",
+        large: true,
+        get get_altered_query_string() {
+          return $$props.get_altered_query_string;
+        },
+        get group_value() {
+          return size();
+        },
+        set group_value($$value) {
+          size($$value);
+        },
+        children: wrap_snippet(PistolSizeSelector, ($$anchor2, $$slotProps) => {
+          {
+            const image = wrap_snippet(PistolSizeSelector, function($$anchor3) {
+              validate_snippet_args(...arguments);
+              var img = root_2();
+              append($$anchor3, img);
+            });
+            const text2 = wrap_snippet(PistolSizeSelector, function($$anchor3) {
+              validate_snippet_args(...arguments);
+              next();
+              var fragment_1 = root_3();
+              next();
+              append($$anchor3, fragment_1);
+            });
+            add_svelte_meta(() => ImageLinkLayout($$anchor2, { image, text: text2, $$slots: { image: true, text: true } }), "component", PistolSizeSelector, 17, 2, { componentTag: "ImageLinkLayout" });
+          }
+        }),
+        $$slots: { default: true }
+      }),
+      "component",
+      PistolSizeSelector,
+      16,
+      1,
+      { componentTag: "RadioLink" }
+    );
+  }
   var node_1 = sibling(node, 2);
-  RadioLink(node_1, {
-    group_name: "size",
-    name: "compact",
-    get group_value() {
-      return size();
-    },
-    set group_value($$value) {
-      size($$value);
-    },
-    children: ($$anchor2, $$slotProps) => {
-      {
-        const image = ($$anchor3) => {
-          var img_1 = root_5();
-          append($$anchor3, img_1);
-        };
-        const text2 = ($$anchor3) => {
-          next();
-          var fragment_3 = root_6();
-          next();
-          append($$anchor3, fragment_3);
-        };
-        ImageLinkLayout($$anchor2, { image, text: text2, $$slots: { image: true, text: true } });
-      }
-    },
-    $$slots: { default: true }
-  });
+  {
+    $$ownership_validator.binding("size", RadioLink, size);
+    add_svelte_meta(
+      () => RadioLink(node_1, {
+        group_name: "size",
+        name: "compact",
+        large: true,
+        get get_altered_query_string() {
+          return $$props.get_altered_query_string;
+        },
+        get group_value() {
+          return size();
+        },
+        set group_value($$value) {
+          size($$value);
+        },
+        children: wrap_snippet(PistolSizeSelector, ($$anchor2, $$slotProps) => {
+          {
+            const image = wrap_snippet(PistolSizeSelector, function($$anchor3) {
+              validate_snippet_args(...arguments);
+              var img_1 = root_5();
+              append($$anchor3, img_1);
+            });
+            const text2 = wrap_snippet(PistolSizeSelector, function($$anchor3) {
+              validate_snippet_args(...arguments);
+              next();
+              var fragment_3 = root_6();
+              next();
+              append($$anchor3, fragment_3);
+            });
+            add_svelte_meta(() => ImageLinkLayout($$anchor2, { image, text: text2, $$slots: { image: true, text: true } }), "component", PistolSizeSelector, 32, 2, { componentTag: "ImageLinkLayout" });
+          }
+        }),
+        $$slots: { default: true }
+      }),
+      "component",
+      PistolSizeSelector,
+      31,
+      1,
+      { componentTag: "RadioLink" }
+    );
+  }
   var node_2 = sibling(node_1, 2);
-  RadioLink(node_2, {
-    group_name: "size",
-    name: "full_size_s",
-    get group_value() {
-      return size();
-    },
-    set group_value($$value) {
-      size($$value);
-    },
-    children: ($$anchor2, $$slotProps) => {
-      {
-        const image = ($$anchor3) => {
-          var img_2 = root_8();
-          append($$anchor3, img_2);
-        };
-        const text2 = ($$anchor3) => {
-          next();
-          var fragment_5 = root_9();
-          next();
-          append($$anchor3, fragment_5);
-        };
-        ImageLinkLayout($$anchor2, { image, text: text2, $$slots: { image: true, text: true } });
-      }
-    },
-    $$slots: { default: true }
-  });
+  {
+    $$ownership_validator.binding("size", RadioLink, size);
+    add_svelte_meta(
+      () => RadioLink(node_2, {
+        group_name: "size",
+        name: "full_size_s",
+        large: true,
+        get get_altered_query_string() {
+          return $$props.get_altered_query_string;
+        },
+        get group_value() {
+          return size();
+        },
+        set group_value($$value) {
+          size($$value);
+        },
+        children: wrap_snippet(PistolSizeSelector, ($$anchor2, $$slotProps) => {
+          {
+            const image = wrap_snippet(PistolSizeSelector, function($$anchor3) {
+              validate_snippet_args(...arguments);
+              var img_2 = root_8();
+              append($$anchor3, img_2);
+            });
+            const text2 = wrap_snippet(PistolSizeSelector, function($$anchor3) {
+              validate_snippet_args(...arguments);
+              next();
+              var fragment_5 = root_9();
+              next();
+              append($$anchor3, fragment_5);
+            });
+            add_svelte_meta(() => ImageLinkLayout($$anchor2, { image, text: text2, $$slots: { image: true, text: true } }), "component", PistolSizeSelector, 47, 2, { componentTag: "ImageLinkLayout" });
+          }
+        }),
+        $$slots: { default: true }
+      }),
+      "component",
+      PistolSizeSelector,
+      46,
+      1,
+      { componentTag: "RadioLink" }
+    );
+  }
   reset(div);
   append($$anchor, div);
-  pop();
+  return pop($$exports);
+}
+
+// client/FilterSelection.svelte
+FilterSelection[FILENAME] = "client/FilterSelection.svelte";
+var root4 = add_locations(from_html(`<div><strong class="svelte-8b3y4w"> </strong> <small class="svelte-8b3y4w"> </small> <div class="filter-options svelte-8b3y4w"></div></div>`), FilterSelection[FILENAME], [[24, 0, [[25, 1], [26, 1], [27, 1]]]]);
+function FilterSelection($$anchor, $$props) {
+  check_target(new.target);
+  push($$props, true, FilterSelection);
+  var $$ownership_validator = create_ownership_validator($$props);
+  let selected_value = prop($$props, "selected_value", 15);
+  var $$exports = { ...legacy_api() };
+  var div = root4();
+  var strong = child(div);
+  var text2 = child(strong, true);
+  reset(strong);
+  var small = sibling(strong, 2);
+  var text_1 = child(small, true);
+  reset(small);
+  var div_1 = sibling(small, 2);
+  add_svelte_meta(
+    () => each(div_1, 21, () => $$props.options, index, ($$anchor2, option) => {
+      {
+        $$ownership_validator.binding("selected_value", RadioLink, selected_value);
+        add_svelte_meta(
+          () => RadioLink($$anchor2, {
+            get group_name() {
+              return $$props.group_name;
+            },
+            get name() {
+              return get(option).value;
+            },
+            get get_altered_query_string() {
+              return $$props.get_altered_query_string;
+            },
+            get group_value() {
+              return selected_value();
+            },
+            set group_value($$value) {
+              selected_value($$value);
+            },
+            children: wrap_snippet(FilterSelection, ($$anchor3, $$slotProps) => {
+              next();
+              var text_2 = text();
+              template_effect(() => set_text(text_2, get(option).label));
+              append($$anchor3, text_2);
+            }),
+            $$slots: { default: true }
+          }),
+          "component",
+          FilterSelection,
+          29,
+          3,
+          { componentTag: "RadioLink" }
+        );
+      }
+    }),
+    "each",
+    FilterSelection,
+    28,
+    2
+  );
+  reset(div_1);
+  reset(div);
+  template_effect(() => {
+    set_text(text2, $$props.title);
+    set_text(text_1, $$props.description);
+  });
+  append($$anchor, div);
+  return pop($$exports);
 }
 
 // client/querystring_store.svelte.ts
@@ -4026,18 +4947,29 @@ var create_querystring_store = (defaults) => {
     // params,
     params_with_defaults,
     get_altered_query_string: (param, value) => {
-      update_browser_url(params);
-      return "?" + new URLSearchParams({ ...params, [param]: String(value) }).toString();
+      const { [param]: _, ...rest } = params;
+      const altered_value_is_the_same_as_the_default = value === defaults[param];
+      const new_params = altered_value_is_the_same_as_the_default ? rest : { ...rest, [param]: String(value) };
+      return "?" + new URLSearchParams(new_params).toString();
     }
   };
 };
 
 // client/index.svelte
-var root4 = from_html(`<div class="container svelte-15huzto"><div class="intro"><h1>Buy a PSA Dagger</h1> <!></div> <div class="filters-and-results svelte-15huzto"><div class="filters svelte-15huzto"><h2>Filters</h2> <div><strong>Longer Barrel</strong> <small>Adds about half an inch to the barrel. Makes it easier to hit what
-					you're aiming at.</small> ></div> <div><strong>Threaded Barrel</strong> <small>If you want to be able to stick a suppressor or flash hider or
-					something on your gun</small></div> <div><strong>Night Sight</strong> <small>they glow in the dark</small></div> <div><strong>Optic Compatibility</strong></div> <div><strong>Has Cover Plate</strong> <small>if you're not going to put an optic on right away</small></div></div> <div class="results svelte-15huzto"><h2>Results</h2></div></div></div>`);
+Client[FILENAME] = "client/index.svelte";
+var root5 = add_locations(from_html(`<div class="container svelte-15huzto"><div class="intro"><h1>Buy a PSA Dagger</h1> <!></div> <div class="filters-and-results svelte-15huzto"><div class="filters svelte-15huzto"><h2>Filters</h2> <!> <!> <!> <!> <!></div> <div class="results svelte-15huzto"><h2>Results</h2></div></div></div>`), Client[FILENAME], [
+  [
+    27,
+    0,
+    [
+      [28, 1, [[29, 2]]],
+      [35, 1, [[36, 2, [[37, 3]]], [100, 2, [[101, 3]]]]]
+    ]
+  ]
+]);
 function Client($$anchor, $$props) {
-  push($$props, false);
+  check_target(new.target);
+  push($$props, false, Client);
   const querystring_instance = mutable_source(create_querystring_store({
     size: "compact",
     extra_long_barrel: "false",
@@ -4046,24 +4978,180 @@ function Client($$anchor, $$props) {
     optic_compatibility: "none",
     has_cover_plate: "true"
   }));
+  var $$exports = { ...legacy_api() };
   init();
-  var div = root4();
+  var div = root5();
   var div_1 = child(div);
   var node = sibling(child(div_1), 2);
-  PistolSizeSelector(node, {
-    get size() {
-      return get(querystring_instance).params_with_defaults.size;
-    },
-    set size($$value) {
-      mutate(querystring_instance, get(querystring_instance).params_with_defaults.size = $$value);
-    },
-    $$legacy: true
-  });
+  add_svelte_meta(
+    () => PistolSizeSelector(node, {
+      get get_altered_query_string() {
+        return get(querystring_instance).get_altered_query_string;
+      },
+      get size() {
+        return get(querystring_instance).params_with_defaults.size;
+      },
+      set size($$value) {
+        mutate(querystring_instance, get(querystring_instance).params_with_defaults.size = $$value);
+      },
+      $$legacy: true
+    }),
+    "component",
+    Client,
+    30,
+    2,
+    { componentTag: "PistolSizeSelector" }
+  );
   reset(div_1);
+  var div_2 = sibling(div_1, 2);
+  var div_3 = child(div_2);
+  var node_1 = sibling(child(div_3), 2);
+  add_svelte_meta(
+    () => FilterSelection(node_1, {
+      title: "Longer Barrel",
+      description: "Adds about half an inch to the barrel. Makes it easier to hit what you're aiming at.",
+      group_name: "extra_long_barrel",
+      options: [
+        { label: "Either", value: "any" },
+        { label: "Yes", value: "true" },
+        { label: "No", value: "false" }
+      ],
+      get get_altered_query_string() {
+        return get(querystring_instance).get_altered_query_string;
+      },
+      get selected_value() {
+        return get(querystring_instance).params_with_defaults.extra_long_barrel;
+      },
+      set selected_value($$value) {
+        mutate(querystring_instance, get(querystring_instance).params_with_defaults.extra_long_barrel = $$value);
+      },
+      $$legacy: true
+    }),
+    "component",
+    Client,
+    38,
+    3,
+    { componentTag: "FilterSelection" }
+  );
+  var node_2 = sibling(node_1, 2);
+  add_svelte_meta(
+    () => FilterSelection(node_2, {
+      title: "Threaded Barrel",
+      description: "If you want to be able to stick a suppressor or flash hider or something on your gun",
+      group_name: "threaded_barrel",
+      options: [
+        { label: "Either", value: "any" },
+        { label: "Yes", value: "true" },
+        { label: "No", value: "false" }
+      ],
+      get get_altered_query_string() {
+        return get(querystring_instance).get_altered_query_string;
+      },
+      get selected_value() {
+        return get(querystring_instance).params_with_defaults.threaded_barrel;
+      },
+      set selected_value($$value) {
+        mutate(querystring_instance, get(querystring_instance).params_with_defaults.threaded_barrel = $$value);
+      },
+      $$legacy: true
+    }),
+    "component",
+    Client,
+    50,
+    3,
+    { componentTag: "FilterSelection" }
+  );
+  var node_3 = sibling(node_2, 2);
+  add_svelte_meta(
+    () => FilterSelection(node_3, {
+      title: "Night Sight",
+      description: "They glow in the dark",
+      group_name: "night_sight",
+      options: [
+        { label: "Either", value: "any" },
+        { label: "Yes", value: "true" },
+        { label: "No", value: "false" }
+      ],
+      get get_altered_query_string() {
+        return get(querystring_instance).get_altered_query_string;
+      },
+      get selected_value() {
+        return get(querystring_instance).params_with_defaults.night_sight;
+      },
+      set selected_value($$value) {
+        mutate(querystring_instance, get(querystring_instance).params_with_defaults.night_sight = $$value);
+      },
+      $$legacy: true
+    }),
+    "component",
+    Client,
+    62,
+    3,
+    { componentTag: "FilterSelection" }
+  );
+  var node_4 = sibling(node_3, 2);
+  add_svelte_meta(
+    () => FilterSelection(node_4, {
+      title: "Optic Compatibility",
+      description: "",
+      group_name: "optic_compatibility",
+      options: [
+        { label: "Any", value: "any" },
+        { label: "None", value: "none" },
+        { label: "RMR", value: "rmr" },
+        { label: "Shield RMSc", value: "shield_rmsc" }
+      ],
+      get get_altered_query_string() {
+        return get(querystring_instance).get_altered_query_string;
+      },
+      get selected_value() {
+        return get(querystring_instance).params_with_defaults.optic_compatibility;
+      },
+      set selected_value($$value) {
+        mutate(querystring_instance, get(querystring_instance).params_with_defaults.optic_compatibility = $$value);
+      },
+      $$legacy: true
+    }),
+    "component",
+    Client,
+    74,
+    3,
+    { componentTag: "FilterSelection" }
+  );
+  var node_5 = sibling(node_4, 2);
+  add_svelte_meta(
+    () => FilterSelection(node_5, {
+      title: "Has Cover Plate",
+      description: "If you're not going to put an optic on right away",
+      group_name: "has_cover_plate",
+      options: [
+        { label: "Either", value: "any" },
+        { label: "Yes", value: "true" },
+        { label: "No", value: "false" }
+      ],
+      get get_altered_query_string() {
+        return get(querystring_instance).get_altered_query_string;
+      },
+      get selected_value() {
+        return get(querystring_instance).params_with_defaults.has_cover_plate;
+      },
+      set selected_value($$value) {
+        mutate(querystring_instance, get(querystring_instance).params_with_defaults.has_cover_plate = $$value);
+      },
+      $$legacy: true
+    }),
+    "component",
+    Client,
+    87,
+    3,
+    { componentTag: "FilterSelection" }
+  );
+  reset(div_3);
   next(2);
+  reset(div_2);
   reset(div);
   append($$anchor, div);
-  pop();
+  return pop($$exports);
 }
 
 // client/index.ts

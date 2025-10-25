@@ -1,28 +1,33 @@
-/* fakecss:/Users/joshduff/code/buyapsadagger/client/RadioLink.esbuild-svelte-fake-css */
+/* fakecss:/Users/joshduff/git/buyapsadagger/client/RadioLink.esbuild-svelte-fake-css */
 a.svelte-eew6ub {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 12px var(--spacing);
-  border: 2px solid #e0e0e0;
+  padding: 4px calc(var(--spacing) / 2);
+  border: 2px solid #ddd;
   border-radius: 8px;
   text-decoration: none;
   color: inherit;
   cursor: pointer;
+  white-space: nowrap;
+}
+a[data-large=true].svelte-eew6ub {
+  padding: 12px var(--spacing);
+  white-space: normal;
 }
 a.svelte-eew6ub:hover {
-  border-color: #b0b0b0;
+  border-color: #999;
 }
 a.svelte-eew6ub:focus {
-  outline: 2px solid #007acc;
+  outline: 2px solid var(--accent_color);
   outline-offset: 2px;
 }
 a[data-active=true].svelte-eew6ub {
-  border-color: #007acc;
-  background-color: #f8f9ff;
+  border-color: var(--accent_color);
+  background-color: var(--selected_color);
 }
 
-/* fakecss:/Users/joshduff/code/buyapsadagger/client/ImageLinkLayout.esbuild-svelte-fake-css */
+/* fakecss:/Users/joshduff/git/buyapsadagger/client/ImageLinkLayout.esbuild-svelte-fake-css */
 .image-link-layout.svelte-nv020b {
   display: flex;
   flex-direction: row;
@@ -41,7 +46,7 @@ a[data-active=true].svelte-eew6ub {
   justify-content: flex-start;
 }
 
-/* fakecss:/Users/joshduff/code/buyapsadagger/client/PistolSizeSelector.esbuild-svelte-fake-css */
+/* fakecss:/Users/joshduff/git/buyapsadagger/client/PistolSizeSelector.esbuild-svelte-fake-css */
 .pistol-size.svelte-11eufp1 {
   display: flex;
   flex-direction: row;
@@ -56,7 +61,26 @@ a[data-active=true].svelte-eew6ub {
   }
 }
 
-/* fakecss:/Users/joshduff/code/buyapsadagger/client/index.esbuild-svelte-fake-css */
+/* fakecss:/Users/joshduff/git/buyapsadagger/client/FilterSelection.esbuild-svelte-fake-css */
+strong.svelte-8b3y4w {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+  display: block;
+}
+small.svelte-8b3y4w {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 8px;
+  line-height: 1.4;
+  display: block;
+}
+.filter-options.svelte-8b3y4w {
+  display: flex;
+  gap: 6px;
+}
+
+/* fakecss:/Users/joshduff/git/buyapsadagger/client/index.esbuild-svelte-fake-css */
 .container.svelte-15huzto {
   --spacing: 16px;
   --base_image_width: 100px;
@@ -87,7 +111,12 @@ a[data-active=true].svelte-eew6ub {
   }
 }
 .filters.svelte-15huzto {
-  width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing);
+  flex-basis: 250px;
+  flex-grow: 0;
+  flex-shrink: 0;
 }
 .results.svelte-15huzto {
   flex: 1;
