@@ -103,6 +103,7 @@
 				{#each filtered_daggers as product}
 					<a href={product.psa_url} target="_blank" rel="noopener" class="product-card">
 						<h3>{product.psa_product_name}</h3>
+						<img src="/images/{product.image_file_name}" alt={product.psa_product_name} />
 						<div class="price">${product.price.toFixed(2)}</div>
 					</a>
 				{/each}
@@ -172,7 +173,6 @@
 		flex-direction: column;
 		justify-content: space-between;
 		width: 200px;
-		height: 200px;
 		padding: var(--spacing);
 		border: 1px solid #ccc;
 		border-radius: 8px;
@@ -192,6 +192,13 @@
 		line-clamp: 4;
 		-webkit-line-clamp: 4;
 		-webkit-box-orient: vertical;
+	}
+
+	.product-card img {
+		width: 100%;
+		height: auto;
+		object-fit: contain;
+		margin-bottom: 8px;
 	}
 
 	.product-card .price {
