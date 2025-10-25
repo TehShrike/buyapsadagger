@@ -17,7 +17,12 @@
       "Bash(pnpm run build)",
       "Bash(pnpm run test_parsers:*)",
       "Bash(npm t:*)",
-      "Bash(pnpm run 6_download_product_images:*)"
+      "Bash(pnpm run 6_download_product_images:*)",
+      "WebFetch(domain:www.graphicsmagick.org)",
+      "Bash(pnpm run build:graphicsmagick:*)",
+      "Bash(pnpm run:*)",
+      "WebFetch(domain:www.ijg.org)",
+      "WebFetch(domain:www.libpng.org)"
     ],
     "deny": [],
     "ask": []

@@ -6,6 +6,7 @@
   "scripts": {
     "test": "run-p test:*",
 		"test:types": "tsc --noEmit",
+    "build:graphicsmagick": "bash scripts/build-graphicsmagick.sh",
     "0_delete_downloaded_files": "rm -f psa-parsers/listing-pages/*.html psa-parsers/products/*.html && rm -f public/images/*.jpg",
     "1_download_product_listings": "node psa-parsers/1-download-listings.ts",
     "2_scrape_product_listings": "node psa-parsers/2-parse-listings.ts",
@@ -13,6 +14,7 @@
     "4_parse_products": "node psa-parsers/4-parse-products.ts",
     "5_process_daggers_for_front_end": "node psa-parsers/5-process-daggers-for-front-end.ts",
     "6_download_product_images": "node psa-parsers/6-download-product-images.ts",
+    "7_optimize_images": "./vendor/graphicsmagick/bin/gm mogrify -format jpg -resize 400x -quality 85 public/images/*.jpg",
     "validate_products": "node psa-parsers/validate-products.ts",
     "update_daggers": "npm run 0_delete_downloaded_files && npm run 1_download_product_listings && npm run 2_scrape_product_listings && npm run 3_download_product_pages && npm run 4_parse_products && npm run 5_process_daggers_for_front_end && npm run 6_download_product_images",
     "test_parsers": "npm run 2_scrape_product_listings && npm run 4_parse_products && npm run 5_process_daggers_for_front_end && npm run validate_products",
