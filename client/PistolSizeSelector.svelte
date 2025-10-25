@@ -5,13 +5,15 @@
 
 	let {
 		size = $bindable(),
+		get_altered_query_string,
 	}: {
 		size: Size
+		get_altered_query_string: (param: string, value: string | boolean) => string,
 	} = $props()
 </script>
 
 <div class="pistol-size">
-	<RadioLink group_name="size" name="micro" bind:group_value={size}>
+	<RadioLink group_name="size" name="micro" bind:group_value={size} large {get_altered_query_string}>
 		<ImageLinkLayout>
 			{#snippet image()}
 				<img
@@ -26,7 +28,7 @@
 			{/snippet}
 		</ImageLinkLayout>
 	</RadioLink>
-	<RadioLink group_name="size" name="compact" bind:group_value={size}>
+	<RadioLink group_name="size" name="compact" bind:group_value={size} large {get_altered_query_string}>
 		<ImageLinkLayout>
 			{#snippet image()}
 				<img
@@ -41,7 +43,7 @@
 			{/snippet}
 		</ImageLinkLayout>
 	</RadioLink>
-	<RadioLink group_name="size" name="full_size_s" bind:group_value={size}>
+	<RadioLink group_name="size" name="full_size_s" bind:group_value={size} large {get_altered_query_string}>
 		<ImageLinkLayout>
 			{#snippet image()}
 				<img

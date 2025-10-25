@@ -29,6 +29,7 @@
 		<h1>Buy a PSA Dagger</h1>
 		<PistolSizeSelector
 			bind:size={querystring_instance.params_with_defaults.size}
+			get_altered_query_string={querystring_instance.get_altered_query_string}
 		/>
 	</div>
 	<div class="filters-and-results">
@@ -43,6 +44,7 @@
 					{ label: 'Yes', value: 'true' },
 					{ label: 'No', value: 'false' },
 				]}
+				get_altered_query_string={querystring_instance.get_altered_query_string}
 				bind:selected_value={querystring_instance.params_with_defaults.extra_long_barrel}
 			/>
 			<FilterSelection
@@ -54,6 +56,7 @@
 					{ label: 'Yes', value: 'true' },
 					{ label: 'No', value: 'false' },
 				]}
+				get_altered_query_string={querystring_instance.get_altered_query_string}
 				bind:selected_value={querystring_instance.params_with_defaults.threaded_barrel}
 			/>
 			<FilterSelection
@@ -65,6 +68,7 @@
 					{ label: 'Yes', value: 'true' },
 					{ label: 'No', value: 'false' },
 				]}
+				get_altered_query_string={querystring_instance.get_altered_query_string}
 				bind:selected_value={querystring_instance.params_with_defaults.night_sight}
 			/>
 			<FilterSelection
@@ -77,6 +81,7 @@
 					{ label: 'RMR', value: 'rmr' },
 					{ label: 'Shield RMSc', value: 'shield_rmsc' },
 				]}
+				get_altered_query_string={querystring_instance.get_altered_query_string}
 				bind:selected_value={querystring_instance.params_with_defaults.optic_compatibility}
 			/>
 			<FilterSelection
@@ -88,6 +93,7 @@
 					{ label: 'Yes', value: 'true' },
 					{ label: 'No', value: 'false' },
 				]}
+				get_altered_query_string={querystring_instance.get_altered_query_string}
 				bind:selected_value={querystring_instance.params_with_defaults.has_cover_plate}
 			/>
 		</div>

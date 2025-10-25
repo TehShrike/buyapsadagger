@@ -7,6 +7,7 @@
 		group_name,
 		options,
 		selected_value = $bindable<Value>(),
+		get_altered_query_string,
 	}: {
 		title: string,
 		description: string,
@@ -16,6 +17,7 @@
 			value: Value,
 		}[]
 		selected_value: Value,
+		get_altered_query_string: (param: string, value: string | boolean) => string,
 	} = $props()
 </script>
 
@@ -24,7 +26,7 @@
 	<small>{description}</small>
 	<div class="filter-options">
 		{#each options as option}
-			<RadioLink {group_name} name={option.value} bind:group_value={selected_value}>
+			<RadioLink {group_name} name={option.value} bind:group_value={selected_value} {get_altered_query_string}>
 				{option.label}
 			</RadioLink>
 		{/each}

@@ -1,5 +1,4 @@
 <script lang="ts" generics="PossibleValue extends string">
-	import { get_altered_query_string } from './query_string.ts'
 	import type { Snippet } from 'svelte'
 
 	let {
@@ -7,11 +6,15 @@
 		name,
 		group_value = $bindable<PossibleValue>(),
 		children,
+		large = false,
+		get_altered_query_string
 	}: {
 		group_name: string
 		name: PossibleValue
 		group_value: PossibleValue
 		children: Snippet
+		large?: boolean
+		get_altered_query_string: (param: string, value: string | boolean) => string
 	} = $props()
 
 	let active = $derived(group_value === name)
@@ -24,7 +27,7 @@
 	}
 </script>
 
-<a {href} data-active={active} aria-checked={active} role="radio" {onclick}>
+<a {href} data-active={active} aria-checked={active} role="radio" {onclick} data-large={large}>
 	{@render children()}
 </a>
 
@@ -33,12 +36,16 @@
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
-		padding: 12px var(--spacing);
+		padding: 4px calc(var(--spacing) / 2);
 		border: 2px solid #ddd;
 		border-radius: 8px;
 		text-decoration: none;
 		color: inherit;
 		cursor: pointer;
+	}
+
+	a[data-large='true'] {
+		padding: 12px var(--spacing);
 	}
 
 	a:hover {
