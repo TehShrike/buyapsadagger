@@ -46,6 +46,8 @@ const validate_products = async (): Promise<void> => {
 	const required_string_fields = [
 		'psa_product_name',
 		'psa_url',
+		'original_product_image_url',
+		'image_file_name',
 		'size_name',
 		'optic_compatibility',
 	]

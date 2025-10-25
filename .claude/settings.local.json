@@ -16,7 +16,8 @@
       "Bash(pnpm run validate_products:*)",
       "Bash(pnpm run build)",
       "Bash(pnpm run test_parsers:*)",
-      "Bash(npm t:*)"
+      "Bash(npm t:*)",
+      "Bash(pnpm run 6_download_product_images:*)"
     ],
     "deny": [],
     "ask": []

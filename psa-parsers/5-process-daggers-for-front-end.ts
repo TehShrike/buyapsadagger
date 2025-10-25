@@ -20,6 +20,7 @@ type RawProduct = {
 	url: string
 	title: string
 	price: number
+	original_product_image_url: string
 	product_details: Record<string, string>
 	features: string
 }
@@ -27,6 +28,13 @@ type RawProduct = {
 const extract_numeric_value = (value: string): number => {
 	const match = value.match(/(\d+\.?\d*)/)
 	return match ? parseFloat(match[1]) : 0
+}
+
+const get_image_filename_from_url = (psa_url: string): string => {
+	const url_parts = psa_url.split('/')
+	const filename_with_extension = url_parts[url_parts.length - 1]
+	const filename_without_extension = filename_with_extension.replace('.html', '')
+	return `${filename_without_extension}.jpg`
 }
 
 const determine_size_name = (
@@ -301,7 +309,7 @@ const has_cerakote_coating = (slide_finish: string | null): boolean => {
 }
 
 const process_product = (raw_product: RawProduct): Product => {
-	const { title, url, price, product_details, features } = raw_product
+	const { title, url, price, original_product_image_url, product_details, features } = raw_product
 
 	const width = extract_numeric_value(product_details.overall_width || '')
 	const length = extract_numeric_value(product_details.overall_length || '')
@@ -327,6 +335,8 @@ const process_product = (raw_product: RawProduct): Product => {
 		psa_product_name: title,
 		psa_url: url,
 		price,
+		original_product_image_url,
+		image_file_name: get_image_filename_from_url(url),
 		size_name,
 		width,
 		length,

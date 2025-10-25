@@ -10,6 +10,7 @@ type ParsedProduct = {
 	url: string
 	title: string
 	price: number
+	original_product_image_url: string
 	product_details: Record<string, string>
 	features: string
 }
@@ -116,6 +117,10 @@ const extract_price = ($: cheerio.CheerioAPI): number => {
 	return parseFloat(price_string)
 }
 
+const extract_image_url = ($: cheerio.CheerioAPI): string => {
+	return $('.fotorama__stage__frame img').first().attr('src') || ''
+}
+
 const parse_product_file = async (
 	file_path: string
 ): Promise<ParsedProduct | null> => {
@@ -132,6 +137,7 @@ const parse_product_file = async (
 		const url = extract_url($)
 		const title = extract_title($)
 		const price = extract_price($)
+		const original_product_image_url = extract_image_url($)
 		const product_details = extract_product_details($)
 		const features = extract_features($)
 
@@ -139,6 +145,7 @@ const parse_product_file = async (
 			url,
 			title,
 			price,
+			original_product_image_url,
 			product_details,
 			features,
 		}
