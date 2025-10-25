@@ -22,7 +22,8 @@
       "Bash(pnpm run build:graphicsmagick:*)",
       "Bash(pnpm run:*)",
       "WebFetch(domain:www.ijg.org)",
-      "WebFetch(domain:www.libpng.org)"
+      "WebFetch(domain:www.libpng.org)",
+      "Bash(./vendor/graphicsmagick/bin/gm identify:*)"
     ],
     "deny": [],
     "ask": []
