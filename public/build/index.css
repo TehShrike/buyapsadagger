@@ -3,27 +3,24 @@ a.svelte-eew6ub {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 4px calc(var(--spacing) / 2);
-  border: 2px solid #ddd;
-  border-radius: 8px;
+  padding: 4px var(--spacing);
+  border: 1px solid var(--accent_color);
+  border-radius: 4px;
   text-decoration: none;
   color: inherit;
   cursor: pointer;
   white-space: nowrap;
+  background-color: var(--white);
+  font-size: 14px;
 }
 a[data-large=true].svelte-eew6ub {
-  padding: 12px var(--spacing);
+  padding: 12px calc(var(--spacing));
   white-space: normal;
-}
-a.svelte-eew6ub:hover {
-  border-color: #999;
 }
 a.svelte-eew6ub:focus {
   outline: 2px solid var(--accent_color);
-  outline-offset: 2px;
 }
 a[data-active=true].svelte-eew6ub {
-  border-color: var(--accent_color);
   background-color: var(--selected_color);
 }
 
@@ -82,10 +79,8 @@ small.svelte-8b3y4w {
 
 /* fakecss:/Users/joshduff/git/buyapsadagger/client/index.esbuild-svelte-fake-css */
 .container.svelte-15huzto {
-  --spacing: 16px;
   --base_image_width: 100px;
   @media (max-width: 800px) {
-    --spacing: 8px;
     --base_image_width: 80px;
   }
   display: flex;
@@ -95,15 +90,20 @@ small.svelte-8b3y4w {
   width: 100%;
   max-width: 1200px;
   box-sizing: border-box;
-  gap: var(--spacing);
-  padding: var(--spacing);
+  gap: calc(var(--spacing) * 2);
+  padding: calc(var(--spacing) * 2);
+}
+.intro.svelte-15huzto {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing) * 2);
 }
 .filters-and-results.svelte-15huzto {
   display: flex;
   flex-direction: row;
   align-items: stretch;
   justify-content: space-between;
-  gap: var(--spacing);
+  gap: calc(var(--spacing) * 1.5);
 }
 @media (max-width: 800px) {
   .filters-and-results.svelte-15huzto {
@@ -118,6 +118,48 @@ small.svelte-8b3y4w {
   flex-grow: 0;
   flex-shrink: 0;
 }
-.results.svelte-15huzto {
-  flex: 1;
+.products-grid.svelte-15huzto {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--spacing);
+  align-items: stretch;
+}
+.product-card.svelte-15huzto {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-basis: 190px;
+  flex-grow: 1;
+  padding: var(--spacing);
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  background-color: var(--white);
+}
+.product-card.svelte-15huzto:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.product-card.svelte-15huzto h3:where(.svelte-15huzto) {
+  font-size: 14px;
+  margin: 0 0 8px 0;
+  overflow: hidden;
+  display: -webkit-box;
+  line-clamp: 4;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+}
+.product-card.svelte-15huzto img:where(.svelte-15huzto) {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 8px;
+}
+.product-card.svelte-15huzto .price:where(.svelte-15huzto) {
+  font-weight: bold;
+  margin-top: auto;
+}
+h2.svelte-15huzto {
+  font-size: 20px;
 }

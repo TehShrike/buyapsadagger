@@ -28,9 +28,6 @@ var get_prototype_of = Object.getPrototypeOf;
 var is_extensible = Object.isExtensible;
 var noop = () => {
 };
-function run(fn) {
-  return fn();
-}
 function run_all(arr) {
   for (var i = 0; i < arr.length; i++) {
     arr[i]();
@@ -348,6 +345,19 @@ https://svelte.dev/e/await_waterfall`, bold, normal);
     console.warn(`https://svelte.dev/e/await_waterfall`);
   }
 }
+function binding_property_non_reactive(binding, location) {
+  if (dev_fallback_default) {
+    console.warn(
+      `%c[svelte] binding_property_non_reactive
+%c${location ? `\`${binding}\` (${location}) is binding to a non-reactive property` : `\`${binding}\` is binding to a non-reactive property`}
+https://svelte.dev/e/binding_property_non_reactive`,
+      bold,
+      normal
+    );
+  } else {
+    console.warn(`https://svelte.dev/e/binding_property_non_reactive`);
+  }
+}
 function hydration_attribute_changed(attribute, html2, value) {
   if (dev_fallback_default) {
     console.warn(`%c[svelte] hydration_attribute_changed
@@ -450,14 +460,14 @@ function remove_nodes() {
   var node = hydrate_node;
   while (true) {
     if (node.nodeType === COMMENT_NODE) {
-      var data = (
+      var data2 = (
         /** @type {Comment} */
         node.data
       );
-      if (data === HYDRATION_END) {
+      if (data2 === HYDRATION_END) {
         if (depth === 0) return node;
         depth -= 1;
-      } else if (data === HYDRATION_START || data === HYDRATION_START_ELSE) {
+      } else if (data2 === HYDRATION_START || data2 === HYDRATION_START_ELSE) {
         depth += 1;
       }
     }
@@ -495,9 +505,6 @@ function safe_equals(value) {
 var async_mode_flag = false;
 var legacy_mode_flag = false;
 var tracing_mode_flag = false;
-function enable_legacy_mode_flag() {
-  legacy_mode_flag = true;
-}
 
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dev/tracing.js
 var tracing_expressions = null;
@@ -1509,13 +1516,6 @@ function mutable_source(initial_value, immutable = false, trackable = true) {
   }
   return s;
 }
-function mutate(source2, value) {
-  set(
-    source2,
-    untrack(() => get(source2))
-  );
-  return value;
-}
 function set(source2, value, should_proxy = false) {
   if (active_reaction !== null && // since we are untracking the function inside `$inspect.with` we need to add this check
   // to ensure we error if state is set inside an inspect effect
@@ -2207,15 +2207,6 @@ function user_effect(fn) {
 function create_user_effect(fn) {
   return create_effect(EFFECT | USER_EFFECT, fn, false);
 }
-function user_pre_effect(fn) {
-  validate_effect("$effect.pre");
-  if (dev_fallback_default) {
-    define_property(fn, "name", {
-      value: "$effect.pre"
-    });
-  }
-  return create_effect(RENDER_EFFECT | USER_EFFECT, fn, true);
-}
 function effect_root(fn) {
   Batch.ensure();
   const effect2 = create_effect(ROOT_EFFECT | EFFECT_PRESERVED, fn, true);
@@ -2864,49 +2855,6 @@ var STATUS_MASK = ~(DIRTY | MAYBE_DIRTY | CLEAN);
 function set_signal_status(signal, status) {
   signal.f = signal.f & STATUS_MASK | status;
 }
-function deep_read_state(value) {
-  if (typeof value !== "object" || !value || value instanceof EventTarget) {
-    return;
-  }
-  if (STATE_SYMBOL in value) {
-    deep_read(value);
-  } else if (!Array.isArray(value)) {
-    for (let key2 in value) {
-      const prop2 = value[key2];
-      if (typeof prop2 === "object" && prop2 && STATE_SYMBOL in prop2) {
-        deep_read(prop2);
-      }
-    }
-  }
-}
-function deep_read(value, visited = /* @__PURE__ */ new Set()) {
-  if (typeof value === "object" && value !== null && // We don't want to traverse DOM elements
-  !(value instanceof EventTarget) && !visited.has(value)) {
-    visited.add(value);
-    if (value instanceof Date) {
-      value.getTime();
-    }
-    for (let key2 in value) {
-      try {
-        deep_read(value[key2], visited);
-      } catch (e) {
-      }
-    }
-    const proto = get_prototype_of(value);
-    if (proto !== Object.prototype && proto !== Array.prototype && proto !== Map.prototype && proto !== Set.prototype && proto !== Date.prototype) {
-      const descriptors = get_descriptors(proto);
-      for (let key2 in descriptors) {
-        const get3 = descriptors[key2].get;
-        if (get3) {
-          try {
-            get3.call(value);
-          } catch (e) {
-          }
-        }
-      }
-    }
-  }
-}
 
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/utils.js
 var DOM_BOOLEAN_ATTRIBUTES = [
@@ -3106,8 +3054,8 @@ function handle_event_propagation(event2) {
         // -> the target could not have been disabled because it emits the event in the first place
         event2.target === current_target)) {
           if (is_array(delegated)) {
-            var [fn, ...data] = delegated;
-            fn.apply(current_target, [event2, ...data]);
+            var [fn, ...data2] = delegated;
+            fn.apply(current_target, [event2, ...data2]);
           } else {
             delegated.call(current_target, event2);
           }
@@ -4068,65 +4016,6 @@ function srcset_url_equal(element2, srcset) {
   );
 }
 
-// node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dom/legacy/lifecycle.js
-function init(immutable = false) {
-  const context = (
-    /** @type {ComponentContextLegacy} */
-    component_context
-  );
-  const callbacks = context.l.u;
-  if (!callbacks) return;
-  let props = () => deep_read_state(context.s);
-  if (immutable) {
-    let version = 0;
-    let prev = (
-      /** @type {Record<string, any>} */
-      {}
-    );
-    const d = derived(() => {
-      let changed = false;
-      const props2 = context.s;
-      for (const key2 in props2) {
-        if (props2[key2] !== prev[key2]) {
-          prev[key2] = props2[key2];
-          changed = true;
-        }
-      }
-      if (changed) version++;
-      return version;
-    });
-    props = () => get(d);
-  }
-  if (callbacks.b.length) {
-    user_pre_effect(() => {
-      observe_all(context, props);
-      run_all(callbacks.b);
-    });
-  }
-  user_effect(() => {
-    const fns = untrack(() => callbacks.m.map(run));
-    return () => {
-      for (const fn of fns) {
-        if (typeof fn === "function") {
-          fn();
-        }
-      }
-    };
-  });
-  if (callbacks.a.length) {
-    user_effect(() => {
-      observe_all(context, props);
-      run_all(callbacks.a);
-    });
-  }
-}
-function observe_all(context, props) {
-  if (context.l.s) {
-    for (const signal of context.l.s) get(signal);
-  }
-  props();
-}
-
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/reactivity/store.js
 var is_store_binding = false;
 var IS_UNMOUNTED = Symbol();
@@ -4259,6 +4148,29 @@ function prop(props, key2, flags2, fallback2) {
       return get(d);
     })
   );
+}
+
+// node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/validate.js
+function validate_binding(binding, get_object, get_property, line, column) {
+  var warned = false;
+  var filename = dev_current_component_function?.[FILENAME];
+  render_effect(() => {
+    if (warned) return;
+    var [object, is_store_sub] = capture_store_binding(get_object);
+    if (is_store_sub) return;
+    var property = get_property();
+    var ran = false;
+    var effect2 = render_effect(() => {
+      if (ran) return;
+      object[property];
+    });
+    ran = true;
+    if (effect2.deps === null) {
+      var location = `${filename}:${line}:${column}`;
+      binding_property_non_reactive(binding, location);
+      warned = true;
+    }
+  });
 }
 
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/legacy/legacy-client.js
@@ -4616,9 +4528,6 @@ if (typeof window !== "undefined") {
   ((_a = window.__svelte ?? (window.__svelte = {})).v ?? (_a.v = /* @__PURE__ */ new Set())).add(PUBLIC_VERSION);
 }
 
-// node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/flags/legacy.js
-enable_legacy_mode_flag();
-
 // client/RadioLink.svelte
 RadioLink[FILENAME] = "client/RadioLink.svelte";
 var onclick = (event2, href, group_value, $$props) => {
@@ -4674,18 +4583,18 @@ function ImageLinkLayout($$anchor, $$props) {
 // client/PistolSizeSelector.svelte
 PistolSizeSelector[FILENAME] = "client/PistolSizeSelector.svelte";
 var root_2 = add_locations(from_html(`<img src="silhouettes/micro.svg" alt="Micro pistol silhouette" style="width: var(--base_image_width);"/>`), PistolSizeSelector[FILENAME], [[19, 4]]);
-var root_3 = add_locations(from_html(`Micro <small>It's pretty small</small>`, 1), PistolSizeSelector[FILENAME], [[27, 4]]);
+var root_3 = add_locations(from_html(`<strong>Micro</strong> <small>It's pretty small</small>`, 1), PistolSizeSelector[FILENAME], [[26, 4], [27, 4]]);
 var root_5 = add_locations(from_html(`<img src="silhouettes/compact.svg" alt="Compact pistol silhouette" style="width: calc(var(--base_image_width) * 1.14369501);"/>`), PistolSizeSelector[FILENAME], [[34, 4]]);
-var root_6 = add_locations(from_html(`Compact <small>About half an inch longer, several credit cards wider</small>`, 1), PistolSizeSelector[FILENAME], [[42, 4]]);
+var root_6 = add_locations(from_html(`<strong>Compact</strong> <small>About half an inch longer, several credit cards wider</small>`, 1), PistolSizeSelector[FILENAME], [[41, 4], [42, 4]]);
 var root_8 = add_locations(from_html(`<img src="silhouettes/full_size_s.svg" alt="Full size pistol silhouette" style="width: calc(var(--base_image_width) * 1.14369501);"/>`), PistolSizeSelector[FILENAME], [[49, 4]]);
 var root_9 = add_locations(
   from_html(
-    `Full Size <small>Longer handle if you have big hands or want the extra 2 rounds per
+    `<strong>Full Size</strong> <small>Longer handle if you have big hands or want an extra 2 rounds per
 					magazine</small>`,
     1
   ),
   PistolSizeSelector[FILENAME],
-  [[57, 4]]
+  [[56, 4], [57, 4]]
 );
 var root3 = add_locations(from_html(`<div class="pistol-size svelte-11eufp1"><!> <!> <!></div>`), PistolSizeSelector[FILENAME], [[15, 0]]);
 function PistolSizeSelector($$anchor, $$props) {
@@ -4721,9 +4630,8 @@ function PistolSizeSelector($$anchor, $$props) {
             });
             const text2 = wrap_snippet(PistolSizeSelector, function($$anchor3) {
               validate_snippet_args(...arguments);
-              next();
               var fragment_1 = root_3();
-              next();
+              next(2);
               append($$anchor3, fragment_1);
             });
             add_svelte_meta(() => ImageLinkLayout($$anchor2, { image, text: text2, $$slots: { image: true, text: true } }), "component", PistolSizeSelector, 17, 2, { componentTag: "ImageLinkLayout" });
@@ -4764,9 +4672,8 @@ function PistolSizeSelector($$anchor, $$props) {
             });
             const text2 = wrap_snippet(PistolSizeSelector, function($$anchor3) {
               validate_snippet_args(...arguments);
-              next();
               var fragment_3 = root_6();
-              next();
+              next(2);
               append($$anchor3, fragment_3);
             });
             add_svelte_meta(() => ImageLinkLayout($$anchor2, { image, text: text2, $$slots: { image: true, text: true } }), "component", PistolSizeSelector, 32, 2, { componentTag: "ImageLinkLayout" });
@@ -4807,9 +4714,8 @@ function PistolSizeSelector($$anchor, $$props) {
             });
             const text2 = wrap_snippet(PistolSizeSelector, function($$anchor3) {
               validate_snippet_args(...arguments);
-              next();
               var fragment_5 = root_9();
-              next();
+              next(2);
               append($$anchor3, fragment_5);
             });
             add_svelte_meta(() => ImageLinkLayout($$anchor2, { image, text: text2, $$slots: { image: true, text: true } }), "component", PistolSizeSelector, 47, 2, { componentTag: "ImageLinkLayout" });
@@ -4955,57 +4861,2593 @@ var create_querystring_store = (defaults) => {
   };
 };
 
+// client/daggers-data.ts
+var data = {
+  "daggers": [
+    {
+      "psa_product_name": "PSA Dagger Full Size - S 9mm, Pistol with SW1 RMR RearSight Slide, Sniper Green, Threaded Barrel, with Black Frame",
+      "psa_url": "https://palmettostatearmory.com/dg02-51655130972.html",
+      "price": 369.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/5/1/51655130972_1.jpg",
+      "image_file_name": "dg02-51655130972.jpg",
+      "size_name": "full_size_s",
+      "width": 1.28,
+      "length": 7.65,
+      "height": 5.38,
+      "barrel_length": 4.5,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "sniper_green",
+      "cerakote_slide_coating": true,
+      "frame_color": "sniper_green",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 17
+    },
+    {
+      "psa_product_name": "PSA Dagger Complete SW1 RMR Pistol With Black Fluted Threaded Barrel, FDE",
+      "psa_url": "https://palmettostatearmory.com/disc-psa-dagger-complete-sw1-rmr-pistol-with-black-fluted-threaded-barrel-extreme-carry-cut-fde-rear-sight-rear.html",
+      "price": 399.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655187645_4425_1.jpg",
+      "image_file_name": "disc-psa-dagger-complete-sw1-rmr-pistol-with-black-fluted-threaded-barrel-extreme-carry-cut-fde-rear-sight-rear.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 4.78,
+      "barrel_length": 4.5,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "flat_dark_earth",
+      "cerakote_slide_coating": true,
+      "frame_color": "black",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Custom Compact Dagger RMR Pistol With Chameleon Fluted Barrel, Black",
+      "psa_url": "https://palmettostatearmory.com/psa-custom-compact-dagger-rmr-pistol-with-chameleon-spiral-fluted-barrel-black.html",
+      "price": 449.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655189569_52125_1.jpg",
+      "image_file_name": "psa-custom-compact-dagger-rmr-pistol-with-chameleon-spiral-fluted-barrel-black.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.65,
+      "height": 4.78,
+      "barrel_length": 3.9,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "black",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Custom Compact Dagger RMR Pistol With Threaded DLC Barrel, Black",
+      "psa_url": "https://palmettostatearmory.com/psa-custom-compact-dagger-rmr-pistol-with-threaded-dlc-barrel-black.html",
+      "price": 449.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655189566_51225_1.jpg",
+      "image_file_name": "psa-custom-compact-dagger-rmr-pistol-with-threaded-dlc-barrel-black.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.65,
+      "height": 4.78,
+      "barrel_length": 4.5,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "black",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Custom Compact Dagger RMR Pistol With Threaded Rose Gold Barrel, Black",
+      "psa_url": "https://palmettostatearmory.com/psa-custom-compact-dagger-rmr-pistol-with-threaded-rose-gold-barrel-black.html",
+      "price": 449.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655189568_51225_1.jpg",
+      "image_file_name": "psa-custom-compact-dagger-rmr-pistol-with-threaded-rose-gold-barrel-black.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.65,
+      "height": 4.78,
+      "barrel_length": 4.5,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "black",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Custom Compact Dagger RMR Pistol With Threaded Stainless Barrel, Black",
+      "psa_url": "https://palmettostatearmory.com/psa-custom-compact-dagger-rmr-pistol-with-threaded-stainless-barrel-black.html",
+      "price": 449.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655189567_51225_1.jpg",
+      "image_file_name": "psa-custom-compact-dagger-rmr-pistol-with-threaded-stainless-barrel-black.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.65,
+      "height": 4.78,
+      "barrel_length": 4.5,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "black",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Custom Compact Dagger RMR Pistol With Threaded TiN Barrel, Black",
+      "psa_url": "https://palmettostatearmory.com/psa-custom-compact-dagger-rmr-pistol-with-threaded-tin-barrel-black.html",
+      "price": 449.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655186852_51225_1.jpg",
+      "image_file_name": "psa-custom-compact-dagger-rmr-pistol-with-threaded-tin-barrel-black.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.65,
+      "height": 4.78,
+      "barrel_length": 4.5,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "black",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Micro 9mm Pistol - Shield Cut With Night Sights, Black",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-9mm-pistol-shield-cut-with-night-sights-black.html",
+      "price": 359.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655152685_42524_1_1_.jpg",
+      "image_file_name": "psa-dagger-9mm-pistol-shield-cut-with-night-sights-black.jpg",
+      "size_name": "micro",
+      "width": 1.1,
+      "length": 6.5,
+      "height": 4.7,
+      "barrel_length": 3.41,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": true,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "black",
+      "optic_compatibility": "shield_rmsc",
+      "has_cover_plate": true,
+      "mag_bag_bonus": false,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm Pistol Extreme Carry Cut Slide with Night Sights & Non-Threaded Barrel, Sniper Green",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-extreme-carry-cut-slide-with-night-sights-non-threaded-barrel-sniper-green-2.html",
+      "price": 329.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/5/1/51655129779_1.jpg",
+      "image_file_name": "psa-dagger-compact-9mm-pistol-extreme-carry-cut-slide-with-night-sights-non-threaded-barrel-sniper-green-2.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 4.78,
+      "barrel_length": 3.9,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": true,
+      "compensated_slide": false,
+      "slide_color": "sniper_green",
+      "cerakote_slide_coating": false,
+      "frame_color": "sniper_green",
+      "optic_compatibility": "none",
+      "has_cover_plate": false,
+      "mag_bag_bonus": false,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm Pistol With C-1 RMR Compensated Slide, Black",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-c-1-rmr-compensated-slide-black.html",
+      "price": 379.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655185370_3725_1.jpg",
+      "image_file_name": "psa-dagger-compact-9mm-pistol-with-c-1-rmr-compensated-slide-black.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 4.78,
+      "barrel_length": 3.9,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": true,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "black",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm Pistol With C-1 RMR Compensated Slide, Flat Dark Earth",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-c-1-rmr-compensated-slide-flat-dark-earth.html",
+      "price": 379.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655185371_3725_1.jpg",
+      "image_file_name": "psa-dagger-compact-9mm-pistol-with-c-1-rmr-compensated-slide-flat-dark-earth.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 4.78,
+      "barrel_length": 3.9,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": true,
+      "slide_color": "flat_dark_earth",
+      "cerakote_slide_coating": true,
+      "frame_color": "flat_dark_earth",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm Pistol With C-1 RMR Compensated Slide, Sniper Green",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-c-1-rmr-compensated-slide-sniper-green.html",
+      "price": 379.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655185372_3725_1_1_.jpg",
+      "image_file_name": "psa-dagger-compact-9mm-pistol-with-c-1-rmr-compensated-slide-sniper-green.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 4.78,
+      "barrel_length": 3.9,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": true,
+      "slide_color": "sniper_green",
+      "cerakote_slide_coating": true,
+      "frame_color": "sniper_green",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm Pistol with Extreme Carry Cuts,  Black",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-black-dlc.html",
+      "price": 299.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/9/1/910115111_51024_1.jpg",
+      "image_file_name": "psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-black-dlc.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 4.78,
+      "barrel_length": 3.9,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "black",
+      "optic_compatibility": "none",
+      "has_cover_plate": false,
+      "mag_bag_bonus": false,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm Pistol With Extreme Carry Cuts, Flat Dark Earth",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-flat-dark-earth.html",
+      "price": 299.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655128741_51024_1.jpg",
+      "image_file_name": "psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-flat-dark-earth.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 4.78,
+      "barrel_length": 3.9,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "flat_dark_earth",
+      "cerakote_slide_coating": true,
+      "frame_color": "flat_dark_earth",
+      "optic_compatibility": "none",
+      "has_cover_plate": false,
+      "mag_bag_bonus": false,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm Pistol with Extreme Carry Cuts & Night Sights, Black DLC",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-night-sights-black-dlc-2.html",
+      "price": 329.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/9/1/910125111_1.jpg",
+      "image_file_name": "psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-night-sights-black-dlc-2.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 4.78,
+      "barrel_length": 3.9,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": true,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "black",
+      "optic_compatibility": "none",
+      "has_cover_plate": false,
+      "mag_bag_bonus": false,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm RMR Pistol with Extreme Carry Cuts - 2-Tone Flat Dark Earth",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-rmr-slide-ameriglo-lower-1-3-co-witness-sights-2-tone-flat-dark-earth-with-psa-soft-case.html",
+      "price": 359.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655116726_1_1.jpg",
+      "image_file_name": "psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-rmr-slide-ameriglo-lower-1-3-co-witness-sights-2-tone-flat-dark-earth-with-psa-soft-case.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.65,
+      "height": 4.78,
+      "barrel_length": 4.5,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "flat_dark_earth",
+      "cerakote_slide_coating": true,
+      "frame_color": "2_tone",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm Pistol With Extreme Carry Cuts RMR Slide, Threaded Barrel - 2-Tone Sniper Green With PSA Soft Case",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-rmr-slide-ameriglo-lower-1-3-co-witness-sights-threaded-barrel-2-tone-sniper-green-with-psa-soft-case.html",
+      "price": 359.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655116727_1_1.jpg",
+      "image_file_name": "psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-rmr-slide-ameriglo-lower-1-3-co-witness-sights-threaded-barrel-2-tone-sniper-green-with-psa-soft-case.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.65,
+      "height": 4.78,
+      "barrel_length": 4.5,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "sniper_green",
+      "cerakote_slide_coating": true,
+      "frame_color": "2_tone",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm Pistol with Extreme Carry Cuts RMR Slide, Black",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-rmr-slide-black.html",
+      "price": 349.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/9/1/910132111-1_1.jpg",
+      "image_file_name": "psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-rmr-slide-black.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 4.78,
+      "barrel_length": 3.9,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "dlc_coating",
+      "cerakote_slide_coating": false,
+      "frame_color": "black",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm RMR Pistol W/Threaded Barrel, 10 - 15rd Magazines, & Pistol Case, Flat Dark Earth",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-rmr-threaded-barrel-with-10-15rd-magazines-pistol-case-flat-dark-earth.html",
+      "price": 459.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/s/c/screenshot_2023-03-08_at_9.24.34_am_1.png",
+      "image_file_name": "psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-rmr-threaded-barrel-with-10-15rd-magazines-pistol-case-flat-dark-earth.jpg",
+      "size_name": "compact",
+      "width": 0,
+      "length": 0,
+      "height": 0,
+      "barrel_length": 0,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": null,
+      "cerakote_slide_coating": false,
+      "frame_color": "flat_dark_earth",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 10,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm Pistol With Extreme Carry Cuts, Sniper Green",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-sniper-green.html",
+      "price": 299.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/5/1/51655129773_1.jpg",
+      "image_file_name": "psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-sniper-green.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 4.78,
+      "barrel_length": 3.9,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "sniper_green",
+      "cerakote_slide_coating": true,
+      "frame_color": "sniper_green",
+      "optic_compatibility": "none",
+      "has_cover_plate": false,
+      "mag_bag_bonus": false,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm Pistol With SW1 ECC RMR Slide & Threaded Barrel w/10-15rd Mag and Bag, Sniper Green(Rear Sight Rear)",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-sw1-ecc-rmr-slide-threaded-barrel-w-10-15rd-mag-and-bag-sniper-green-rear-sight-rear.html",
+      "price": 469.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/5/1/51655134997_1_1.jpg",
+      "image_file_name": "psa-dagger-compact-9mm-pistol-with-sw1-ecc-rmr-slide-threaded-barrel-w-10-15rd-mag-and-bag-sniper-green-rear-sight-rear.jpg",
+      "size_name": "compact",
+      "width": 0,
+      "length": 0,
+      "height": 0,
+      "barrel_length": 0,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": null,
+      "cerakote_slide_coating": false,
+      "frame_color": "sniper_green",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 10,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm Pistol With SW1 Extreme Carry Cut RMR Slide & Non-Threaded Barrel, 2-Tone Flat Dark Earth",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-sw1-extreme-carry-cut-rmr-slide-non-threaded-barrel-2-tone-flat-dark-earth.html",
+      "price": 369.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655125591_1.jpg",
+      "image_file_name": "psa-dagger-compact-9mm-pistol-with-sw1-extreme-carry-cut-rmr-slide-non-threaded-barrel-2-tone-flat-dark-earth.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 4.78,
+      "barrel_length": 3.9,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "flat_dark_earth",
+      "cerakote_slide_coating": true,
+      "frame_color": "2_tone",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm Pistol With SW1 Extreme Carry Cut RMR Slide & Non-Threaded Barrel, 2-Tone Sniper Green",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-sw1-extreme-carry-cut-rmr-slide-non-threaded-barrel-2-tone-sniper-green.html",
+      "price": 369.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655125592_1.jpg",
+      "image_file_name": "psa-dagger-compact-9mm-pistol-with-sw1-extreme-carry-cut-rmr-slide-non-threaded-barrel-2-tone-sniper-green.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 4.78,
+      "barrel_length": 3.9,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "sniper_green",
+      "cerakote_slide_coating": true,
+      "frame_color": "2_tone",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm Pistol With SW1 Extreme Carry Cut RMR Slide & Non-Threaded Barrel, Black",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-sw1-extreme-carry-cut-rmr-slide-non-threaded-barrel-black-dlc.html",
+      "price": 369.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655125590_1.jpg",
+      "image_file_name": "psa-dagger-compact-9mm-pistol-with-sw1-extreme-carry-cut-rmr-slide-non-threaded-barrel-black-dlc.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 4.78,
+      "barrel_length": 3.9,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "black",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm Pistol With SW1 Extreme Carry Cut RMR Slide & Threaded Barrel, Flat Dark Earth",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-sw1-extreme-carry-cut-rmr-slide-threaded-barrel-2-tone-flat-dark-earth2.html",
+      "price": 379.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/7/a/7a4a2500_1.jpg",
+      "image_file_name": "psa-dagger-compact-9mm-pistol-with-sw1-extreme-carry-cut-rmr-slide-threaded-barrel-2-tone-flat-dark-earth2.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.65,
+      "height": 4.78,
+      "barrel_length": 4.5,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "flat_dark_earth",
+      "cerakote_slide_coating": true,
+      "frame_color": "flat_dark_earth",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm Pistol With SW1 Extreme Carry Cut RMR Slide & Threaded Barrel, 2-Tone Sniper Green",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-sw1-extreme-carry-cut-rmr-slide-threaded-barrel-2-tone-sniper-green.html",
+      "price": 379.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/7/a/7a4a7801_1_.jpg",
+      "image_file_name": "psa-dagger-compact-9mm-pistol-with-sw1-extreme-carry-cut-rmr-slide-threaded-barrel-2-tone-sniper-green.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 4.78,
+      "barrel_length": 3.9,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "sniper_green",
+      "cerakote_slide_coating": false,
+      "frame_color": "2_tone",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm Pistol With SW1 Extreme Carry Cut RMR Slide & Threaded Barrel, Black",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-sw1-extreme-carry-cut-rmr-slide-threaded-barrel-black-dlc.html",
+      "price": 379.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655124750_1.jpg",
+      "image_file_name": "psa-dagger-compact-9mm-pistol-with-sw1-extreme-carry-cut-rmr-slide-threaded-barrel-black-dlc.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 4.78,
+      "barrel_length": 3.9,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "black",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm Pistol With SW1 RMR Slide & Stainless Threaded Barrel, Black",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-sw1-rmr-slide-stainless-threaded-barrel-black.html",
+      "price": 389.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655135871_32224_1_1_.jpg",
+      "image_file_name": "psa-dagger-compact-9mm-pistol-with-sw1-rmr-slide-stainless-threaded-barrel-black.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 4.78,
+      "barrel_length": 4.5,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "black",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm Pistol With SW2 Extreme Carry Cut RMR Slide & Threaded Barrel, 2-Tone Flat Dark Earth",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-sw2-extreme-carry-cut-rmr-slide-threaded-barrel-2-tone-flat-dark-earth.html",
+      "price": 379.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655123178_1.jpg",
+      "image_file_name": "psa-dagger-compact-9mm-pistol-with-sw2-extreme-carry-cut-rmr-slide-threaded-barrel-2-tone-flat-dark-earth.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.65,
+      "height": 4.78,
+      "barrel_length": 4.5,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "flat_dark_earth",
+      "cerakote_slide_coating": true,
+      "frame_color": "2_tone",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm Pistol With SW2 Extreme Carry Cut RMR Slide & Threaded Barrel, 2-Tone Sniper Green",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-sw2-extreme-carry-cut-rmr-slide-threaded-barrel-2-tone-sniper-green.html",
+      "price": 379.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/7/a/7a4a7832.jpg",
+      "image_file_name": "psa-dagger-compact-9mm-pistol-with-sw2-extreme-carry-cut-rmr-slide-threaded-barrel-2-tone-sniper-green.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.65,
+      "height": 4.78,
+      "barrel_length": 4.5,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "sniper_green",
+      "cerakote_slide_coating": false,
+      "frame_color": "2_tone",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm Pistol With SW2 Extreme Carry Cut RMR Slide & Threaded Barrel, Black",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-sw2-extreme-carry-cut-rmr-slide-threaded-barrel-black-dlc.html",
+      "price": 379.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/7/a/7a4a7005.jpg",
+      "image_file_name": "psa-dagger-compact-9mm-pistol-with-sw2-extreme-carry-cut-rmr-slide-threaded-barrel-black-dlc.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.65,
+      "height": 4.78,
+      "barrel_length": 4.5,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "black",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm Pistol With SW2 Extreme Carry Cut RMR Slide & Threaded Barrel, Flat Dark Earth",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-sw2-extreme-carry-cut-rmr-slide-threaded-barrel-flat-dark-earth.html",
+      "price": 379.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655128774_4.jpg",
+      "image_file_name": "psa-dagger-compact-9mm-pistol-with-sw2-extreme-carry-cut-rmr-slide-threaded-barrel-flat-dark-earth.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.65,
+      "height": 4.78,
+      "barrel_length": 4.5,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "flat_dark_earth",
+      "cerakote_slide_coating": true,
+      "frame_color": "flat_dark_earth",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm Pistol With SW6 RMR Slide & Non-Threaded Barrel, Black",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-sw6-rmr-slide-non-threaded-barrel-dlc-black.html",
+      "price": 379.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg0151655142747_82223_1_1_.jpg",
+      "image_file_name": "psa-dagger-compact-9mm-pistol-with-sw6-rmr-slide-non-threaded-barrel-dlc-black.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 4.78,
+      "barrel_length": 3.9,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "black",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": false,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm Pistol With SW6 RMR Slide & Non-Threaded Barrel, FDE",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-sw6-rmr-slide-non-threaded-barrel-fde.html",
+      "price": 379.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg0151655142749_82223_1_1_.jpg",
+      "image_file_name": "psa-dagger-compact-9mm-pistol-with-sw6-rmr-slide-non-threaded-barrel-fde.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 4.78,
+      "barrel_length": 3.9,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "flat_dark_earth",
+      "cerakote_slide_coating": false,
+      "frame_color": "flat_dark_earth",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": false,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm Pistol With SW6 RMR Slide & Stainless Non-Threaded Barrel, Black",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-sw6-rmr-slide-stainless-non-threaded-barrel-black.html",
+      "price": 389.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655145936_112823_1_1_.jpg",
+      "image_file_name": "psa-dagger-compact-9mm-pistol-with-sw6-rmr-slide-stainless-non-threaded-barrel-black.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 4.78,
+      "barrel_length": 3.9,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "black",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": false,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm Pistol With SW6 RMR Slide & Threaded Barrel, Black",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-sw6-rmr-slide-threaded-barrel-dlc-black.html",
+      "price": 389.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg0151655142748_82223_1_1_.jpg",
+      "image_file_name": "psa-dagger-compact-9mm-pistol-with-sw6-rmr-slide-threaded-barrel-dlc-black.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 4.78,
+      "barrel_length": 4.5,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "black",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": false,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm Pistol With SWRV2 RMR Slide W/ Copper Threaded Barrel, Sniper Green",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-swr-rmr-slide-green-copper-threaded-barrel.html",
+      "price": 389.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655140148_5724_1_1_.jpg",
+      "image_file_name": "psa-dagger-compact-9mm-pistol-with-swr-rmr-slide-green-copper-threaded-barrel.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.65,
+      "height": 4.78,
+      "barrel_length": 4.5,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "sniper_green",
+      "cerakote_slide_coating": true,
+      "frame_color": "sniper_green",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm Pistol With SWRV2  RMR Slide & Threaded Barrel, Black",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-swr-rmr-slide-threaded-barrel-dlc-black-rear-sight-rear.html",
+      "price": 389.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655131023_32824_1_1_.jpg",
+      "image_file_name": "psa-dagger-compact-9mm-pistol-with-swr-rmr-slide-threaded-barrel-dlc-black-rear-sight-rear.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 4.78,
+      "barrel_length": 4.9,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black_dlc",
+      "cerakote_slide_coating": false,
+      "frame_color": "black",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm Pistol With SWRV2 RMR Slide & Threaded Barrel, FDE, 2-Tone (Rear Sight Rear)",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-swr-rmr-slide-threaded-barrel-fde-2-tone-rear-sight-rear.html",
+      "price": 379.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655131076_32824_1_1_.jpg",
+      "image_file_name": "psa-dagger-compact-9mm-pistol-with-swr-rmr-slide-threaded-barrel-fde-2-tone-rear-sight-rear.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 4.78,
+      "barrel_length": 4.5,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "flat_dark_earth",
+      "cerakote_slide_coating": true,
+      "frame_color": "flat_dark_earth",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm Pistol With SWRV2 RMR Slide & Threaded Barrel, Green, 2-Tone",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-swr-rmr-slide-threaded-barrel-green-2-tone-rear-sight-rear.html",
+      "price": 379.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655131077_32924_1_1_.jpg",
+      "image_file_name": "psa-dagger-compact-9mm-pistol-with-swr-rmr-slide-threaded-barrel-green-2-tone-rear-sight-rear.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 4.78,
+      "barrel_length": 4.5,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "sniper_green",
+      "cerakote_slide_coating": true,
+      "frame_color": "2_tone",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm Pistol With SWRV2 RMR Slide & TiN Non-Threaded Barrel, Flat Dark Earth",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-swr-rmr-slide-tin-non-threaded-barrel-flat-dark-earth.html",
+      "price": 379.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655130872_32824_1_1_.jpg",
+      "image_file_name": "psa-dagger-compact-9mm-pistol-with-swr-rmr-slide-tin-non-threaded-barrel-flat-dark-earth.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 4.78,
+      "barrel_length": 3.9,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "flat_dark_earth",
+      "cerakote_slide_coating": true,
+      "frame_color": "flat_dark_earth",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm Pistol With SWRV2 RMR Slide & TiN Non-Threaded Barrel, Sniper Green (Rear Sight Rear)",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-swr-rmr-slide-tin-non-threaded-barrel-sniper-green-rear-sight-rear.html",
+      "price": 379.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655130873_32924_1_1_.jpg",
+      "image_file_name": "psa-dagger-compact-9mm-pistol-with-swr-rmr-slide-tin-non-threaded-barrel-sniper-green-rear-sight-rear.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 4.78,
+      "barrel_length": 3.9,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "sniper_green",
+      "cerakote_slide_coating": true,
+      "frame_color": "sniper_green",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm Pistol With  X-1 RMR Long Slide, Black",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-x-1-rmr-long-slide-black.html",
+      "price": 379.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655187397_4225_1_1.jpg",
+      "image_file_name": "psa-dagger-compact-9mm-pistol-with-x-1-rmr-long-slide-black.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 5.38,
+      "barrel_length": 4.5,
+      "longer_barrel": true,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "black",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm Pistol With X-1 RMR Long Slide, Flat Dark Earth",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-x-1-rmr-long-slide-flat-dark-earth.html",
+      "price": 379.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655187398_4225_1_1.jpg",
+      "image_file_name": "psa-dagger-compact-9mm-pistol-with-x-1-rmr-long-slide-flat-dark-earth.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 5.38,
+      "barrel_length": 4.5,
+      "longer_barrel": true,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "flat_dark_earth",
+      "cerakote_slide_coating": true,
+      "frame_color": "flat_dark_earth",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm RMR Pistol w/ 10 PMAG 27rd/15rd Magazines & PSA Pistol Bag",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-rmr-pistol-w-10-pmag-27rd-15rd-magazines-psa-pistol-bag2.html",
+      "price": 449.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655136745_1.jpeg",
+      "image_file_name": "psa-dagger-compact-9mm-rmr-pistol-w-10-pmag-27rd-15rd-magazines-psa-pistol-bag2.jpg",
+      "size_name": "compact",
+      "width": 0,
+      "length": 0,
+      "height": 0,
+      "barrel_length": 0,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": null,
+      "cerakote_slide_coating": false,
+      "frame_color": null,
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm RMR Pistol with Extreme Carry Cuts - Flat Dark Earth",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-rmr-pistol-with-extreme-carry-cuts-flat-dark-earth.html",
+      "price": 349.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655128744_4.jpg",
+      "image_file_name": "psa-dagger-compact-9mm-rmr-pistol-with-extreme-carry-cuts-flat-dark-earth.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 4.78,
+      "barrel_length": 3.9,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "flat_dark_earth",
+      "cerakote_slide_coating": true,
+      "frame_color": "flat_dark_earth",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm RMR Pistol with Threaded Barrel, Black",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-rmr-pistol-with-threaded-barrel-black-dlc.html",
+      "price": 359.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655129121_2.jpeg",
+      "image_file_name": "psa-dagger-compact-9mm-rmr-pistol-with-threaded-barrel-black-dlc.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 4.78,
+      "barrel_length": 4.5,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "black",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm RMR Pistol With Threaded Barrel, Flat Dark Earth",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-rmr-pistol-with-threaded-barrel-flat-dark-earth.html",
+      "price": 359.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655128743_3.jpg",
+      "image_file_name": "psa-dagger-compact-9mm-rmr-pistol-with-threaded-barrel-flat-dark-earth.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.65,
+      "height": 4.78,
+      "barrel_length": 4.5,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "flat_dark_earth",
+      "cerakote_slide_coating": true,
+      "frame_color": "flat_dark_earth",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Compact 9mm RMR Pistol With Threaded Barrel, Sniper Green",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-rmr-pistol-with-threaded-barrel-sniper-green.html",
+      "price": 379.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg0151655129980_032423_1_1.jpg",
+      "image_file_name": "psa-dagger-compact-9mm-rmr-pistol-with-threaded-barrel-sniper-green.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.65,
+      "height": 4.78,
+      "barrel_length": 4.5,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "sniper_green",
+      "cerakote_slide_coating": true,
+      "frame_color": "sniper_green",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Complete SW1 RMR Pistol W/ Gold Barrel & 10 15RD Mags, Black",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-complete-sw1-rmr-pistol-w-gold-barrel-10-15rd-mags-black-dlc.html",
+      "price": 469.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg0151655139887_052623_1.jpg",
+      "image_file_name": "psa-dagger-complete-sw1-rmr-pistol-w-gold-barrel-10-15rd-mags-black-dlc.jpg",
+      "size_name": "compact",
+      "width": 0,
+      "length": 0,
+      "height": 0,
+      "barrel_length": 0,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": null,
+      "cerakote_slide_coating": false,
+      "frame_color": "black",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 10,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Complete SW3 RMR Pistol W/Copper Spiral Fluted Non-Threaded Barrel, Flat Dark Earth",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-complete-sw3-rmr-slide-assembly-w-copper-spiral-fluted-non-threaded-barrel-flat-dark-earth.html",
+      "price": 429.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655175124_10724_1.jpg",
+      "image_file_name": "psa-dagger-complete-sw3-rmr-slide-assembly-w-copper-spiral-fluted-non-threaded-barrel-flat-dark-earth.jpg",
+      "size_name": "compact",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 4.78,
+      "barrel_length": 4,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "flat_dark_earth",
+      "cerakote_slide_coating": true,
+      "frame_color": "flat_dark_earth",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Full Size S 9mm Pistol With C-1 RMR Compensated Slide, Black",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-full-size-s-9mm-pistol-with-c-1-rmr-compensated-slide-black.html",
+      "price": 379.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655185368_3625_1_1_.jpg",
+      "image_file_name": "psa-dagger-full-size-s-9mm-pistol-with-c-1-rmr-compensated-slide-black.jpg",
+      "size_name": "full_size_s",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 5.38,
+      "barrel_length": 3.9,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": true,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "black",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 17
+    },
+    {
+      "psa_product_name": "PSA Dagger Full Size S 9mm Pistol With C-1 RMR Compensated Slide, Flat Dark Earth",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-full-size-s-9mm-pistol-with-c-1-rmr-compensated-slide-flat-dark-earth.html",
+      "price": 379.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655185369_3625_1_1_.jpg",
+      "image_file_name": "psa-dagger-full-size-s-9mm-pistol-with-c-1-rmr-compensated-slide-flat-dark-earth.jpg",
+      "size_name": "full_size_s",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 5.38,
+      "barrel_length": 3.9,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": true,
+      "slide_color": "flat_dark_earth",
+      "cerakote_slide_coating": true,
+      "frame_color": "flat_dark_earth",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 17
+    },
+    {
+      "psa_product_name": "PSA Dagger Full Size - S 9mm Pistol With Extreme Carry Cut RMR Slide & Threaded Barrel, Two-Tone Sniper Green",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-full-size-s-9mm-pistol-with-extreme-carry-cut-rmr-slide-threaded-barrel-two-tone-sniper-green.html",
+      "price": 369.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/5/1/51655130273_1.jpg",
+      "image_file_name": "psa-dagger-full-size-s-9mm-pistol-with-extreme-carry-cut-rmr-slide-threaded-barrel-two-tone-sniper-green.jpg",
+      "size_name": "full_size_s",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 5.38,
+      "barrel_length": 4.5,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "sniper_green",
+      "cerakote_slide_coating": true,
+      "frame_color": "two_tone",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 17
+    },
+    {
+      "psa_product_name": "PSA Dagger Full Size - S 9mm Pistol with SW1 RMR with Threaded Barrel & 10 17rd Mags & Bag, FDE (Rear Sight Rear)",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-full-size-s-9mm-pistol-with-sw1-rmr-with-threaded-barrel-ameriglo-lower-1-3-co-witness-10-17rd-mags-bag-fde-rear-sight-rear.html",
+      "price": 479.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/5/1/51655132791_1_1.jpg",
+      "image_file_name": "psa-dagger-full-size-s-9mm-pistol-with-sw1-rmr-with-threaded-barrel-ameriglo-lower-1-3-co-witness-10-17rd-mags-bag-fde-rear-sight-rear.jpg",
+      "size_name": "full_size_s",
+      "width": 0,
+      "length": 0,
+      "height": 0,
+      "barrel_length": 4.5,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": null,
+      "cerakote_slide_coating": false,
+      "frame_color": "flat_dark_earth",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 10,
+      "mag_size": 17
+    },
+    {
+      "psa_product_name": "PSA Dagger Full Size - S 9mm Pistol With SWRV2 RMR Slide & TiN Non-Threaded Barrel, Sniper Green",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-full-size-s-9mm-pistol-with-swr-rmr-slide-tin-non-threaded-barrel-sniper-green.html",
+      "price": 379.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655130875_41924_1_1_.jpg",
+      "image_file_name": "psa-dagger-full-size-s-9mm-pistol-with-swr-rmr-slide-tin-non-threaded-barrel-sniper-green.jpg",
+      "size_name": "full_size_s",
+      "width": 1.28,
+      "length": 7.65,
+      "height": 5.38,
+      "barrel_length": 3.9,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "sniper_green",
+      "cerakote_slide_coating": true,
+      "frame_color": "sniper_green",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 17
+    },
+    {
+      "psa_product_name": "PSA Dagger Full Size - S 9mm Pistol With SWR RMR Slide W/Gold Barrel, Sniper Green With 10-17rd PMAGS & PSA Pistol Bag",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-full-size-s-9mm-pistol-with-swr-rmr-slide-w-gold-barrel-sniper-green-with-10-17rd-pmags-psa-pistol-bag.html",
+      "price": 469.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/s/c/screenshot_2023-06-21_at_1.45.16_pm_1.png",
+      "image_file_name": "psa-dagger-full-size-s-9mm-pistol-with-swr-rmr-slide-w-gold-barrel-sniper-green-with-10-17rd-pmags-psa-pistol-bag.jpg",
+      "size_name": "full_size_s",
+      "width": 0,
+      "length": 0,
+      "height": 0,
+      "barrel_length": 0,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": null,
+      "cerakote_slide_coating": false,
+      "frame_color": "sniper_green",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 17
+    },
+    {
+      "psa_product_name": "PSA Dagger Full Size - S 9mm SW1 RMR Pistol With Threaded Barrel, Sniper Green",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-full-size-s-9mm-sw1-rmr-pistol-with-threaded-barrel-1-3-lower-sights.html",
+      "price": 369.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/5/1/51655130985_1.jpg",
+      "image_file_name": "psa-dagger-full-size-s-9mm-sw1-rmr-pistol-with-threaded-barrel-1-3-lower-sights.jpg",
+      "size_name": "full_size_s",
+      "width": 1.28,
+      "length": 7.65,
+      "height": 5.38,
+      "barrel_length": 4.5,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "sniper_green",
+      "cerakote_slide_coating": true,
+      "frame_color": "sniper_green",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 17
+    },
+    {
+      "psa_product_name": "PSA Dagger Full Size - S 9mm SW2 RMR Pistol, Black",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-full-size-s-9mm-sw2-rmr-pistol-black.html",
+      "price": 369.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg0251655139253_8423_1.jpg",
+      "image_file_name": "psa-dagger-full-size-s-9mm-sw2-rmr-pistol-black.jpg",
+      "size_name": "full_size_s",
+      "width": 1.28,
+      "length": 7.65,
+      "height": 5.38,
+      "barrel_length": 4.5,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black_dlc",
+      "cerakote_slide_coating": false,
+      "frame_color": "black",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 17
+    },
+    {
+      "psa_product_name": "PSA Dagger Full Size - S 9mm SW2 RMR Pistol W/ Chameleon Threaded Barrel, Black",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-full-size-s-9mm-sw2-rmr-pistol-w-chameleon-threaded-barrel-black.html",
+      "price": 379.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg0251655139258_8423_1.jpg",
+      "image_file_name": "psa-dagger-full-size-s-9mm-sw2-rmr-pistol-w-chameleon-threaded-barrel-black.jpg",
+      "size_name": "full_size_s",
+      "width": 1.28,
+      "length": 7.65,
+      "height": 5.38,
+      "barrel_length": 4.5,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black_dlc",
+      "cerakote_slide_coating": false,
+      "frame_color": "black",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 17
+    },
+    {
+      "psa_product_name": "PSA Dagger Full Size - S 9mm SW3 RMR Pistol With Stainless Non-Threaded Barrel  With10 -17rd Magazines and Bag, Black",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-full-size-s-9mm-sw3-rmr-pistol-with-stainless-non-threaded-barrel-lower-1-3-day-sights-with10-17rd-magazines-and-bag-black.html",
+      "price": 469.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg0251655137031_041723_1.jpg",
+      "image_file_name": "psa-dagger-full-size-s-9mm-sw3-rmr-pistol-with-stainless-non-threaded-barrel-lower-1-3-day-sights-with10-17rd-magazines-and-bag-black.jpg",
+      "size_name": "full_size_s",
+      "width": 0,
+      "length": 0,
+      "height": 0,
+      "barrel_length": 0,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": null,
+      "cerakote_slide_coating": false,
+      "frame_color": "black",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 10,
+      "mag_size": 17
+    },
+    {
+      "psa_product_name": "PSA Dagger Full Size - S 9mm Pistol With SWRV2 RMR & Gold Barrel, Flat Dark Earth",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-full-size-s-9mm-swr-rmr-pistol-with-gold-barrel-flat-dark-earth.html",
+      "price": 379.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655130874_41924_1_1_.jpg",
+      "image_file_name": "psa-dagger-full-size-s-9mm-swr-rmr-pistol-with-gold-barrel-flat-dark-earth.jpg",
+      "size_name": "full_size_s",
+      "width": 1.28,
+      "length": 7.65,
+      "height": 5.38,
+      "barrel_length": 3.9,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "flat_dark_earth",
+      "cerakote_slide_coating": true,
+      "frame_color": "flat_dark_earth",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 17
+    },
+    {
+      "psa_product_name": "PSA Dagger Full Size S 9mm Pistol With Compact X-1 RMR Long Slide, Flat Dark Earth",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-full-size-sx-pistol-with-rmr-extreme-carry-cut-long-slide-lower-1-3-day-sight-long-non-threaded-barrel-flat-dark-earth.html",
+      "price": 379.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/5/1/51655131120_1.jpg",
+      "image_file_name": "psa-dagger-full-size-sx-pistol-with-rmr-extreme-carry-cut-long-slide-lower-1-3-day-sight-long-non-threaded-barrel-flat-dark-earth.jpg",
+      "size_name": "full_size_s",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 5.38,
+      "barrel_length": 4.5,
+      "longer_barrel": true,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "flat_dark_earth",
+      "cerakote_slide_coating": true,
+      "frame_color": "flat_dark_earth",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 17
+    },
+    {
+      "psa_product_name": "PSA Dagger Full Size S 9mm Pistol With Compact X-1 RMR Long Slide, Sniper Green",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-full-size-sx-pistol-with-rmr-extreme-carry-cut-long-slide-lower-1-3-day-sight-long-non-threaded-barrel-sniper-green.html",
+      "price": 379.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/5/1/51655131121_1.jpg",
+      "image_file_name": "psa-dagger-full-size-sx-pistol-with-rmr-extreme-carry-cut-long-slide-lower-1-3-day-sight-long-non-threaded-barrel-sniper-green.jpg",
+      "size_name": "full_size_s",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 5.38,
+      "barrel_length": 4.5,
+      "longer_barrel": true,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "sniper_green",
+      "cerakote_slide_coating": true,
+      "frame_color": "sniper_green",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 17
+    },
+    {
+      "psa_product_name": "PSA Dagger Micro 9mm Pistol - Shield Cut With 5 15rd Mags & Bag, Black",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-micro-9mm-pistol-shield-cut-5-15rd-mags-bag-black.html",
+      "price": 479.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655180824.png",
+      "image_file_name": "psa-dagger-micro-9mm-pistol-shield-cut-5-15rd-mags-bag-black.jpg",
+      "size_name": "micro",
+      "width": 1.1,
+      "length": 6.5,
+      "height": 4.7,
+      "barrel_length": 3.41,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "black",
+      "optic_compatibility": "shield_rmsc",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 5,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Micro 9mm Pistol - Shield Cut, Black",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-micro-9mm-pistol-shield-cut-black-dlc.html",
+      "price": 339.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655136024_1.jpg",
+      "image_file_name": "psa-dagger-micro-9mm-pistol-shield-cut-black-dlc.jpg",
+      "size_name": "micro",
+      "width": 1.1,
+      "length": 6.5,
+      "height": 4.7,
+      "barrel_length": 3.41,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "black",
+      "optic_compatibility": "shield_rmsc",
+      "has_cover_plate": true,
+      "mag_bag_bonus": false,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Micro 9mm Pistol - Shield Cut, FDE Slide, 2-Tone",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-micro-9mm-pistol-shield-cut-fde-slide-2-tone.html",
+      "price": 339.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655146998_121123_1_1_.jpg",
+      "image_file_name": "psa-dagger-micro-9mm-pistol-shield-cut-fde-slide-2-tone.jpg",
+      "size_name": "micro",
+      "width": 1.1,
+      "length": 6.5,
+      "height": 4.7,
+      "barrel_length": 3.41,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "flat_dark_earth",
+      "cerakote_slide_coating": true,
+      "frame_color": "flat_dark_earth",
+      "optic_compatibility": "shield_rmsc",
+      "has_cover_plate": true,
+      "mag_bag_bonus": false,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Micro 9mm Pistol - Shield Cut, Flat Dark Earth",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-micro-9mm-pistol-shield-cut-flat-dark-earth.html",
+      "price": 339.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655150888_3524_1_1_.jpg",
+      "image_file_name": "psa-dagger-micro-9mm-pistol-shield-cut-flat-dark-earth.jpg",
+      "size_name": "micro",
+      "width": 1.1,
+      "length": 6.5,
+      "height": 4.7,
+      "barrel_length": 3.41,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "flat_dark_earth",
+      "cerakote_slide_coating": true,
+      "frame_color": "flat_dark_earth",
+      "optic_compatibility": "shield_rmsc",
+      "has_cover_plate": true,
+      "mag_bag_bonus": false,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Micro 9mm Pistol - Shield Cut, Sniper Green Slide, 2-Tone",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-micro-9mm-pistol-shield-cut-sniper-green-slide-2-tone.html",
+      "price": 339.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655146999_121123_1_1_.jpg",
+      "image_file_name": "psa-dagger-micro-9mm-pistol-shield-cut-sniper-green-slide-2-tone.jpg",
+      "size_name": "micro",
+      "width": 1.1,
+      "length": 6.5,
+      "height": 4.7,
+      "barrel_length": 3.41,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "sniper_green",
+      "cerakote_slide_coating": true,
+      "frame_color": "sniper_green",
+      "optic_compatibility": "shield_rmsc",
+      "has_cover_plate": true,
+      "mag_bag_bonus": false,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Micro 9mm Pistol - Shield Cut, Sniper Green",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-micro-9mm-pistol-shield-cut-sniper-green2.html",
+      "price": 339.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655150909_3524_1_1_.jpg",
+      "image_file_name": "psa-dagger-micro-9mm-pistol-shield-cut-sniper-green2.jpg",
+      "size_name": "micro",
+      "width": 1.1,
+      "length": 6.5,
+      "height": 4.7,
+      "barrel_length": 3.41,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "sniper_green",
+      "cerakote_slide_coating": true,
+      "frame_color": "sniper_green",
+      "optic_compatibility": "shield_rmsc",
+      "has_cover_plate": true,
+      "mag_bag_bonus": false,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Micro 9mm Pistol - Shield Cut w/ Holosun 407k, Black",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-micro-9mm-pistol-shield-cut-w-holosun-407k-black-dlc.html",
+      "price": 539.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655136037_1.jpg",
+      "image_file_name": "psa-dagger-micro-9mm-pistol-shield-cut-w-holosun-407k-black-dlc.jpg",
+      "size_name": "micro",
+      "width": 1.1,
+      "length": 6.5,
+      "height": 4.7,
+      "barrel_length": 3.41,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "black",
+      "optic_compatibility": "shield_rmsc",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Micro 9mm Pistol - Shield Cut W/Holosun 407k, FDE Slide, 2-Tone",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-micro-9mm-pistol-shield-cut-w-holosun-407k-fde-slide-2-tone.html",
+      "price": 539.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655147002_121123_1_1_.jpg",
+      "image_file_name": "psa-dagger-micro-9mm-pistol-shield-cut-w-holosun-407k-fde-slide-2-tone.jpg",
+      "size_name": "micro",
+      "width": 1.1,
+      "length": 6.5,
+      "height": 4.7,
+      "barrel_length": 3.41,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "flat_dark_earth",
+      "cerakote_slide_coating": true,
+      "frame_color": "flat_dark_earth",
+      "optic_compatibility": "shield_rmsc",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Micro 9mm Pistol - Shield Cut W/ Holosun 407K, Sniper Green Slide, 2-Tone",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-micro-9mm-pistol-shield-cut-w-holosun-407k-sniper-green-slide-2-tone.html",
+      "price": 539.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655147003_121123_1_1_.jpg",
+      "image_file_name": "psa-dagger-micro-9mm-pistol-shield-cut-w-holosun-407k-sniper-green-slide-2-tone.jpg",
+      "size_name": "micro",
+      "width": 1.1,
+      "length": 6.5,
+      "height": 4.7,
+      "barrel_length": 3.41,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "sniper_green",
+      "cerakote_slide_coating": true,
+      "frame_color": "sniper_green",
+      "optic_compatibility": "shield_rmsc",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Micro 9mm Pistol - Shield Cut With Night Sights, Flat Dark Earth",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-micro-9mm-pistol-shield-cut-with-night-sights-flat-dark-earth.html",
+      "price": 359.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655188413_42525_1.jpg",
+      "image_file_name": "psa-dagger-micro-9mm-pistol-shield-cut-with-night-sights-flat-dark-earth.jpg",
+      "size_name": "micro",
+      "width": 1.1,
+      "length": 6.5,
+      "height": 4.7,
+      "barrel_length": 3.41,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": true,
+      "compensated_slide": false,
+      "slide_color": "flat_dark_earth",
+      "cerakote_slide_coating": true,
+      "frame_color": "flat_dark_earth",
+      "optic_compatibility": "shield_rmsc",
+      "has_cover_plate": true,
+      "mag_bag_bonus": false,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Micro 9mm Pistol With Threaded Barrel - Shield Cut, Black",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-micro-9mm-pistol-with-threaded-barrel-shield-cut-black.html",
+      "price": 359.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655159766_103124_1_2_.jpg",
+      "image_file_name": "psa-dagger-micro-9mm-pistol-with-threaded-barrel-shield-cut-black.jpg",
+      "size_name": "micro",
+      "width": 1.1,
+      "length": 0,
+      "height": 4.7,
+      "barrel_length": 3.9,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "black",
+      "optic_compatibility": "shield_rmsc",
+      "has_cover_plate": true,
+      "mag_bag_bonus": false,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Micro C-1 9mm Pistol - Shield Cut, Flat Dark Earth",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-micro-c-1-9mm-pistol-shield-cut-flat-dark-earth.html",
+      "price": 359.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655150889_3524_1_1_.jpg",
+      "image_file_name": "psa-dagger-micro-c-1-9mm-pistol-shield-cut-flat-dark-earth.jpg",
+      "size_name": "micro",
+      "width": 1.1,
+      "length": 7.1,
+      "height": 4.7,
+      "barrel_length": 3.41,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": true,
+      "slide_color": "flat_dark_earth",
+      "cerakote_slide_coating": true,
+      "frame_color": "flat_dark_earth",
+      "optic_compatibility": "shield_rmsc",
+      "has_cover_plate": true,
+      "mag_bag_bonus": false,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Micro C-1 9mm Pistol - Shield Cut, Sniper Green",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-micro-c-1-9mm-pistol-shield-cut-sniper-green.html",
+      "price": 359.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655150910_3524_1_1_.jpg",
+      "image_file_name": "psa-dagger-micro-c-1-9mm-pistol-shield-cut-sniper-green.jpg",
+      "size_name": "micro",
+      "width": 1.1,
+      "length": 7.1,
+      "height": 4.7,
+      "barrel_length": 3.41,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": true,
+      "slide_color": "sniper_green",
+      "cerakote_slide_coating": true,
+      "frame_color": "sniper_green",
+      "optic_compatibility": "shield_rmsc",
+      "has_cover_plate": true,
+      "mag_bag_bonus": false,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Micro C-1 9mm Pistol - Shield Cut, Sniper Green Slide, 2-Tone",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-micro-c-1-complete-9mm-pistol-shield-cut-sniper-green-slide-2-tone.html",
+      "price": 359.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655145572_101023_1_1_.jpg",
+      "image_file_name": "psa-dagger-micro-c-1-complete-9mm-pistol-shield-cut-sniper-green-slide-2-tone.jpg",
+      "size_name": "micro",
+      "width": 1.1,
+      "length": 7.1,
+      "height": 4.7,
+      "barrel_length": 3.41,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": true,
+      "slide_color": "sniper_green",
+      "cerakote_slide_coating": false,
+      "frame_color": "sniper_green",
+      "optic_compatibility": "shield_rmsc",
+      "has_cover_plate": true,
+      "mag_bag_bonus": false,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Micro C-1 9mm Pistol - Shield Cut, W/Holosun 407k, FDE Slide, 2-Tone",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-micro-c-1-complete-9mm-pistol-shield-cut-w-holosun-407k-fde-slide-2-tone.html",
+      "price": 559.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655145580_101023_1_1_.jpg",
+      "image_file_name": "psa-dagger-micro-c-1-complete-9mm-pistol-shield-cut-w-holosun-407k-fde-slide-2-tone.jpg",
+      "size_name": "micro",
+      "width": 1.1,
+      "length": 7.1,
+      "height": 4.7,
+      "barrel_length": 3.41,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": true,
+      "slide_color": "flat_dark_earth",
+      "cerakote_slide_coating": false,
+      "frame_color": "flat_dark_earth",
+      "optic_compatibility": "shield_rmsc",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Micro C-1 9mm Pistol - Shield Cut, W/Holosun 407k, Sniper Green Slide, 2-Tone",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-micro-c-1-complete-9mm-pistol-shield-cut-w-holosun-407k-sniper-green-slide-2-tone.html",
+      "price": 559.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655145581_101023_1_1_.jpg",
+      "image_file_name": "psa-dagger-micro-c-1-complete-9mm-pistol-shield-cut-w-holosun-407k-sniper-green-slide-2-tone.jpg",
+      "size_name": "micro",
+      "width": 1.1,
+      "length": 7.1,
+      "height": 4.7,
+      "barrel_length": 3.41,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": true,
+      "slide_color": "sniper_green",
+      "cerakote_slide_coating": false,
+      "frame_color": "sniper_green",
+      "optic_compatibility": "shield_rmsc",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Micro C-1 9mm Pistol - Shield Cut, FDE Slide, 2-Tone",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-micro-complete-9mm-pistol-mc-1-fde-slide-2-tone.html",
+      "price": 359.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655143765_91123_1_1_.jpg",
+      "image_file_name": "psa-dagger-micro-complete-9mm-pistol-mc-1-fde-slide-2-tone.jpg",
+      "size_name": "micro",
+      "width": 1.1,
+      "length": 7.1,
+      "height": 4.7,
+      "barrel_length": 3.41,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": true,
+      "slide_color": "flat_dark_earth",
+      "cerakote_slide_coating": false,
+      "frame_color": "flat_dark_earth",
+      "optic_compatibility": "shield_rmsc",
+      "has_cover_plate": true,
+      "mag_bag_bonus": false,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Micro X-1 9mm Pistol - Shield Cut, Non-Threaded Barrel, Sniper Green Slide, 2-Tone",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-micro-x-1-9mm-pistol-shield-cut-non-threaded-barrel-sniper-green-slide-2-tone.html",
+      "price": 359.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655148591_11024_1_1_.jpg",
+      "image_file_name": "psa-dagger-micro-x-1-9mm-pistol-shield-cut-non-threaded-barrel-sniper-green-slide-2-tone.jpg",
+      "size_name": "micro",
+      "width": 1.1,
+      "length": 7.2,
+      "height": 4.7,
+      "barrel_length": 4.15,
+      "longer_barrel": true,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "sniper_green",
+      "cerakote_slide_coating": true,
+      "frame_color": "sniper_green",
+      "optic_compatibility": "shield_rmsc",
+      "has_cover_plate": true,
+      "mag_bag_bonus": false,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Micro X-1 9mm Pistol - Shield Cut, Non Threaded Barrel, Sniper Green",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-micro-x-1-9mm-pistol-shield-cut-non-threaded-barrel-sniper-green2.html",
+      "price": 359.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655150911_3524_1_1_.jpg",
+      "image_file_name": "psa-dagger-micro-x-1-9mm-pistol-shield-cut-non-threaded-barrel-sniper-green2.jpg",
+      "size_name": "micro",
+      "width": 1.1,
+      "length": 7.2,
+      "height": 4.7,
+      "barrel_length": 4.15,
+      "longer_barrel": true,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "sniper_green",
+      "cerakote_slide_coating": true,
+      "frame_color": "sniper_green",
+      "optic_compatibility": "shield_rmsc",
+      "has_cover_plate": true,
+      "mag_bag_bonus": false,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Micro X-1 9mm Pistol - Shield Cut, Non-Threaded Barrel, FDE Slide, 2-Tone",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-micro-x-1-complete-9mm-pistol-non-threaded-barrel-fde-slide-2-tone.html",
+      "price": 359.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655145550_092923_1_1_.jpg",
+      "image_file_name": "psa-dagger-micro-x-1-complete-9mm-pistol-non-threaded-barrel-fde-slide-2-tone.jpg",
+      "size_name": "micro",
+      "width": 1.1,
+      "length": 7.2,
+      "height": 4.7,
+      "barrel_length": 4.15,
+      "longer_barrel": true,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "flat_dark_earth",
+      "cerakote_slide_coating": true,
+      "frame_color": "flat_dark_earth",
+      "optic_compatibility": "shield_rmsc",
+      "has_cover_plate": true,
+      "mag_bag_bonus": false,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Micro X-1 9mm Pistol -Shield Cut, Non-Threaded Barrel W/Holosun 407k, Black",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-micro-x-1-complete-9mm-pistol-shield-cut-non-threaded-barrel-w-holosun-407k-black-dlc.html",
+      "price": 559.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655145557_092923_1_1_.jpg",
+      "image_file_name": "psa-dagger-micro-x-1-complete-9mm-pistol-shield-cut-non-threaded-barrel-w-holosun-407k-black-dlc.jpg",
+      "size_name": "micro",
+      "width": 1.1,
+      "length": 7.2,
+      "height": 4.7,
+      "barrel_length": 4.15,
+      "longer_barrel": true,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "black",
+      "optic_compatibility": "shield_rmsc",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Micro X-1 9mm Pistol - Shield Cut, Non-Threaded Barrel W/Holosun 407k, Two Tone, FDE Slide",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-micro-x-1-complete-9mm-pistol-shield-cut-non-threaded-barrel-w-holosun-407k-two-tone-fde-slide.html",
+      "price": 559.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655145558_092923_1_1_.jpg",
+      "image_file_name": "psa-dagger-micro-x-1-complete-9mm-pistol-shield-cut-non-threaded-barrel-w-holosun-407k-two-tone-fde-slide.jpg",
+      "size_name": "micro",
+      "width": 1.1,
+      "length": 7.2,
+      "height": 4.7,
+      "barrel_length": 4.15,
+      "longer_barrel": true,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "flat_dark_earth",
+      "cerakote_slide_coating": true,
+      "frame_color": "two_tone",
+      "optic_compatibility": "shield_rmsc",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Full Size - S 9mm ECC RMR Threaded Barrel Pistol With 10 17rd Magazines & Pistol Case, Flat Dark Earth",
+      "psa_url": "https://palmettostatearmory.com/psa-full-size-s-9mm-ecc-rmr-threaded-barrel-lower-1-3-day-sights-pistol-with-10-17rd-magazines-pistol-case-flat-dark-earth.html",
+      "price": 459.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg0251655136904_041323_1_1.jpg",
+      "image_file_name": "psa-full-size-s-9mm-ecc-rmr-threaded-barrel-lower-1-3-day-sights-pistol-with-10-17rd-magazines-pistol-case-flat-dark-earth.jpg",
+      "size_name": "full_size_s",
+      "width": 0,
+      "length": 0,
+      "height": 0,
+      "barrel_length": 0,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": null,
+      "cerakote_slide_coating": false,
+      "frame_color": "flat_dark_earth",
+      "optic_compatibility": "rmr",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 10,
+      "mag_size": 17
+    },
+    {
+      "psa_product_name": "PSA Sabre Dagger Full Size - S 9mm Pistol, Spiral Fluted Barrel, W/Mag Extensions, M81 Woodland Camo",
+      "psa_url": "https://palmettostatearmory.com/psa-sabre-dagger-full-size-s-9mm-pistol-fluted-barrel-w-mag-extensions-m81-woodland-camo.html",
+      "price": 629.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655152390_42224_1_1_.jpg",
+      "image_file_name": "psa-sabre-dagger-full-size-s-9mm-pistol-fluted-barrel-w-mag-extensions-m81-woodland-camo.jpg",
+      "size_name": "full_size_s",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 5.38,
+      "barrel_length": 3.9,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "m81_woodland_camo",
+      "optic_compatibility": "none",
+      "has_cover_plate": false,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 2,
+      "mag_size": 17
+    },
+    {
+      "psa_product_name": "PSA Sabre Dagger Full Size - S 9mm Pistol, Ported Barrel, W/Mag Extensions, Black",
+      "psa_url": "https://palmettostatearmory.com/psa-sabre-dagger-full-size-s-9mm-pistol-ported-barrel-w-mag-extensions-black.html",
+      "price": 599.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655191654_7325_6.jpg",
+      "image_file_name": "psa-sabre-dagger-full-size-s-9mm-pistol-ported-barrel-w-mag-extensions-black.jpg",
+      "size_name": "full_size_s",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 5.38,
+      "barrel_length": 4,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "black",
+      "optic_compatibility": "none",
+      "has_cover_plate": false,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 2,
+      "mag_size": 17
+    },
+    {
+      "psa_product_name": "PSA Sabre Dagger Full Size - S 9mm Pistol, Ported Barrel, W/Mag Extensions, M81 Woodland Camo",
+      "psa_url": "https://palmettostatearmory.com/psa-sabre-dagger-full-size-s-9mm-pistol-ported-barrel-w-mag-extensions-m81-woodland-camo.html",
+      "price": 629.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655191679_7325_6.jpg",
+      "image_file_name": "psa-sabre-dagger-full-size-s-9mm-pistol-ported-barrel-w-mag-extensions-m81-woodland-camo.jpg",
+      "size_name": "full_size_s",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 5.38,
+      "barrel_length": 3.9,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "m81_woodland_camo",
+      "optic_compatibility": "none",
+      "has_cover_plate": false,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 2,
+      "mag_size": 17
+    },
+    {
+      "psa_product_name": "PSA Sabre Dagger Full Size - S 9mm Pistol, Spiral Fluted Barrel, W/Mag Extensions, Black",
+      "psa_url": "https://palmettostatearmory.com/psa-sabre-dagger-full-size-s-9mm-pistol-spiral-fluted-barrel-w-mag-extensions-black.html",
+      "price": 599.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655152373_42224_1_1_.jpg",
+      "image_file_name": "psa-sabre-dagger-full-size-s-9mm-pistol-spiral-fluted-barrel-w-mag-extensions-black.jpg",
+      "size_name": "full_size_s",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 5.38,
+      "barrel_length": 3.9,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "black",
+      "optic_compatibility": "none",
+      "has_cover_plate": false,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 2,
+      "mag_size": 17
+    },
+    {
+      "psa_product_name": "PSA Sabre Dagger Full Size - S 9mm Pistol, Threaded Barrel, W/Mag Extensions, Black",
+      "psa_url": "https://palmettostatearmory.com/psa-sabre-dagger-full-size-s-9mm-pistol-threaded-barrel-w-mag-extensions-black.html",
+      "price": 599.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655152113_081224_1.jpg",
+      "image_file_name": "psa-sabre-dagger-full-size-s-9mm-pistol-threaded-barrel-w-mag-extensions-black.jpg",
+      "size_name": "full_size_s",
+      "width": 1.28,
+      "length": 7.65,
+      "height": 5.38,
+      "barrel_length": 4.5,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "black",
+      "optic_compatibility": "none",
+      "has_cover_plate": false,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 2,
+      "mag_size": 17
+    },
+    {
+      "psa_product_name": "PSA Sabre Dagger Full Size - S 9mm Pistol, Threaded Barrel, W/Mag extensions, M81 Woodland Camo",
+      "psa_url": "https://palmettostatearmory.com/psa-sabre-dagger-full-size-s-9mm-pistol-threaded-barrel-w-mag-extensions-m81-woodland-camo.html",
+      "price": 629.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655152121_081224_1.jpg",
+      "image_file_name": "psa-sabre-dagger-full-size-s-9mm-pistol-threaded-barrel-w-mag-extensions-m81-woodland-camo.jpg",
+      "size_name": "full_size_s",
+      "width": 1.28,
+      "length": 7.65,
+      "height": 5.38,
+      "barrel_length": 4.5,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "m81_woodland_camo",
+      "optic_compatibility": "none",
+      "has_cover_plate": false,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 2,
+      "mag_size": 17
+    },
+    {
+      "psa_product_name": "PSA Sabre Dagger Full Size - S 9mm Pistol, TiN Spiral Fluted Barrel, W/Mag Extensions, Black",
+      "psa_url": "https://palmettostatearmory.com/psa-sabre-dagger-full-size-s-9mm-pistol-tin-fluted-barrel-w-mag-extensions-black.html",
+      "price": 599.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655152374_42224_1_1_.jpg",
+      "image_file_name": "psa-sabre-dagger-full-size-s-9mm-pistol-tin-fluted-barrel-w-mag-extensions-black.jpg",
+      "size_name": "full_size_s",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 5.38,
+      "barrel_length": 3.9,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "black",
+      "optic_compatibility": "none",
+      "has_cover_plate": false,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 2,
+      "mag_size": 17
+    },
+    {
+      "psa_product_name": "PSA Sabre Dagger Full Size - S 9mm Pistol, TiN Spiral Fluted Barrel, W/Mag Extensions, M81 Desert Camo",
+      "psa_url": "https://palmettostatearmory.com/psa-sabre-dagger-full-size-s-9mm-pistol-tin-fluted-barrel-w-mag-extensions-m81-desert-camo.html",
+      "price": 629.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655152389_42224_1_1_.jpg",
+      "image_file_name": "psa-sabre-dagger-full-size-s-9mm-pistol-tin-fluted-barrel-w-mag-extensions-m81-desert-camo.jpg",
+      "size_name": "full_size_s",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 5.38,
+      "barrel_length": 3.9,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "m81_desert_camo",
+      "optic_compatibility": "none",
+      "has_cover_plate": false,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 2,
+      "mag_size": 17
+    },
+    {
+      "psa_product_name": "PSA Sabre Dagger Full Size - S 9mm Pistol, TiN Ported Barrel, W/Mag Extensions, Black",
+      "psa_url": "https://palmettostatearmory.com/psa-sabre-dagger-full-size-s-9mm-pistol-tin-ported-barrel-w-mag-extensions-black.html",
+      "price": 599.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655191653_7325_6.jpg",
+      "image_file_name": "psa-sabre-dagger-full-size-s-9mm-pistol-tin-ported-barrel-w-mag-extensions-black.jpg",
+      "size_name": "full_size_s",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 5.38,
+      "barrel_length": 4,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "black",
+      "optic_compatibility": "none",
+      "has_cover_plate": false,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 2,
+      "mag_size": 17
+    },
+    {
+      "psa_product_name": "PSA Sabre Dagger Full Size - S 9mm Pistol, TiN Ported Barrel, W/Mag Extensions, M81 Desert Camo",
+      "psa_url": "https://palmettostatearmory.com/psa-sabre-dagger-full-size-s-9mm-pistol-tin-ported-barrel-w-mag-extensions-m81-desert-camo.html",
+      "price": 629.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655191652_7325_6.jpg",
+      "image_file_name": "psa-sabre-dagger-full-size-s-9mm-pistol-tin-ported-barrel-w-mag-extensions-m81-desert-camo.jpg",
+      "size_name": "full_size_s",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 5.38,
+      "barrel_length": 4,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "m81_desert_camo",
+      "optic_compatibility": "none",
+      "has_cover_plate": false,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 2,
+      "mag_size": 17
+    },
+    {
+      "psa_product_name": "PSA Sabre Dagger Full Size - S 9mm Pistol, TiN-Threaded Barrel, W/Mag extensions, Black",
+      "psa_url": "https://palmettostatearmory.com/psa-sabre-dagger-full-size-s-9mm-pistol-tin-threaded-barrel-w-mag-extensions-black.html",
+      "price": 599.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655152119_81224_1.jpg",
+      "image_file_name": "psa-sabre-dagger-full-size-s-9mm-pistol-tin-threaded-barrel-w-mag-extensions-black.jpg",
+      "size_name": "full_size_s",
+      "width": 1.28,
+      "length": 7.65,
+      "height": 5.38,
+      "barrel_length": 4,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "black",
+      "optic_compatibility": "none",
+      "has_cover_plate": false,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 2,
+      "mag_size": 17
+    },
+    {
+      "psa_product_name": "PSA Sabre Dagger Full Size - S 9mm Pistol, Tin-Threaded Barrel, W/Mag Extensions, M81 Desert Camo",
+      "psa_url": "https://palmettostatearmory.com/psa-sabre-dagger-full-size-s-9mm-pistol-tin-threaded-barrel-w-mag-extensions-m81-desert-camo.html",
+      "price": 629.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655152120_81224_1.jpg",
+      "image_file_name": "psa-sabre-dagger-full-size-s-9mm-pistol-tin-threaded-barrel-w-mag-extensions-m81-desert-camo.jpg",
+      "size_name": "full_size_s",
+      "width": 1.28,
+      "length": 7.65,
+      "height": 5.38,
+      "barrel_length": 4.5,
+      "longer_barrel": false,
+      "threaded_barrel": true,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "m81_desert_camo",
+      "optic_compatibility": "none",
+      "has_cover_plate": false,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 2,
+      "mag_size": 17
+    },
+    {
+      "psa_product_name": "PSA Sabre Dagger Micro 9mm Pistol, TiN Barrel w/ Mag Extensions, Black",
+      "psa_url": "https://palmettostatearmory.com/psa-sabre-dagger-micro-9mm-pistol-tin-barrel-w-mag-extensions-black.html",
+      "price": 599.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm02-51655197977_92625_1.jpg",
+      "image_file_name": "psa-sabre-dagger-micro-9mm-pistol-tin-barrel-w-mag-extensions-black.jpg",
+      "size_name": "micro",
+      "width": 1.1,
+      "length": 6.5,
+      "height": 4.9,
+      "barrel_length": 3.41,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "black",
+      "optic_compatibility": "none",
+      "has_cover_plate": false,
+      "mag_bag_bonus": false,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Sabre Dagger Micro 9mm Pistol, TiN Barrel, w/ Mag Extensions, M81 Desert Camo",
+      "psa_url": "https://palmettostatearmory.com/psa-sabre-dagger-micro-9mm-pistol-tin-barrel-w-mag-extensions-m81-desert-camo.html",
+      "price": 629.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm02-51655197979_92625_1.jpg",
+      "image_file_name": "psa-sabre-dagger-micro-9mm-pistol-tin-barrel-w-mag-extensions-m81-desert-camo.jpg",
+      "size_name": "micro",
+      "width": 1.1,
+      "length": 6.5,
+      "height": 4.9,
+      "barrel_length": 3.41,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "m81_desert_camo",
+      "optic_compatibility": "none",
+      "has_cover_plate": false,
+      "mag_bag_bonus": false,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Sabre Dagger Micro 9mm Pistol, w/ Mag Extensions, Black",
+      "psa_url": "https://palmettostatearmory.com/psa-sabre-dagger-micro-9mm-pistol-w-mag-extensions-black.html",
+      "price": 599.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm02-51655197960_92625_1.jpg",
+      "image_file_name": "psa-sabre-dagger-micro-9mm-pistol-w-mag-extensions-black.jpg",
+      "size_name": "micro",
+      "width": 1.1,
+      "length": 6.5,
+      "height": 4.9,
+      "barrel_length": 3.41,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "black",
+      "optic_compatibility": "none",
+      "has_cover_plate": false,
+      "mag_bag_bonus": false,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Sabre Dagger Micro 9mm Pistol, w/ Mag Extensions, M81 Desert Camo",
+      "psa_url": "https://palmettostatearmory.com/psa-sabre-dagger-micro-9mm-pistol-w-mag-extensions-m81-desert-camo.html",
+      "price": 629.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm02-51655197976_92625_1.jpg",
+      "image_file_name": "psa-sabre-dagger-micro-9mm-pistol-w-mag-extensions-m81-desert-camo.jpg",
+      "size_name": "micro",
+      "width": 1.1,
+      "length": 6.5,
+      "height": 4.9,
+      "barrel_length": 3.41,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "m81_desert_camo",
+      "optic_compatibility": "none",
+      "has_cover_plate": false,
+      "mag_bag_bonus": false,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Sabre Dagger Micro 9mm Pistol, w/ Mag Extensions, M81 Woodland Camo",
+      "psa_url": "https://palmettostatearmory.com/psa-sabre-dagger-micro-9mm-pistol-w-mag-extensions-m81-woodland-camo.html",
+      "price": 629.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm02-51655197975_92625_1.jpg",
+      "image_file_name": "psa-sabre-dagger-micro-9mm-pistol-w-mag-extensions-m81-woodland-camo.jpg",
+      "size_name": "micro",
+      "width": 1.1,
+      "length": 6.5,
+      "height": 4.9,
+      "barrel_length": 3.41,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "cerakote_slide_coating": true,
+      "frame_color": "m81_woodland_camo",
+      "optic_compatibility": "none",
+      "has_cover_plate": false,
+      "mag_bag_bonus": false,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    }
+  ],
+  "slide_colors": {
+    "sniper_green": "Sniper Green",
+    "flat_dark_earth": "Flat Dark Earth",
+    "black": "Black",
+    "dlc_coating": "DLC Coating",
+    "black_dlc": "Black DLC"
+  },
+  "frame_colors": {
+    "sniper_green": "Sniper Green",
+    "black": "Black",
+    "flat_dark_earth": "Flat Dark Earth",
+    "2_tone": "2-Tone",
+    "two_tone": "Two-Tone",
+    "m81_woodland_camo": "M81 Woodland Camo",
+    "m81_desert_camo": "M81 Desert Camo"
+  }
+};
+var daggers_data_default = data;
+
+// client/filter-daggers.ts
+var boolean_to_string = (value) => {
+  return value ? "true" : "false";
+};
+var matches_boolean_filter = (product_value, filter_value) => {
+  return filter_value === "any" || boolean_to_string(product_value) === filter_value;
+};
+var filter_daggers = (daggers, filters) => {
+  return daggers.filter((product) => {
+    return product.size_name === filters.size && matches_boolean_filter(product.longer_barrel, filters.extra_long_barrel) && matches_boolean_filter(product.threaded_barrel, filters.threaded_barrel) && matches_boolean_filter(product.night_sight, filters.night_sight) && (filters.optic_compatibility === "any" || product.optic_compatibility === filters.optic_compatibility) && matches_boolean_filter(product.has_cover_plate, filters.has_cover_plate);
+  });
+};
+
 // client/index.svelte
 Client[FILENAME] = "client/index.svelte";
-var root5 = add_locations(from_html(`<div class="container svelte-15huzto"><div class="intro"><h1>Buy a PSA Dagger</h1> <!></div> <div class="filters-and-results svelte-15huzto"><div class="filters svelte-15huzto"><h2>Filters</h2> <!> <!> <!> <!> <!></div> <div class="results svelte-15huzto"><h2>Results</h2></div></div></div>`), Client[FILENAME], [
+var root_1 = add_locations(from_html(`<a target="_blank" rel="noopener" class="product-card svelte-15huzto"><h3 class="svelte-15huzto"> </h3> <img class="svelte-15huzto"/> <div class="price svelte-15huzto"> </div></a>`), Client[FILENAME], [[104, 4, [[105, 5], [106, 5], [107, 5]]]]);
+var root5 = add_locations(from_html(`<div class="container svelte-15huzto"><div class="intro svelte-15huzto"><h1 style="color: var(--light_color)">Buy a PSA Dagger</h1> <div class="card"><!></div></div> <div class="filters-and-results svelte-15huzto"><div class="filters card svelte-15huzto"><h2 style="color: var(--dark_color); border-bottom: 1px solid var(--dark_color); padding-bottom: 8px;" class="svelte-15huzto">Filters</h2> <!> <!> <!> <!> <!></div> <div class="products-grid card svelte-15huzto"></div></div></div>`), Client[FILENAME], [
   [
-    29,
+    27,
     0,
     [
-      [30, 1, [[31, 2]]],
-      [37, 1, [[38, 2, [[39, 3]]], [102, 2, [[103, 3]]]]]
+      [28, 1, [[29, 2], [30, 2]]],
+      [37, 1, [[38, 2, [[39, 3]]], [102, 2]]]
     ]
   ]
 ]);
 function Client($$anchor, $$props) {
   check_target(new.target);
-  push($$props, false, Client);
-  const querystring_instance = mutable_source(create_querystring_store({
+  push($$props, true, Client);
+  const querystring_instance = create_querystring_store({
     size: "compact",
-    extra_long_barrel: "false",
-    threaded_barrel: "true",
-    night_sight: "true",
-    optic_compatibility: "none",
-    has_cover_plate: "true"
-  }));
+    extra_long_barrel: "any",
+    threaded_barrel: "any",
+    night_sight: "any",
+    optic_compatibility: "any",
+    has_cover_plate: "any"
+  });
+  const filtered_daggers = tag(user_derived(() => filter_daggers(daggers_data_default.daggers, querystring_instance.params_with_defaults).sort((a, b) => a.price - b.price)), "filtered_daggers");
   var $$exports = { ...legacy_api() };
-  init();
   var div = root5();
   var div_1 = child(div);
-  var node = sibling(child(div_1), 2);
+  var div_2 = sibling(child(div_1), 2);
+  var node = child(div_2);
+  validate_binding("bind:size={querystring_instance.params_with_defaults.size}", () => querystring_instance.params_with_defaults, () => "size", 32, 4);
   add_svelte_meta(
     () => PistolSizeSelector(node, {
       get get_altered_query_string() {
-        return get(querystring_instance).get_altered_query_string;
+        return querystring_instance.get_altered_query_string;
       },
       get size() {
-        return get(querystring_instance).params_with_defaults.size;
+        return querystring_instance.params_with_defaults.size;
       },
       set size($$value) {
-        mutate(querystring_instance, get(querystring_instance).params_with_defaults.size = $$value);
-      },
-      $$legacy: true
+        querystring_instance.params_with_defaults.size = $$value;
+      }
     }),
     "component",
     Client,
-    32,
-    2,
+    31,
+    3,
     { componentTag: "PistolSizeSelector" }
   );
+  reset(div_2);
   reset(div_1);
-  var div_2 = sibling(div_1, 2);
-  var div_3 = child(div_2);
-  var node_1 = sibling(child(div_3), 2);
+  var div_3 = sibling(div_1, 2);
+  var div_4 = child(div_3);
+  var node_1 = sibling(child(div_4), 2);
+  validate_binding("bind:selected_value={querystring_instance.params_with_defaults.extra_long_barrel}", () => querystring_instance.params_with_defaults, () => "extra_long_barrel", 50, 4);
   add_svelte_meta(
     () => FilterSelection(node_1, {
       title: "Longer Barrel",
@@ -5017,15 +7459,14 @@ function Client($$anchor, $$props) {
         { label: "No", value: "false" }
       ],
       get get_altered_query_string() {
-        return get(querystring_instance).get_altered_query_string;
+        return querystring_instance.get_altered_query_string;
       },
       get selected_value() {
-        return get(querystring_instance).params_with_defaults.extra_long_barrel;
+        return querystring_instance.params_with_defaults.extra_long_barrel;
       },
       set selected_value($$value) {
-        mutate(querystring_instance, get(querystring_instance).params_with_defaults.extra_long_barrel = $$value);
-      },
-      $$legacy: true
+        querystring_instance.params_with_defaults.extra_long_barrel = $$value;
+      }
     }),
     "component",
     Client,
@@ -5034,6 +7475,7 @@ function Client($$anchor, $$props) {
     { componentTag: "FilterSelection" }
   );
   var node_2 = sibling(node_1, 2);
+  validate_binding("bind:selected_value={querystring_instance.params_with_defaults.threaded_barrel}", () => querystring_instance.params_with_defaults, () => "threaded_barrel", 62, 4);
   add_svelte_meta(
     () => FilterSelection(node_2, {
       title: "Threaded Barrel",
@@ -5045,15 +7487,14 @@ function Client($$anchor, $$props) {
         { label: "No", value: "false" }
       ],
       get get_altered_query_string() {
-        return get(querystring_instance).get_altered_query_string;
+        return querystring_instance.get_altered_query_string;
       },
       get selected_value() {
-        return get(querystring_instance).params_with_defaults.threaded_barrel;
+        return querystring_instance.params_with_defaults.threaded_barrel;
       },
       set selected_value($$value) {
-        mutate(querystring_instance, get(querystring_instance).params_with_defaults.threaded_barrel = $$value);
-      },
-      $$legacy: true
+        querystring_instance.params_with_defaults.threaded_barrel = $$value;
+      }
     }),
     "component",
     Client,
@@ -5062,10 +7503,11 @@ function Client($$anchor, $$props) {
     { componentTag: "FilterSelection" }
   );
   var node_3 = sibling(node_2, 2);
+  validate_binding("bind:selected_value={querystring_instance.params_with_defaults.night_sight}", () => querystring_instance.params_with_defaults, () => "night_sight", 74, 4);
   add_svelte_meta(
     () => FilterSelection(node_3, {
       title: "Night Sight",
-      description: "They glow in the dark",
+      description: "The sights glow in the dark",
       group_name: "night_sight",
       options: [
         { label: "Either", value: "any" },
@@ -5073,15 +7515,14 @@ function Client($$anchor, $$props) {
         { label: "No", value: "false" }
       ],
       get get_altered_query_string() {
-        return get(querystring_instance).get_altered_query_string;
+        return querystring_instance.get_altered_query_string;
       },
       get selected_value() {
-        return get(querystring_instance).params_with_defaults.night_sight;
+        return querystring_instance.params_with_defaults.night_sight;
       },
       set selected_value($$value) {
-        mutate(querystring_instance, get(querystring_instance).params_with_defaults.night_sight = $$value);
-      },
-      $$legacy: true
+        querystring_instance.params_with_defaults.night_sight = $$value;
+      }
     }),
     "component",
     Client,
@@ -5090,6 +7531,7 @@ function Client($$anchor, $$props) {
     { componentTag: "FilterSelection" }
   );
   var node_4 = sibling(node_3, 2);
+  validate_binding("bind:selected_value={querystring_instance.params_with_defaults.optic_compatibility}", () => querystring_instance.params_with_defaults, () => "optic_compatibility", 87, 4);
   add_svelte_meta(
     () => FilterSelection(node_4, {
       title: "Optic Compatibility",
@@ -5102,15 +7544,14 @@ function Client($$anchor, $$props) {
         { label: "Shield RMSc", value: "shield_rmsc" }
       ],
       get get_altered_query_string() {
-        return get(querystring_instance).get_altered_query_string;
+        return querystring_instance.get_altered_query_string;
       },
       get selected_value() {
-        return get(querystring_instance).params_with_defaults.optic_compatibility;
+        return querystring_instance.params_with_defaults.optic_compatibility;
       },
       set selected_value($$value) {
-        mutate(querystring_instance, get(querystring_instance).params_with_defaults.optic_compatibility = $$value);
-      },
-      $$legacy: true
+        querystring_instance.params_with_defaults.optic_compatibility = $$value;
+      }
     }),
     "component",
     Client,
@@ -5119,6 +7560,7 @@ function Client($$anchor, $$props) {
     { componentTag: "FilterSelection" }
   );
   var node_5 = sibling(node_4, 2);
+  validate_binding("bind:selected_value={querystring_instance.params_with_defaults.has_cover_plate}", () => querystring_instance.params_with_defaults, () => "has_cover_plate", 99, 4);
   add_svelte_meta(
     () => FilterSelection(node_5, {
       title: "Has Cover Plate",
@@ -5130,15 +7572,14 @@ function Client($$anchor, $$props) {
         { label: "No", value: "false" }
       ],
       get get_altered_query_string() {
-        return get(querystring_instance).get_altered_query_string;
+        return querystring_instance.get_altered_query_string;
       },
       get selected_value() {
-        return get(querystring_instance).params_with_defaults.has_cover_plate;
+        return querystring_instance.params_with_defaults.has_cover_plate;
       },
       set selected_value($$value) {
-        mutate(querystring_instance, get(querystring_instance).params_with_defaults.has_cover_plate = $$value);
-      },
-      $$legacy: true
+        querystring_instance.params_with_defaults.has_cover_plate = $$value;
+      }
     }),
     "component",
     Client,
@@ -5146,9 +7587,38 @@ function Client($$anchor, $$props) {
     3,
     { componentTag: "FilterSelection" }
   );
+  reset(div_4);
+  var div_5 = sibling(div_4, 2);
+  add_svelte_meta(
+    () => each(div_5, 21, () => get(filtered_daggers), index, ($$anchor2, product) => {
+      var a_1 = root_1();
+      var h3 = child(a_1);
+      var text2 = child(h3, true);
+      reset(h3);
+      var img = sibling(h3, 2);
+      var div_6 = sibling(img, 2);
+      var text_1 = child(div_6);
+      reset(div_6);
+      reset(a_1);
+      template_effect(
+        ($0) => {
+          set_attribute2(a_1, "href", get(product).psa_url);
+          set_text(text2, get(product).psa_product_name);
+          set_attribute2(img, "src", `/images/${get(product).image_file_name ?? ""}`);
+          set_attribute2(img, "alt", get(product).psa_product_name);
+          set_text(text_1, `$${$0 ?? ""}`);
+        },
+        [() => get(product).price.toFixed(2)]
+      );
+      append($$anchor2, a_1);
+    }),
+    "each",
+    Client,
+    103,
+    3
+  );
+  reset(div_5);
   reset(div_3);
-  next(2);
-  reset(div_2);
   reset(div);
   append($$anchor, div);
   return pop($$exports);
