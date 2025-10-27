@@ -21,8 +21,6 @@ const matches_boolean_filter = (
 	product_value: boolean,
 	filter_value: TrueFalseOrAny
 ): boolean => {
-	console.log('Comparing', product_value, 'to', filter_value, 'and the match is', filter_value === 'any' ||boolean_to_string(product_value) === filter_value)
-
 	return filter_value === 'any' ||boolean_to_string(product_value) === filter_value
 }
 
