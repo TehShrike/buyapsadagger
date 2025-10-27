@@ -20,21 +20,23 @@
 	})
 
 	const filtered_daggers = $derived(
-		filter_daggers(daggers_data.daggers, querystring_instance.params_with_defaults)
+		filter_daggers(daggers_data.daggers, querystring_instance.params_with_defaults).sort((a, b) => a.price - b.price)
 	)
 </script>
 
 <div class="container">
 	<div class="intro">
-		<h1>Buy a PSA Dagger</h1>
-		<PistolSizeSelector
-			bind:size={querystring_instance.params_with_defaults.size}
-			get_altered_query_string={querystring_instance.get_altered_query_string}
-		/>
+		<h1 style="color: var(--light_color)">Buy a PSA Dagger</h1>
+		<div class="card">
+			<PistolSizeSelector
+				bind:size={querystring_instance.params_with_defaults.size}
+				get_altered_query_string={querystring_instance.get_altered_query_string}
+			/>
+		</div>
 	</div>
 	<div class="filters-and-results">
-		<div class="filters">
-			<h2>Filters</h2>
+		<div class="filters card">
+			<h2 style="color: var(--dark_color); border-bottom: 1px solid var(--dark_color); padding-bottom: 8px;">Filters</h2>
 			<FilterSelection
 				title="Longer Barrel"
 				description="Adds about half an inch to the barrel. Makes it easier to hit what you're aiming at."
@@ -61,7 +63,7 @@
 			/>
 			<FilterSelection
 				title="Night Sight"
-				description="They glow in the dark"
+				description="The sights glow in the dark"
 				group_name="night_sight"
 				options={[
 					{ label: 'Either', value: 'any' },
@@ -97,28 +99,23 @@
 				bind:selected_value={querystring_instance.params_with_defaults.has_cover_plate}
 			/>
 		</div>
-		<div class="results">
-			<h2>Results</h2>
-			<div class="products-grid">
-				{#each filtered_daggers as product}
-					<a href={product.psa_url} target="_blank" rel="noopener" class="product-card">
-						<h3>{product.psa_product_name}</h3>
-						<img src="/images/{product.image_file_name}" alt={product.psa_product_name} />
-						<div class="price">${product.price.toFixed(2)}</div>
-					</a>
-				{/each}
-			</div>
+		<div class="products-grid card">
+			{#each filtered_daggers as product}
+				<a href={product.psa_url} target="_blank" rel="noopener" class="product-card">
+					<h3>{product.psa_product_name}</h3>
+					<img src="/images/{product.image_file_name}" alt={product.psa_product_name} />
+					<div class="price">${product.price.toFixed(2)}</div>
+				</a>
+			{/each}
 		</div>
 	</div>
 </div>
 
 <style>
 	.container {
-		--spacing: 16px;
 		--base_image_width: 100px;
 
 		@media (max-width: 800px) {
-			--spacing: 8px;
 			--base_image_width: 80px;
 		}
 
@@ -129,8 +126,14 @@
 		width: 100%;
 		max-width: 1200px;
 		box-sizing: border-box;
-		gap: var(--spacing);
-		padding: var(--spacing);
+		gap: calc(var(--spacing) * 2);
+		padding: calc(var(--spacing) * 2);
+	}
+
+	.intro {
+		display: flex;
+		flex-direction: column;
+		gap: calc(var(--spacing) * 2);
 	}
 
 	.filters-and-results {
@@ -138,7 +141,7 @@
 		flex-direction: row;
 		align-items: stretch;
 		justify-content: space-between;
-		gap: var(--spacing);
+		gap: calc(var(--spacing) * 1.5);
 	}
 
 	@media (max-width: 800px) {
@@ -156,10 +159,6 @@
 		flex-shrink: 0;
 	}
 
-	.results {
-		flex: 1;
-	}
-
 	.products-grid {
 		display: flex;
 		flex-direction: row;
@@ -172,12 +171,14 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
-		width: 200px;
+		flex-basis: 190px;
+		flex-grow: 1;
 		padding: var(--spacing);
 		border: 1px solid #ccc;
 		border-radius: 8px;
 		text-decoration: none;
 		color: inherit;
+		background-color: var(--white);
 	}
 
 	.product-card:hover {
@@ -204,5 +205,9 @@
 	.product-card .price {
 		font-weight: bold;
 		margin-top: auto;
+	}
+
+	h2 {
+		font-size: 20px;
 	}
 </style>

@@ -36,31 +36,33 @@
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
-		padding: 4px calc(var(--spacing) / 2);
-		border: 2px solid #ddd;
-		border-radius: 8px;
+		padding: 4px var(--spacing);
+		border: 1px solid var(--accent_color);
+		border-radius: 4px;
 		text-decoration: none;
 		color: inherit;
 		cursor: pointer;
 		white-space: nowrap;
+		background-color: var(--white);
+		font-size: 14px;
 	}
 
 	a[data-large='true'] {
-		padding: 12px var(--spacing);
+		padding: 12px calc(var(--spacing));
 		white-space: normal;
 	}
 
-	a:hover {
-		border-color: #999;
-	}
+	/* a:hover {
+		border-color: var(--dark_color);
+	} */
 
 	a:focus {
 		outline: 2px solid var(--accent_color);
-		outline-offset: 2px;
+		/* outline-offset: 2px; */
 	}
 
 	a[data-active='true'] {
-		border-color: var(--accent_color);
+		/* border-color: var(--accent_color); */
 		background-color: var(--selected_color);
 	}
 </style>

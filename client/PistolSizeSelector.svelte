@@ -23,7 +23,7 @@
 				/>
 			{/snippet}
 			{#snippet text()}
-				Micro
+				<strong>Micro</strong>
 				<small>It's pretty small</small>
 			{/snippet}
 		</ImageLinkLayout>
@@ -38,7 +38,7 @@
 				/>
 			{/snippet}
 			{#snippet text()}
-				Compact
+				<strong>Compact</strong>
 				<small>About half an inch longer, several credit cards wider</small>
 			{/snippet}
 		</ImageLinkLayout>
@@ -53,9 +53,9 @@
 				/>
 			{/snippet}
 			{#snippet text()}
-				Full Size
+				<strong>Full Size</strong>
 				<small>
-					Longer handle if you have big hands or want the extra 2 rounds per
+					Longer handle if you have big hands or want an extra 2 rounds per
 					magazine
 				</small>
 			{/snippet}

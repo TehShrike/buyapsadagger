@@ -1,5 +1,29 @@
 :root {
-	--background_color: #f0f4f1;
-	--selected_color: #f0f7ed;
-	--accent_color: #2d5016;
+	--light_color: #f5f8f5;
+	--dark_color: #1a2e1a;
+	--background_color: var(--dark_color);
+	--selected_color: #e8f4e0;
+	--accent_color: #5a8a3a;
+	--white: #ffffff;
+
+	--spacing: 16px;
+
+	@media (max-width: 800px) {
+		--spacing: 8px;
+	}
+}
+
+* {
+	margin: 0;
+}
+
+body {
+	background-color: var(--background_color);
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;;
+}
+
+.card {
+	background-color: var(--light_color);
+	border-radius: 8px;
+	padding: 16px;
 }
