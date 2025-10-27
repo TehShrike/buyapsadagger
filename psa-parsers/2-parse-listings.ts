@@ -11,6 +11,12 @@ interface ProductInfo {
 	title: string
 }
 
+const titles_to_filter_out = [
+	'Complete Polymer Frame',
+	'Complete Slide Assembly',
+	'Complete Frame',
+]
+
 const parse_listing_page = (html_content: string): ProductInfo[] => {
 	const $ = load(html_content)
 	const products: ProductInfo[] = []
@@ -20,7 +26,7 @@ const parse_listing_page = (html_content: string): ProductInfo[] => {
 		const url = $link.attr('href')
 		const title = $link.text().trim()
 
-		if (url && title) {
+		if (url && title && !titles_to_filter_out.some(filter_title => title.includes(filter_title))) {
 			products.push({ url, title })
 		}
 	})
