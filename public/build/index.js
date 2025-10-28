@@ -4804,6 +4804,81 @@ function FilterSelection($$anchor, $$props) {
   return pop($$exports);
 }
 
+// psa-parsers/assert.ts
+function assert(condition, message) {
+  if (!condition) {
+    throw new Error(message || "Assertion failed");
+  }
+}
+var assert_default = assert;
+
+// client/generate_title.ts
+var get_size = (product) => {
+  const { size_name } = product;
+  if (size_name === "micro") {
+    return "Micro";
+  }
+  if (size_name === "compact") {
+    return "Compact";
+  }
+  if (size_name === "full_size_s") {
+    return "Full Size";
+  }
+  throw new Error(`Unknown size: ${size_name}`);
+};
+var get_slide_color_name = (color_key, metadata) => {
+  const color_name = metadata.slide_colors[color_key];
+  assert_default(color_name);
+  return color_name;
+};
+var get_frame_color_name = (color_key, metadata) => {
+  const color_name = metadata.frame_colors[color_key];
+  assert_default(color_name);
+  return color_name;
+};
+var get_color = (product, metadata) => {
+  const { slide_color, frame_color } = product;
+  if (!slide_color && !frame_color) {
+    return null;
+  }
+  if (slide_color === frame_color) {
+    return get_slide_color_name(slide_color, metadata);
+  }
+  if (slide_color && frame_color) {
+    return `${get_slide_color_name(slide_color, metadata)} + ${get_frame_color_name(frame_color, metadata)}`;
+  }
+  return slide_color ? get_slide_color_name(slide_color, metadata) : get_frame_color_name(frame_color, metadata);
+};
+var join_non_null_values = (values) => {
+  return values.filter(Boolean).join(", ");
+};
+var get_optic_compatibility = (product) => {
+  const { optic_compatibility } = product;
+  if (product.optic_compatibility === "none") {
+    return null;
+  }
+  if (optic_compatibility === "rmr") {
+    return "RMR compatible";
+  }
+  if (optic_compatibility === "shield_rmsc") {
+    return "Shield RMSc compatible";
+  }
+  throw new Error(`Unknown optic compatibility: ${optic_compatibility}`);
+};
+var generate_title = (product, metadata, current_filters) => {
+  return join_non_null_values([
+    get_size(product),
+    get_color(product, metadata),
+    product.threaded_barrel && current_filters.threaded_barrel === "any" ? "Threaded" : null,
+    product.night_sight && current_filters.night_sight === "any" ? "Night Sights" : null,
+    // (product.compensated_slide && current_filters.compensated_slide === 'any') ? 'Compensated Slide' : null,
+    product.longer_barrel && current_filters.extra_long_barrel === "any" ? "(Longer Barrel)" : null,
+    get_optic_compatibility(product),
+    product.number_of_included_mags > 1 ? `${product.number_of_included_mags} Magazines` : null
+  ]);
+};
+var generate_title_default = generate_title;
+
 // client/querystring_store.svelte.ts
 var in_browser = typeof window !== "undefined" && window.location;
 var parse_query_string = () => {
@@ -4881,7 +4956,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": "sniper_green",
       "cerakote_slide_coating": true,
-      "frame_color": "sniper_green",
+      "frame_color": "black",
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -4905,7 +4980,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": "flat_dark_earth",
       "cerakote_slide_coating": true,
-      "frame_color": "black",
+      "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -5049,7 +5124,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": "black",
       "cerakote_slide_coating": true,
-      "frame_color": "black",
+      "frame_color": null,
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": false,
@@ -5068,7 +5143,7 @@ var data = {
       "height": 4.78,
       "barrel_length": 3.9,
       "longer_barrel": false,
-      "threaded_barrel": true,
+      "threaded_barrel": false,
       "night_sight": true,
       "compensated_slide": false,
       "slide_color": "sniper_green",
@@ -5097,7 +5172,7 @@ var data = {
       "compensated_slide": true,
       "slide_color": "black",
       "cerakote_slide_coating": true,
-      "frame_color": "black",
+      "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -5121,7 +5196,7 @@ var data = {
       "compensated_slide": true,
       "slide_color": "flat_dark_earth",
       "cerakote_slide_coating": true,
-      "frame_color": "flat_dark_earth",
+      "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -5145,7 +5220,7 @@ var data = {
       "compensated_slide": true,
       "slide_color": "sniper_green",
       "cerakote_slide_coating": true,
-      "frame_color": "sniper_green",
+      "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -5169,7 +5244,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": "black",
       "cerakote_slide_coating": true,
-      "frame_color": "black",
+      "frame_color": null,
       "optic_compatibility": "none",
       "has_cover_plate": false,
       "mag_bag_bonus": false,
@@ -5217,7 +5292,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": "black",
       "cerakote_slide_coating": true,
-      "frame_color": "black",
+      "frame_color": null,
       "optic_compatibility": "none",
       "has_cover_plate": false,
       "mag_bag_bonus": false,
@@ -5241,7 +5316,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": "flat_dark_earth",
       "cerakote_slide_coating": true,
-      "frame_color": "2_tone",
+      "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -5265,7 +5340,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": "sniper_green",
       "cerakote_slide_coating": true,
-      "frame_color": "2_tone",
+      "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -5287,9 +5362,9 @@ var data = {
       "threaded_barrel": false,
       "night_sight": false,
       "compensated_slide": false,
-      "slide_color": "dlc_coating",
+      "slide_color": null,
       "cerakote_slide_coating": false,
-      "frame_color": "black",
+      "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -5313,7 +5388,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": null,
       "cerakote_slide_coating": false,
-      "frame_color": "flat_dark_earth",
+      "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -5361,7 +5436,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": null,
       "cerakote_slide_coating": false,
-      "frame_color": "sniper_green",
+      "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -5380,12 +5455,12 @@ var data = {
       "height": 4.78,
       "barrel_length": 3.9,
       "longer_barrel": false,
-      "threaded_barrel": true,
+      "threaded_barrel": false,
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "flat_dark_earth",
       "cerakote_slide_coating": true,
-      "frame_color": "2_tone",
+      "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -5404,12 +5479,12 @@ var data = {
       "height": 4.78,
       "barrel_length": 3.9,
       "longer_barrel": false,
-      "threaded_barrel": true,
+      "threaded_barrel": false,
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "sniper_green",
       "cerakote_slide_coating": true,
-      "frame_color": "2_tone",
+      "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -5428,12 +5503,12 @@ var data = {
       "height": 4.78,
       "barrel_length": 3.9,
       "longer_barrel": false,
-      "threaded_barrel": true,
+      "threaded_barrel": false,
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
       "cerakote_slide_coating": true,
-      "frame_color": "black",
+      "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -5481,7 +5556,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": "sniper_green",
       "cerakote_slide_coating": false,
-      "frame_color": "2_tone",
+      "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -5505,7 +5580,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": "black",
       "cerakote_slide_coating": true,
-      "frame_color": "black",
+      "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -5529,7 +5604,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": "black",
       "cerakote_slide_coating": true,
-      "frame_color": "black",
+      "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -5553,7 +5628,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": "flat_dark_earth",
       "cerakote_slide_coating": true,
-      "frame_color": "2_tone",
+      "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -5577,7 +5652,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": "sniper_green",
       "cerakote_slide_coating": false,
-      "frame_color": "2_tone",
+      "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -5601,7 +5676,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": "black",
       "cerakote_slide_coating": true,
-      "frame_color": "black",
+      "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -5625,7 +5700,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": "flat_dark_earth",
       "cerakote_slide_coating": true,
-      "frame_color": "flat_dark_earth",
+      "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -5644,12 +5719,12 @@ var data = {
       "height": 4.78,
       "barrel_length": 3.9,
       "longer_barrel": false,
-      "threaded_barrel": true,
+      "threaded_barrel": false,
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
       "cerakote_slide_coating": true,
-      "frame_color": "black",
+      "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": false,
@@ -5668,12 +5743,12 @@ var data = {
       "height": 4.78,
       "barrel_length": 3.9,
       "longer_barrel": false,
-      "threaded_barrel": true,
+      "threaded_barrel": false,
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "flat_dark_earth",
       "cerakote_slide_coating": false,
-      "frame_color": "flat_dark_earth",
+      "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": false,
@@ -5692,12 +5767,12 @@ var data = {
       "height": 4.78,
       "barrel_length": 3.9,
       "longer_barrel": false,
-      "threaded_barrel": true,
+      "threaded_barrel": false,
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
       "cerakote_slide_coating": true,
-      "frame_color": "black",
+      "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": false,
@@ -5721,7 +5796,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": "black",
       "cerakote_slide_coating": true,
-      "frame_color": "black",
+      "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": false,
@@ -5767,7 +5842,7 @@ var data = {
       "threaded_barrel": true,
       "night_sight": false,
       "compensated_slide": false,
-      "slide_color": "black_dlc",
+      "slide_color": "black",
       "cerakote_slide_coating": false,
       "frame_color": "black",
       "optic_compatibility": "rmr",
@@ -5793,7 +5868,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": "flat_dark_earth",
       "cerakote_slide_coating": true,
-      "frame_color": "flat_dark_earth",
+      "frame_color": "black",
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -5817,7 +5892,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": "sniper_green",
       "cerakote_slide_coating": true,
-      "frame_color": "2_tone",
+      "frame_color": "black",
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -5836,7 +5911,7 @@ var data = {
       "height": 4.78,
       "barrel_length": 3.9,
       "longer_barrel": false,
-      "threaded_barrel": true,
+      "threaded_barrel": false,
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "flat_dark_earth",
@@ -5860,7 +5935,7 @@ var data = {
       "height": 4.78,
       "barrel_length": 3.9,
       "longer_barrel": false,
-      "threaded_barrel": true,
+      "threaded_barrel": false,
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "sniper_green",
@@ -5889,7 +5964,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": "black",
       "cerakote_slide_coating": true,
-      "frame_color": "black",
+      "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -5913,7 +5988,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": "flat_dark_earth",
       "cerakote_slide_coating": true,
-      "frame_color": "flat_dark_earth",
+      "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -5985,7 +6060,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": "black",
       "cerakote_slide_coating": true,
-      "frame_color": "black",
+      "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -6057,7 +6132,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": null,
       "cerakote_slide_coating": false,
-      "frame_color": "black",
+      "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -6076,12 +6151,12 @@ var data = {
       "height": 4.78,
       "barrel_length": 4,
       "longer_barrel": false,
-      "threaded_barrel": true,
+      "threaded_barrel": false,
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "flat_dark_earth",
       "cerakote_slide_coating": true,
-      "frame_color": "flat_dark_earth",
+      "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -6105,7 +6180,7 @@ var data = {
       "compensated_slide": true,
       "slide_color": "black",
       "cerakote_slide_coating": true,
-      "frame_color": "black",
+      "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -6129,7 +6204,7 @@ var data = {
       "compensated_slide": true,
       "slide_color": "flat_dark_earth",
       "cerakote_slide_coating": true,
-      "frame_color": "flat_dark_earth",
+      "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -6153,7 +6228,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": "sniper_green",
       "cerakote_slide_coating": true,
-      "frame_color": "two_tone",
+      "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -6177,7 +6252,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": null,
       "cerakote_slide_coating": false,
-      "frame_color": "flat_dark_earth",
+      "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -6196,7 +6271,7 @@ var data = {
       "height": 5.38,
       "barrel_length": 3.9,
       "longer_barrel": false,
-      "threaded_barrel": true,
+      "threaded_barrel": false,
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "sniper_green",
@@ -6225,7 +6300,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": null,
       "cerakote_slide_coating": false,
-      "frame_color": "sniper_green",
+      "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -6271,7 +6346,7 @@ var data = {
       "threaded_barrel": true,
       "night_sight": false,
       "compensated_slide": false,
-      "slide_color": "black_dlc",
+      "slide_color": "black",
       "cerakote_slide_coating": false,
       "frame_color": "black",
       "optic_compatibility": "rmr",
@@ -6295,7 +6370,7 @@ var data = {
       "threaded_barrel": true,
       "night_sight": false,
       "compensated_slide": false,
-      "slide_color": "black_dlc",
+      "slide_color": "black",
       "cerakote_slide_coating": false,
       "frame_color": "black",
       "optic_compatibility": "rmr",
@@ -6316,12 +6391,12 @@ var data = {
       "height": 0,
       "barrel_length": 0,
       "longer_barrel": false,
-      "threaded_barrel": true,
+      "threaded_barrel": false,
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": null,
       "cerakote_slide_coating": false,
-      "frame_color": "black",
+      "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -6417,7 +6492,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": "black",
       "cerakote_slide_coating": true,
-      "frame_color": "black",
+      "frame_color": null,
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -6441,7 +6516,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": "black",
       "cerakote_slide_coating": true,
-      "frame_color": "black",
+      "frame_color": null,
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": false,
@@ -6465,7 +6540,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": "flat_dark_earth",
       "cerakote_slide_coating": true,
-      "frame_color": "flat_dark_earth",
+      "frame_color": null,
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": false,
@@ -6513,7 +6588,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": "sniper_green",
       "cerakote_slide_coating": true,
-      "frame_color": "sniper_green",
+      "frame_color": null,
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": false,
@@ -6561,7 +6636,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": "black",
       "cerakote_slide_coating": true,
-      "frame_color": "black",
+      "frame_color": null,
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -6585,7 +6660,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": "flat_dark_earth",
       "cerakote_slide_coating": true,
-      "frame_color": "flat_dark_earth",
+      "frame_color": null,
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -6609,7 +6684,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": "sniper_green",
       "cerakote_slide_coating": true,
-      "frame_color": "sniper_green",
+      "frame_color": null,
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -6633,7 +6708,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": "flat_dark_earth",
       "cerakote_slide_coating": true,
-      "frame_color": "flat_dark_earth",
+      "frame_color": null,
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": false,
@@ -6657,7 +6732,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": "black",
       "cerakote_slide_coating": true,
-      "frame_color": "black",
+      "frame_color": null,
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": false,
@@ -6729,7 +6804,7 @@ var data = {
       "compensated_slide": true,
       "slide_color": "sniper_green",
       "cerakote_slide_coating": false,
-      "frame_color": "sniper_green",
+      "frame_color": null,
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": false,
@@ -6753,7 +6828,7 @@ var data = {
       "compensated_slide": true,
       "slide_color": "flat_dark_earth",
       "cerakote_slide_coating": false,
-      "frame_color": "flat_dark_earth",
+      "frame_color": null,
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -6777,7 +6852,7 @@ var data = {
       "compensated_slide": true,
       "slide_color": "sniper_green",
       "cerakote_slide_coating": false,
-      "frame_color": "sniper_green",
+      "frame_color": null,
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -6801,7 +6876,7 @@ var data = {
       "compensated_slide": true,
       "slide_color": "flat_dark_earth",
       "cerakote_slide_coating": false,
-      "frame_color": "flat_dark_earth",
+      "frame_color": null,
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": false,
@@ -6820,12 +6895,12 @@ var data = {
       "height": 4.7,
       "barrel_length": 4.15,
       "longer_barrel": true,
-      "threaded_barrel": true,
+      "threaded_barrel": false,
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "sniper_green",
       "cerakote_slide_coating": true,
-      "frame_color": "sniper_green",
+      "frame_color": null,
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": false,
@@ -6844,7 +6919,7 @@ var data = {
       "height": 4.7,
       "barrel_length": 4.15,
       "longer_barrel": true,
-      "threaded_barrel": true,
+      "threaded_barrel": false,
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "sniper_green",
@@ -6868,12 +6943,12 @@ var data = {
       "height": 4.7,
       "barrel_length": 4.15,
       "longer_barrel": true,
-      "threaded_barrel": true,
+      "threaded_barrel": false,
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "flat_dark_earth",
       "cerakote_slide_coating": true,
-      "frame_color": "flat_dark_earth",
+      "frame_color": null,
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": false,
@@ -6892,12 +6967,12 @@ var data = {
       "height": 4.7,
       "barrel_length": 4.15,
       "longer_barrel": true,
-      "threaded_barrel": true,
+      "threaded_barrel": false,
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
       "cerakote_slide_coating": true,
-      "frame_color": "black",
+      "frame_color": null,
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -6916,12 +6991,12 @@ var data = {
       "height": 4.7,
       "barrel_length": 4.15,
       "longer_barrel": true,
-      "threaded_barrel": true,
+      "threaded_barrel": false,
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "flat_dark_earth",
       "cerakote_slide_coating": true,
-      "frame_color": "two_tone",
+      "frame_color": null,
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -6945,7 +7020,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": null,
       "cerakote_slide_coating": false,
-      "frame_color": "flat_dark_earth",
+      "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
       "mag_bag_bonus": true,
@@ -7257,7 +7332,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": "black",
       "cerakote_slide_coating": true,
-      "frame_color": "black",
+      "frame_color": null,
       "optic_compatibility": "none",
       "has_cover_plate": false,
       "mag_bag_bonus": false,
@@ -7281,7 +7356,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": "black",
       "cerakote_slide_coating": true,
-      "frame_color": "m81_desert_camo",
+      "frame_color": "m81_desert",
       "optic_compatibility": "none",
       "has_cover_plate": false,
       "mag_bag_bonus": false,
@@ -7305,7 +7380,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": "black",
       "cerakote_slide_coating": true,
-      "frame_color": "black",
+      "frame_color": null,
       "optic_compatibility": "none",
       "has_cover_plate": false,
       "mag_bag_bonus": false,
@@ -7329,7 +7404,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": "black",
       "cerakote_slide_coating": true,
-      "frame_color": "m81_desert_camo",
+      "frame_color": "m81_desert",
       "optic_compatibility": "none",
       "has_cover_plate": false,
       "mag_bag_bonus": false,
@@ -7353,7 +7428,7 @@ var data = {
       "compensated_slide": false,
       "slide_color": "black",
       "cerakote_slide_coating": true,
-      "frame_color": "m81_woodland_camo",
+      "frame_color": "m81_woodland",
       "optic_compatibility": "none",
       "has_cover_plate": false,
       "mag_bag_bonus": false,
@@ -7364,18 +7439,16 @@ var data = {
   "slide_colors": {
     "sniper_green": "Sniper Green",
     "flat_dark_earth": "Flat Dark Earth",
-    "black": "Black",
-    "dlc_coating": "DLC Coating",
-    "black_dlc": "Black DLC"
+    "black": "Black"
   },
   "frame_colors": {
-    "sniper_green": "Sniper Green",
     "black": "Black",
+    "sniper_green": "Sniper Green",
     "flat_dark_earth": "Flat Dark Earth",
-    "2_tone": "2-Tone",
-    "two_tone": "Two-Tone",
     "m81_woodland_camo": "M81 Woodland Camo",
-    "m81_desert_camo": "M81 Desert Camo"
+    "m81_desert_camo": "M81 Desert Camo",
+    "m81_desert": "M81 Desert",
+    "m81_woodland": "M81 Woodland"
   }
 };
 var daggers_data_default = data;
@@ -7395,14 +7468,14 @@ var filter_daggers = (daggers, filters) => {
 
 // client/index.svelte
 Client[FILENAME] = "client/index.svelte";
-var root_1 = add_locations(from_html(`<a target="_blank" rel="noopener" class="product-card svelte-15huzto"><h3 class="svelte-15huzto"> </h3> <img class="svelte-15huzto"/> <div class="price svelte-15huzto"> </div></a>`), Client[FILENAME], [[104, 4, [[105, 5], [106, 5], [107, 5]]]]);
+var root_1 = add_locations(from_html(`<a target="_blank" rel="noopener" class="product-card svelte-15huzto"><h3 class="svelte-15huzto"> </h3> <img class="svelte-15huzto"/> <div class="price svelte-15huzto"> </div></a>`), Client[FILENAME], [[101, 4, [[102, 5], [103, 5], [104, 5]]]]);
 var root5 = add_locations(from_html(`<div class="container svelte-15huzto"><div class="intro svelte-15huzto"><h1 style="color: var(--light_color)">Buy a PSA Dagger</h1> <div class="card"><!></div></div> <div class="filters-and-results svelte-15huzto"><div class="filters card svelte-15huzto"><h2 style="color: var(--dark_color); border-bottom: 1px solid var(--dark_color); padding-bottom: 8px;" class="svelte-15huzto">Filters</h2> <!> <!> <!> <!> <!></div> <div class="products-grid card svelte-15huzto"></div></div></div>`), Client[FILENAME], [
   [
-    27,
+    24,
     0,
     [
-      [28, 1, [[29, 2], [30, 2]]],
-      [37, 1, [[38, 2, [[39, 3]]], [102, 2]]]
+      [25, 1, [[26, 2], [27, 2]]],
+      [34, 1, [[35, 2, [[36, 3]]], [99, 2]]]
     ]
   ]
 ]);
@@ -7423,7 +7496,7 @@ function Client($$anchor, $$props) {
   var div_1 = child(div);
   var div_2 = sibling(child(div_1), 2);
   var node = child(div_2);
-  validate_binding("bind:size={querystring_instance.params_with_defaults.size}", () => querystring_instance.params_with_defaults, () => "size", 32, 4);
+  validate_binding("bind:size={querystring_instance.params_with_defaults.size}", () => querystring_instance.params_with_defaults, () => "size", 29, 4);
   add_svelte_meta(
     () => PistolSizeSelector(node, {
       get get_altered_query_string() {
@@ -7438,7 +7511,7 @@ function Client($$anchor, $$props) {
     }),
     "component",
     Client,
-    31,
+    28,
     3,
     { componentTag: "PistolSizeSelector" }
   );
@@ -7447,7 +7520,7 @@ function Client($$anchor, $$props) {
   var div_3 = sibling(div_1, 2);
   var div_4 = child(div_3);
   var node_1 = sibling(child(div_4), 2);
-  validate_binding("bind:selected_value={querystring_instance.params_with_defaults.extra_long_barrel}", () => querystring_instance.params_with_defaults, () => "extra_long_barrel", 50, 4);
+  validate_binding("bind:selected_value={querystring_instance.params_with_defaults.extra_long_barrel}", () => querystring_instance.params_with_defaults, () => "extra_long_barrel", 47, 4);
   add_svelte_meta(
     () => FilterSelection(node_1, {
       title: "Longer Barrel",
@@ -7470,12 +7543,12 @@ function Client($$anchor, $$props) {
     }),
     "component",
     Client,
-    40,
+    37,
     3,
     { componentTag: "FilterSelection" }
   );
   var node_2 = sibling(node_1, 2);
-  validate_binding("bind:selected_value={querystring_instance.params_with_defaults.threaded_barrel}", () => querystring_instance.params_with_defaults, () => "threaded_barrel", 62, 4);
+  validate_binding("bind:selected_value={querystring_instance.params_with_defaults.threaded_barrel}", () => querystring_instance.params_with_defaults, () => "threaded_barrel", 59, 4);
   add_svelte_meta(
     () => FilterSelection(node_2, {
       title: "Threaded Barrel",
@@ -7498,12 +7571,12 @@ function Client($$anchor, $$props) {
     }),
     "component",
     Client,
-    52,
+    49,
     3,
     { componentTag: "FilterSelection" }
   );
   var node_3 = sibling(node_2, 2);
-  validate_binding("bind:selected_value={querystring_instance.params_with_defaults.night_sight}", () => querystring_instance.params_with_defaults, () => "night_sight", 74, 4);
+  validate_binding("bind:selected_value={querystring_instance.params_with_defaults.night_sight}", () => querystring_instance.params_with_defaults, () => "night_sight", 71, 4);
   add_svelte_meta(
     () => FilterSelection(node_3, {
       title: "Night Sight",
@@ -7526,12 +7599,12 @@ function Client($$anchor, $$props) {
     }),
     "component",
     Client,
-    64,
+    61,
     3,
     { componentTag: "FilterSelection" }
   );
   var node_4 = sibling(node_3, 2);
-  validate_binding("bind:selected_value={querystring_instance.params_with_defaults.optic_compatibility}", () => querystring_instance.params_with_defaults, () => "optic_compatibility", 87, 4);
+  validate_binding("bind:selected_value={querystring_instance.params_with_defaults.optic_compatibility}", () => querystring_instance.params_with_defaults, () => "optic_compatibility", 84, 4);
   add_svelte_meta(
     () => FilterSelection(node_4, {
       title: "Optic Compatibility",
@@ -7555,12 +7628,12 @@ function Client($$anchor, $$props) {
     }),
     "component",
     Client,
-    76,
+    73,
     3,
     { componentTag: "FilterSelection" }
   );
   var node_5 = sibling(node_4, 2);
-  validate_binding("bind:selected_value={querystring_instance.params_with_defaults.has_cover_plate}", () => querystring_instance.params_with_defaults, () => "has_cover_plate", 99, 4);
+  validate_binding("bind:selected_value={querystring_instance.params_with_defaults.has_cover_plate}", () => querystring_instance.params_with_defaults, () => "has_cover_plate", 96, 4);
   add_svelte_meta(
     () => FilterSelection(node_5, {
       title: "Has Cover Plate",
@@ -7583,7 +7656,7 @@ function Client($$anchor, $$props) {
     }),
     "component",
     Client,
-    89,
+    86,
     3,
     { componentTag: "FilterSelection" }
   );
@@ -7601,20 +7674,23 @@ function Client($$anchor, $$props) {
       reset(div_6);
       reset(a_1);
       template_effect(
-        ($0) => {
+        ($0, $1) => {
           set_attribute2(a_1, "href", get(product).psa_url);
-          set_text(text2, get(product).psa_product_name);
+          set_text(text2, $0);
           set_attribute2(img, "src", `/images/${get(product).image_file_name ?? ""}`);
           set_attribute2(img, "alt", get(product).psa_product_name);
-          set_text(text_1, `$${$0 ?? ""}`);
+          set_text(text_1, `$${$1 ?? ""}`);
         },
-        [() => get(product).price.toFixed(2)]
+        [
+          () => generate_title_default(get(product), daggers_data_default, querystring_instance.params_with_defaults),
+          () => get(product).price.toFixed(2)
+        ]
       );
       append($$anchor2, a_1);
     }),
     "each",
     Client,
-    103,
+    100,
     3
   );
   reset(div_5);
