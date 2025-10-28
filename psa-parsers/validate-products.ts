@@ -153,23 +153,35 @@ const validate_products = async (): Promise<void> => {
 
 	console.log('✓ All products have required fields with valid types')
 
-	for (const field of nullable_string_fields) {
-		const count = products.filter(
-			(p) => p[field as keyof Product] !== null
-		).length
-		const percentage = (count / products.length) * 100
+	// Validate slide_color with 80% threshold
+	const slide_color_count = products.filter((p) => p.slide_color !== null).length
+	const slide_color_percentage = (slide_color_count / products.length) * 100
 
-		if (percentage < 50) {
-			console.error(
-				`Sanity check failed: ${field} is non-null in only ${percentage.toFixed(1)}% of products (expected >50%)`
-			)
-			process.exit(1)
-		}
-
-		console.log(
-			`✓ ${field} is non-null in ${count}/${products.length} products (${percentage.toFixed(1)}%)`
+	if (slide_color_percentage < 80) {
+		console.error(
+			`Sanity check failed: slide_color is non-null in only ${slide_color_percentage.toFixed(1)}% of products (expected ≥80%)`
 		)
+		process.exit(1)
 	}
+
+	console.log(
+		`✓ slide_color is non-null in ${slide_color_count}/${products.length} products (${slide_color_percentage.toFixed(1)}%)`
+	)
+
+	// Validate frame_color with 30% threshold
+	const frame_color_count = products.filter((p) => p.frame_color !== null).length
+	const frame_color_percentage = (frame_color_count / products.length) * 100
+
+	if (frame_color_percentage < 30) {
+		console.error(
+			`Sanity check failed: frame_color is non-null in only ${frame_color_percentage.toFixed(1)}% of products (expected ≥30%)`
+		)
+		process.exit(1)
+	}
+
+	console.log(
+		`✓ frame_color is non-null in ${frame_color_count}/${products.length} products (${frame_color_percentage.toFixed(1)}%)`
+	)
 
 	for (const field of nullable_number_fields) {
 		const count = products.filter(

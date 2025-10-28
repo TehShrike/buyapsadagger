@@ -28,3 +28,5 @@ export type DaggersData = {
 	slide_colors: Record<string, string>
 	frame_colors: Record<string, string>
 }
+
+export type DaggersMetadata = Pick<DaggersData, Exclude<keyof DaggersData, 'daggers'>>

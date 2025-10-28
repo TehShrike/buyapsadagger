@@ -58,7 +58,7 @@ const apply_manual_fixes = (text: string): string => {
 		.replace(/^FDE$/i, 'Flat Dark Earth')
 }
 
-const strip_cerakote_from_finish = (slide_finish: string): string => {
+const strip_cerakote_or_dlc_from_finish = (slide_finish: string): string => {
 	if (!slide_finish) return slide_finish
 
 	// Strip out "Cerakote" from the human-readable string
@@ -73,6 +73,7 @@ const strip_cerakote_from_finish = (slide_finish: string): string => {
 		.replace(/\s+Cerakote$/i, '')
 		// Handle "[Rest of Color] Cerakote Coating" pattern
 		.replace(/\s+Cerakote\s+Coating$/i, '')
+		.replace(/\s+DLC$/i, '')
 		.trim()
 
 	// Apply manual fixes
@@ -83,45 +84,46 @@ const normalize_slide_finish = (slide_finish: string): string | null => {
 	if (!slide_finish) return null
 
 	// Simple normalization to snake_case (no Cerakote stripping here)
-	return slide_finish
+	const normalized = slide_finish
 		.toLowerCase()
 		.replace(/[^a-z0-9\s]/g, ' ') // Replace non-alphanumeric with spaces first
 		.replace(/\s+/g, '_') // Then replace spaces with underscores
 		.replace(/_{2,}/g, '_') // Remove duplicate underscores
 		.replace(/^_|_$/g, '') // Remove leading/trailing underscores
-}
 
-const extract_color_from_title = (title: string): string | null => {
-	const title_lower = title.toLowerCase()
-
-	// Look for specific color patterns first (most reliable)
-	const specific_colors = [
-		/\b(black|sniper green|flat dark earth|fde|two[- ]?tone|2[- ]?tone)\b/i,
-		/\b(m81 woodland camo|m81 desert camo)\b/i,
-	]
-
-	for (const pattern of specific_colors) {
-		const match = title.match(pattern)
-		if (match) {
-			return match[1]
-		}
+	// Filter out "DLC Coating"
+	if (normalized === 'dlc_coating') {
+		return null
 	}
 
-	// Extract color from end of title (most common pattern)
-	const end_match = title.match(/,\s*([^,]+)$/)
-	if (end_match) {
-		const potential_color = end_match[1].trim()
-		// Check if it looks like a color (not a technical spec)
-		if (
-			!potential_color.match(
-				/\d+rd|\d+|magazine|mag|case|bag|barrel|with\s+\d+|rear\s+sight/i
-			)
-		) {
-			// Further filter out technical terms
-			if (!potential_color.match(/threaded|non[- ]?threaded|pistol|slide/i)) {
-				return potential_color
-			}
+	return normalized
+}
+
+const extract_color_from_frame = (frame_string: string): string | null => {
+	if (!frame_string) return null
+
+	// Look for "Polymer, [color name]" pattern
+	const match = frame_string.match(/Polymer,\s*(.+)/i)
+	if (match) {
+		let color = match[1].trim()
+
+		// Ignore if the color is just "Laser Stippled"
+		if (color.toLowerCase() === 'laser stippled') {
+			return null
 		}
+
+		// Remove ", Laser Stippled" from the end
+		color = color.replace(/,\s*Laser Stippled$/i, '')
+
+		// Remove "Laser Stippled, " from the beginning
+		color = color.replace(/^Laser Stippled,?\s*/i, '')
+
+		// Remove "Cerakoted " from the beginning
+		color = color.replace(/^Cerakoted\s+/i, '')
+
+		color = color.trim()
+
+		return color
 	}
 
 	return null
@@ -190,13 +192,17 @@ const has_threaded_barrel = (
 	const barrel_length = product_details.barrel_length || ''
 	const barrel_profile = product_details.barrel_profile || ''
 	const thread_pitch = product_details.thread_pitch || ''
+	const barrel_lower = (product_details.barrel || '').toLowerCase()
 
-	return (
+	return !/non[- ]threaded/i.test(title_lower)
+		&& !/non[- ]threaded/i.test(barrel_lower)
+		&& (
 		title_lower.includes('threaded') ||
 		barrel_thread.includes('TPI') ||
 		thread_pitch.includes('TPI') ||
 		barrel_length.includes('TPI') ||
-		barrel_profile.includes('Threaded')
+		barrel_profile.includes('Threaded') ||
+		barrel_lower.includes('threaded')
 	)
 }
 
@@ -320,11 +326,11 @@ const process_product = (raw_product: RawProduct): Product => {
 
 	const size_name = determine_size_name(title, width, height)
 	const original_slide_finish = product_details.slide_finish || ''
-	const stripped_slide_finish = strip_cerakote_from_finish(
+	const stripped_slide_finish = strip_cerakote_or_dlc_from_finish(
 		original_slide_finish
 	)
 	const slide_color = normalize_slide_finish(stripped_slide_finish)
-	const original_frame_color = extract_color_from_title(title)
+	const original_frame_color = extract_color_from_frame(product_details.frame || '')
 	const fixed_frame_color = apply_manual_fixes(original_frame_color || '')
 	const frame_color = normalize_color(fixed_frame_color)
 	const optic_compatibility = determine_optic_compatibility(title, features)
@@ -383,7 +389,7 @@ const process_daggers_for_front_end = async (): Promise<void> => {
 	for (const product of raw_data) {
 		// Process slide colors
 		const original_finish = product.product_details.slide_finish || ''
-		const stripped_finish = strip_cerakote_from_finish(original_finish)
+		const stripped_finish = strip_cerakote_or_dlc_from_finish(original_finish)
 		const normalized_slide_color = normalize_slide_finish(stripped_finish)
 
 		if (
@@ -394,7 +400,7 @@ const process_daggers_for_front_end = async (): Promise<void> => {
 		}
 
 		// Process frame colors
-		const original_frame_color = extract_color_from_title(product.title)
+		const original_frame_color = extract_color_from_frame(product.product_details.frame || '')
 		const fixed_frame_color = apply_manual_fixes(original_frame_color || '')
 		const normalized_frame_color = normalize_color(fixed_frame_color)
 

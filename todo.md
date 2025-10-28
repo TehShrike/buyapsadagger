@@ -1,10 +1,18 @@
-- [ ] implement the dark theme
-- [ ] look into why the images didn't get shrunk to 400px last time?
+- [x] implement the dark theme
+- [ ] get "dlc" in frame coating metadata
+- [ ] find out why the filters card is wider than 250px
+- [ ] make the buttons in the filters card stretch to fill the width of the bar
 - [ ] make it so optic compatibility only shows up if you pick something other than "none"
+- [ ] make it so that optic compatibility options only show up if there are any pistols with that option in the current size
+- [ ] make it so the boolean filter options only show up if there are some options to choose from
 - [ ] make it so the "has cover plate" filter only applies if the pistol is optic capable
+- [ ] make it not look jank when there are no results (might not be necessary when the above is done)
+- [ ] make it so that the pistol result cards are all the same smaller width even when there are <3 results in a row
 - [x] sans serif fonts
-- [ ] generate custom title
+- [x] generate custom title
+- [ ] look into why the images didn't get shrunk to 400px last time?
 - [ ] sign up for PSA affiliate program
+
 
 ## To generalize for other sites
 

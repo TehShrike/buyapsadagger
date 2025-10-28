@@ -1,14 +1,11 @@
 <script lang="ts">
 	import PistolSizeSelector from './PistolSizeSelector.svelte'
 	import FilterSelection from './FilterSelection.svelte'
+	import generate_title from './generate_title.ts'
 	import { create_querystring_store } from './querystring_store.svelte.ts'
-	import type { OpticCompatibility, Size } from './option_types.d.ts'
 	import daggers_data from './daggers-data.ts'
-	import { filter_daggers } from './filter-daggers.ts'
+	import { filter_daggers, type FilterParams } from './filter-daggers.ts'
 
-
-	type TrueFalseOrAny = 'true' | 'false' | 'any'
-	type OpticCompatibilityOrAny = OpticCompatibility | 'any'
 
 	const querystring_instance = create_querystring_store<FilterParams>({
 		size: 'compact',
@@ -102,7 +99,7 @@
 		<div class="products-grid card">
 			{#each filtered_daggers as product}
 				<a href={product.psa_url} target="_blank" rel="noopener" class="product-card">
-					<h3>{product.psa_product_name}</h3>
+					<h3>{generate_title(product, daggers_data, querystring_instance.params_with_defaults)}</h3>
 					<img src="/images/{product.image_file_name}" alt={product.psa_product_name} />
 					<div class="price">${product.price.toFixed(2)}</div>
 				</a>
