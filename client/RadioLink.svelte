@@ -35,7 +35,7 @@
 	a {
 		display: flex;
 		flex-direction: column;
-		align-items: flex-start;
+		align-items: center;
 		padding: 4px var(--spacing);
 		border: 1px solid var(--accent_color);
 		border-radius: 4px;
@@ -48,6 +48,7 @@
 	}
 
 	a[data-large='true'] {
+		align-items: flex-start;
 		padding: 12px calc(var(--spacing));
 		white-space: normal;
 	}

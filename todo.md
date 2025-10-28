@@ -1,7 +1,6 @@
 - [x] implement the dark theme
 - [x] get "dlc" in frame coating metadata
-- [ ] find out why the filters card is wider than 250px
-- [ ] make the buttons in the filters card stretch to fill the width of the bar
+- [x] make the buttons in the filters card stretch to fill the width of the bar
 - [ ] make it so optic compatibility only shows up if you pick something other than "none"
 - [ ] make it so that optic compatibility options only show up if there are any pistols with that option in the current size
 - [ ] make it so the boolean filter options only show up if there are some options to choose from
@@ -12,6 +11,7 @@
 - [x] generate custom title
 - [ ] look into why the images didn't get shrunk to 400px last time?
 - [ ] sign up for PSA affiliate program
+- [ ] find out why the filters card is wider than 250px
 
 
 ## To generalize for other sites

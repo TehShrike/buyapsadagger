@@ -52,5 +52,10 @@
 	.filter-options {
 		display: flex;
 		gap: 6px;
+
+		& > :global(*) {
+			flex-basis: 0;
+			flex-grow: 1;
+		}
 	}
 </style>
