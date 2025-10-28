@@ -50,6 +50,7 @@ const validate_products = async (): Promise<void> => {
 		'image_file_name',
 		'size_name',
 		'optic_compatibility',
+		'slide_coating',
 	]
 	const required_number_fields = [
 		'price',
@@ -64,7 +65,6 @@ const validate_products = async (): Promise<void> => {
 		'threaded_barrel',
 		'night_sight',
 		'compensated_slide',
-		'cerakote_slide_coating',
 		'has_cover_plate',
 		'mag_bag_bonus',
 	]
@@ -141,6 +141,15 @@ const validate_products = async (): Promise<void> => {
 		if (product.price <= 0) {
 			console.error(
 				`Product has invalid price (must be greater than 0): ${product.psa_url || 'unknown'} (price: ${product.price})`
+			)
+			validation_failed = true
+		}
+
+		// Validate slide_coating has valid value
+		const valid_coating_values = ['none', 'dlc', 'cerakote']
+		if (!valid_coating_values.includes(product.slide_coating)) {
+			console.error(
+				`Product has invalid slide_coating (must be 'none', 'dlc', or 'cerakote'): ${product.psa_url || 'unknown'} (slide_coating: ${product.slide_coating})`
 			)
 			validation_failed = true
 		}

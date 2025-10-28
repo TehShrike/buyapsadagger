@@ -14,7 +14,7 @@ export type Product = {
 	night_sight: boolean
 	compensated_slide: boolean
 	slide_color: string | null
-	cerakote_slide_coating: boolean
+	slide_coating: 'none' | 'dlc' | 'cerakote'
 	frame_color: string | null
 	optic_compatibility: 'none' | 'rmr' | 'shield_rmsc'
 	has_cover_plate: boolean

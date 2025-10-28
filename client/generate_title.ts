@@ -78,6 +78,24 @@ export const get_optic_compatibility = (product: Product): string | null => {
 	throw new Error(`Unknown optic compatibility: ${optic_compatibility}`)
 }
 
+const get_slide_coating = (product: Product): string | null => {
+	const {slide_coating} = product
+
+	if (slide_coating === 'none') {
+		return null
+	}
+
+	if (slide_coating === 'dlc') {
+		return 'diamond-like slide coating'
+	}
+
+	if (slide_coating === 'cerakote') {
+		return 'ceramic slide coating'
+	}
+
+	throw new Error(`Unknown slide coating: ${slide_coating}`)
+}
+
 // Size (compact)
 // color (slide, frame)
 // threaded
@@ -87,12 +105,13 @@ export const get_optic_compatibility = (product: Product): string | null => {
 const generate_title = (product: Product, metadata: DaggersMetadata, current_filters: FilterParams): string => {
 	return join_non_null_values([
 		get_size(product),
-		get_color(product, metadata),
+		// get_color(product, metadata),
 		(product.threaded_barrel && current_filters.threaded_barrel === 'any') ? 'Threaded' : null,
 		(product.night_sight && current_filters.night_sight === 'any') ? 'Night Sights' : null,
 		// (product.compensated_slide && current_filters.compensated_slide === 'any') ? 'Compensated Slide' : null,
 		(product.longer_barrel && current_filters.extra_long_barrel === 'any') ? '(Longer Barrel)' : null,
 		get_optic_compatibility(product),
+		get_slide_coating(product),
 		(product.number_of_included_mags > 1) ? `${product.number_of_included_mags} Magazines` : null,
 	])
 }

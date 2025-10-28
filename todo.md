@@ -1,5 +1,5 @@
 - [x] implement the dark theme
-- [ ] get "dlc" in frame coating metadata
+- [x] get "dlc" in frame coating metadata
 - [ ] find out why the filters card is wider than 250px
 - [ ] make the buttons in the filters card stretch to fill the width of the bar
 - [ ] make it so optic compatibility only shows up if you pick something other than "none"

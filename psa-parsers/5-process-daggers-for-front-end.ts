@@ -309,9 +309,20 @@ const has_mag_bag_bonus = (
 	)
 }
 
-const has_cerakote_coating = (slide_finish: string | null): boolean => {
-	if (!slide_finish) return false
-	return slide_finish.toLowerCase().includes('cerakote')
+const determine_slide_coating = (slide_finish: string | null): 'none' | 'dlc' | 'cerakote' => {
+	if (!slide_finish) return 'none'
+
+	const finish_lower = slide_finish.toLowerCase()
+
+	if (finish_lower.includes('cerakote')) {
+		return 'cerakote'
+	}
+
+	if (finish_lower.includes('dlc')) {
+		return 'dlc'
+	}
+
+	return 'none'
 }
 
 const process_product = (raw_product: RawProduct): Product => {
@@ -353,7 +364,7 @@ const process_product = (raw_product: RawProduct): Product => {
 		night_sight: has_night_sights(product_details),
 		compensated_slide: has_compensated_slide(title, features),
 		slide_color,
-		cerakote_slide_coating: has_cerakote_coating(original_slide_finish),
+		slide_coating: determine_slide_coating(original_slide_finish),
 		frame_color,
 		optic_compatibility,
 		has_cover_plate: optic_compatibility !== 'none',
