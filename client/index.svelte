@@ -9,7 +9,7 @@
 
 	const querystring_instance = create_querystring_store<FilterParams>({
 		size: 'compact',
-		extra_long_barrel: 'any',
+		longer_barrel: 'any',
 		threaded_barrel: 'any',
 		night_sight: 'any',
 		optic_compatibility: 'any',
@@ -37,14 +37,14 @@
 			<FilterSelection
 				title="Longer Barrel"
 				description="Adds about half an inch to the barrel. Makes it easier to hit what you're aiming at."
-				group_name="extra_long_barrel"
+				group_name="longer_barrel"
 				options={[
 					{ label: 'Either', value: 'any' },
 					{ label: 'Yes', value: 'true' },
 					{ label: 'No', value: 'false' },
 				]}
 				get_altered_query_string={querystring_instance.get_altered_query_string}
-				bind:selected_value={querystring_instance.params_with_defaults.extra_long_barrel}
+				bind:selected_value={querystring_instance.params_with_defaults.longer_barrel}
 			/>
 			<FilterSelection
 				title="Threaded Barrel"

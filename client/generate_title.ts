@@ -1,23 +1,23 @@
 import type { DaggersMetadata, Product } from './product.d.ts'
 import type { FilterParams } from './filter-daggers.ts'
-import assert from '../psa-parsers/assert.ts'
+import assert from '#lib/assert.ts'
 
 export const get_size = (product: Product): string => {
-	const {size_name} = product
+	const {size} = product
 
-	if (size_name === 'micro') {
+	if (size === 'micro') {
 		return 'Micro'
 	}
 
-	if (size_name === 'compact') {
+	if (size === 'compact') {
 		return 'Compact'
 	}
 
-	if (size_name === 'full_size_s') {
+	if (size === 'full_size_s') {
 		return 'Full Size'
 	}
 
-	throw new Error(`Unknown size: ${size_name}`)
+	throw new Error(`Unknown size: ${size}`)
 }
 
 const get_slide_color_name = (color_key: keyof DaggersMetadata['slide_colors'], metadata: DaggersMetadata): string | null => {
@@ -109,7 +109,7 @@ const generate_title = (product: Product, metadata: DaggersMetadata, current_fil
 		(product.threaded_barrel && current_filters.threaded_barrel === 'any') ? 'Threaded' : null,
 		(product.night_sight && current_filters.night_sight === 'any') ? 'Night Sights' : null,
 		// (product.compensated_slide && current_filters.compensated_slide === 'any') ? 'Compensated Slide' : null,
-		(product.longer_barrel && current_filters.extra_long_barrel === 'any') ? '(Longer Barrel)' : null,
+		(product.longer_barrel && current_filters.longer_barrel === 'any') ? '(Longer Barrel)' : null,
 		current_filters.optic_compatibility === 'any' ? get_optic_compatibility(product) : null,
 		get_slide_coating(product),
 		(product.number_of_included_mags > 1) ? `${product.number_of_included_mags} Magazines` : null,

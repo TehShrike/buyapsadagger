@@ -2,7 +2,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { fileURLToPath } from 'url'
 import puppeteer from 'puppeteer'
-import assert from './assert.ts'
+import assert from '#lib/assert.ts'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)

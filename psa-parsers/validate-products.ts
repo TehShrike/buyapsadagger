@@ -48,7 +48,7 @@ const validate_products = async (): Promise<void> => {
 		'psa_url',
 		'original_product_image_url',
 		'image_file_name',
-		'size_name',
+		'size',
 		'optic_compatibility',
 		'slide_coating',
 	]

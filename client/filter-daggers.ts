@@ -6,7 +6,7 @@ type OpticCompatibilityOrAny = OpticCompatibility | 'any'
 
 export type FilterParams = {
 	size: Size
-	extra_long_barrel: TrueFalseOrAny
+	longer_barrel: TrueFalseOrAny
 	threaded_barrel: TrueFalseOrAny
 	night_sight: TrueFalseOrAny
 	optic_compatibility: OpticCompatibilityOrAny
@@ -29,8 +29,8 @@ export const filter_daggers = (
 	filters: FilterParams
 ): Product[] => {
 	return daggers.filter((product) => {
-		return product.size_name === filters.size
-			&& matches_boolean_filter(product.longer_barrel, filters.extra_long_barrel)
+		return product.size === filters.size
+			&& matches_boolean_filter(product.longer_barrel, filters.longer_barrel)
 			&& matches_boolean_filter(product.threaded_barrel, filters.threaded_barrel)
 			&& matches_boolean_filter(product.night_sight, filters.night_sight)
 			&& (filters.optic_compatibility === 'any' || product.optic_compatibility === filters.optic_compatibility)

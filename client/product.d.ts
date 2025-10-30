@@ -4,7 +4,7 @@ export type Product = {
 	price: number
 	original_product_image_url: string
 	image_file_name: string
-	size_name: 'micro' | 'compact' | 'full_size_s'
+	size: 'micro' | 'compact' | 'full_size_s'
 	width: number
 	length: number
 	height: number

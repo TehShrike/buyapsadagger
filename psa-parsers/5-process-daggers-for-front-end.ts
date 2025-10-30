@@ -12,6 +12,7 @@ import * as fs from 'fs/promises'
 import * as path from 'path'
 import { fileURLToPath } from 'url'
 import type { Product, DaggersData } from '../client/product.d.ts'
+import assert from '#lib/assert.ts'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -46,6 +47,7 @@ const determine_size_name = (
 	if (title_lower.includes('micro')) return 'micro'
 	if (title_lower.includes('full size') || title_lower.includes('full-size'))
 		return 'full_size_s'
+	assert(title_lower.includes('compact'))
 	return 'compact'
 }
 
@@ -335,7 +337,7 @@ const process_product = (raw_product: RawProduct): Product => {
 		product_details.barrel_length || ''
 	)
 
-	const size_name = determine_size_name(title, width, height)
+	const size = determine_size_name(title, width, height)
 	const original_slide_finish = product_details.slide_finish || ''
 	const stripped_slide_finish = strip_cerakote_or_dlc_from_finish(
 		original_slide_finish
@@ -354,7 +356,7 @@ const process_product = (raw_product: RawProduct): Product => {
 		price,
 		original_product_image_url,
 		image_file_name: get_image_filename_from_url(url),
-		size_name,
+		size,
 		width,
 		length,
 		height,
@@ -460,7 +462,7 @@ export default data
 	if (sample) {
 		console.log('\nSample processed product:')
 		console.log(`Name: ${sample.psa_product_name}`)
-		console.log(`Size: ${sample.size_name}`)
+		console.log(`Size: ${sample.size}`)
 		console.log(
 			`Dimensions: ${sample.width}" x ${sample.length}" x ${sample.height}"`
 		)
@@ -508,7 +510,7 @@ export default data
 
 	// Summary statistics
 	const size_counts = processed_products.reduce((acc, p) => {
-		acc[p.size_name] = (acc[p.size_name] || 0) + 1
+		acc[p.size] = (acc[p.size] || 0) + 1
 		return acc
 	}, {} as Record<string, number>)
 
