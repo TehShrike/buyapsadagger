@@ -25,6 +25,7 @@ a[data-disabled=true].svelte-eew6ub {
 }
 a.svelte-eew6ub:focus {
   outline: 2px solid var(--accent_color);
+  outline-offset: 0;
 }
 a[data-active=true].svelte-eew6ub {
   background-color: var(--selected_color);
@@ -34,8 +35,10 @@ a[data-active=true].svelte-eew6ub {
 .image-link-layout.svelte-nv020b {
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
-  gap: 12px;
+  align-items: stretch;
+  gap: 20px;
+  flex-grow: 1;
+  align-self: stretch;
 }
 .image.svelte-nv020b {
   flex-shrink: 1;
@@ -46,11 +49,15 @@ a[data-active=true].svelte-eew6ub {
   display: flex;
   flex-grow: 1;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: stretch;
 }
 
 /* fakecss:/Users/joshduff/git/buyapsadagger/client/PistolSizeSelector.esbuild-svelte-fake-css */
 .pistol-size.svelte-11eufp1 {
+  --base_image_width: 100px;
+  @media (max-width: 1100px) {
+    --base_image_width: 80px;
+  }
   display: flex;
   flex-direction: row;
   gap: var(--spacing);
@@ -63,18 +70,40 @@ a[data-active=true].svelte-eew6ub {
     flex-direction: column;
   }
 }
+.text_snippet.svelte-11eufp1 {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing) / 2);
+}
+small.svelte-11eufp1 {
+  color: var(--lighter_foreground_text_color);
+}
 
 /* fakecss:/Users/joshduff/git/buyapsadagger/client/FilterSelection.esbuild-svelte-fake-css */
+.filter-selection.svelte-8b3y4w {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing) / 2);
+  --close: 4px;
+}
+@media (max-width: 800px) {
+  .filter-selection.svelte-8b3y4w {
+    --close: 2px;
+  }
+}
+.explanation.svelte-8b3y4w {
+  display: flex;
+  flex-direction: column;
+  gap: var(--close);
+}
 strong.svelte-8b3y4w {
   font-weight: 600;
   font-size: 14px;
-  margin-bottom: 4px;
   display: block;
 }
 small.svelte-8b3y4w {
   font-size: 12px;
-  color: #666;
-  margin-bottom: 8px;
+  color: var(--lighter_foreground_text_color);
   line-height: 1.4;
   display: block;
 }
@@ -89,16 +118,12 @@ small.svelte-8b3y4w {
 
 /* fakecss:/Users/joshduff/git/buyapsadagger/client/index.esbuild-svelte-fake-css */
 .container.svelte-15huzto {
-  --base_image_width: 100px;
-  @media (max-width: 800px) {
-    --base_image_width: 80px;
-  }
   display: flex;
   flex-direction: column;
   align-items: stretch;
   justify-content: center;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1400px;
   box-sizing: border-box;
   gap: calc(var(--spacing) * 2);
   padding: calc(var(--spacing) * 2);
@@ -106,7 +131,23 @@ small.svelte-8b3y4w {
 .intro.svelte-15huzto {
   display: flex;
   flex-direction: column;
-  gap: calc(var(--spacing) * 2);
+  gap: var(--spacing);
+}
+details.svelte-15huzto {
+  max-width: 600px;
+  color: var(--light_color);
+  &,
+  & > div:where(.svelte-15huzto) {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing);
+  }
+  & > div:where(.svelte-15huzto) {
+    font-size: 16px;
+  }
+  summary:where(.svelte-15huzto) {
+    cursor: pointer;
+  }
 }
 .filters-and-results.svelte-15huzto {
   display: flex;
@@ -115,24 +156,44 @@ small.svelte-8b3y4w {
   justify-content: space-between;
   gap: calc(var(--spacing) * 1.5);
 }
+a.svelte-15huzto {
+  color: var(--light_color);
+}
+.filters-pistol-size-selector.svelte-15huzto {
+  display: none;
+}
 @media (max-width: 800px) {
   .filters-and-results.svelte-15huzto {
     flex-direction: column;
+    align-items: center;
+  }
+  .products-grid.svelte-15huzto {
+    align-self: stretch;
+  }
+  .intro.svelte-15huzto {
+    align-items: center;
+  }
+  .intro-pistol-size-selector.svelte-15huzto {
+    display: none;
+  }
+  .filters-pistol-size-selector.svelte-15huzto {
+    display: block;
   }
 }
 .filters.svelte-15huzto {
   display: flex;
   flex-direction: column;
   gap: var(--spacing);
-  flex-basis: 250px;
-  flex-grow: 0;
-  flex-shrink: 0;
+  flex-basis: max(300px, 20%);
 }
 .products-grid.svelte-15huzto {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: var(--spacing);
   flex-grow: 1;
+  @media (max-width: 1100px) {
+    grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+  }
 }
 .no-results.svelte-15huzto {
   flex-grow: 1;

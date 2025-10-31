@@ -78,10 +78,8 @@ var STALE_REACTION = new class StaleReactionError extends Error {
     __publicField(this, "message", "The reaction that called `getAbortSignal()` was re-run or destroyed");
   }
 }();
-var ELEMENT_NODE = 1;
 var TEXT_NODE = 3;
 var COMMENT_NODE = 8;
-var DOCUMENT_FRAGMENT_NODE = 11;
 
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/shared/errors.js
 function await_outside_boundary() {
@@ -95,28 +93,6 @@ https://svelte.dev/e/await_outside_boundary`);
     throw new Error(`https://svelte.dev/e/await_outside_boundary`);
   }
 }
-function invalid_snippet_arguments() {
-  if (dev_fallback_default) {
-    const error = new Error(`invalid_snippet_arguments
-A snippet function was passed invalid arguments. Snippets should only be instantiated via \`{@render ...}\`
-https://svelte.dev/e/invalid_snippet_arguments`);
-    error.name = "Svelte error";
-    throw error;
-  } else {
-    throw new Error(`https://svelte.dev/e/invalid_snippet_arguments`);
-  }
-}
-function snippet_without_render_tag() {
-  if (dev_fallback_default) {
-    const error = new Error(`snippet_without_render_tag
-Attempted to render a snippet without a \`{@render}\` block. This would cause the snippet code to be stringified instead of its content being rendered to the DOM. To fix this, change \`{snippet}\` to \`{@render snippet()}\`.
-https://svelte.dev/e/snippet_without_render_tag`);
-    error.name = "Svelte error";
-    throw error;
-  } else {
-    throw new Error(`https://svelte.dev/e/snippet_without_render_tag`);
-  }
-}
 
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/errors.js
 function async_derived_orphan() {
@@ -128,28 +104,6 @@ https://svelte.dev/e/async_derived_orphan`);
     throw error;
   } else {
     throw new Error(`https://svelte.dev/e/async_derived_orphan`);
-  }
-}
-function component_api_changed(method, component2) {
-  if (dev_fallback_default) {
-    const error = new Error(`component_api_changed
-Calling \`${method}\` on a component instance (of ${component2}) is no longer valid in Svelte 5
-https://svelte.dev/e/component_api_changed`);
-    error.name = "Svelte error";
-    throw error;
-  } else {
-    throw new Error(`https://svelte.dev/e/component_api_changed`);
-  }
-}
-function component_api_invalid_new(component2, name) {
-  if (dev_fallback_default) {
-    const error = new Error(`component_api_invalid_new
-Attempted to instantiate ${component2} with \`new ${name}\`, which is no longer valid in Svelte 5. If this component is not under your control, set the \`compatibility.componentApi\` compiler option to \`4\` to keep it working.
-https://svelte.dev/e/component_api_invalid_new`);
-    error.name = "Svelte error";
-    throw error;
-  } else {
-    throw new Error(`https://svelte.dev/e/component_api_invalid_new`);
   }
 }
 function derived_references_self() {
@@ -345,19 +299,6 @@ https://svelte.dev/e/await_waterfall`, bold, normal);
     console.warn(`https://svelte.dev/e/await_waterfall`);
   }
 }
-function binding_property_non_reactive(binding, location) {
-  if (dev_fallback_default) {
-    console.warn(
-      `%c[svelte] binding_property_non_reactive
-%c${location ? `\`${binding}\` (${location}) is binding to a non-reactive property` : `\`${binding}\` is binding to a non-reactive property`}
-https://svelte.dev/e/binding_property_non_reactive`,
-      bold,
-      normal
-    );
-  } else {
-    console.warn(`https://svelte.dev/e/binding_property_non_reactive`);
-  }
-}
 function hydration_attribute_changed(attribute, html2, value) {
   if (dev_fallback_default) {
     console.warn(`%c[svelte] hydration_attribute_changed
@@ -387,24 +328,6 @@ function lifecycle_double_unmount() {
 https://svelte.dev/e/lifecycle_double_unmount`, bold, normal);
   } else {
     console.warn(`https://svelte.dev/e/lifecycle_double_unmount`);
-  }
-}
-function ownership_invalid_binding(parent, prop2, child2, owner) {
-  if (dev_fallback_default) {
-    console.warn(`%c[svelte] ownership_invalid_binding
-%c${parent} passed property \`${prop2}\` to ${child2} with \`bind:\`, but its parent component ${owner} did not declare \`${prop2}\` as a binding. Consider creating a binding between ${owner} and ${parent} (e.g. \`bind:${prop2}={...}\` instead of \`${prop2}={...}\`)
-https://svelte.dev/e/ownership_invalid_binding`, bold, normal);
-  } else {
-    console.warn(`https://svelte.dev/e/ownership_invalid_binding`);
-  }
-}
-function ownership_invalid_mutation(name, location, prop2, parent) {
-  if (dev_fallback_default) {
-    console.warn(`%c[svelte] ownership_invalid_mutation
-%cMutating unbound props (\`${name}\`, at ${location}) is strongly discouraged. Consider using \`bind:${prop2}={...}\` in ${parent} (or using a callback) instead
-https://svelte.dev/e/ownership_invalid_mutation`, bold, normal);
-  } else {
-    console.warn(`https://svelte.dev/e/ownership_invalid_mutation`);
   }
 }
 function state_proxy_equality_mismatch(operator) {
@@ -560,22 +483,6 @@ function set_component_context(context) {
 var dev_stack = null;
 function set_dev_stack(stack2) {
   dev_stack = stack2;
-}
-function add_svelte_meta(callback, type, component2, line, column, additional) {
-  const parent = dev_stack;
-  dev_stack = {
-    type,
-    file: component2[FILENAME],
-    line,
-    column,
-    parent,
-    ...additional
-  };
-  try {
-    return callback();
-  } finally {
-    dev_stack = parent;
-  }
 }
 var dev_current_component_function = null;
 function set_dev_current_component_function(fn) {
@@ -1969,15 +1876,6 @@ function init_array_prototype_warnings() {
     array_prototype2.includes = includes;
   };
 }
-function strict_equals(a, b, equal = true) {
-  try {
-    if (a === b !== (get_proxied_value(a) === get_proxied_value(b))) {
-      state_proxy_equality_mismatch(equal ? "===" : "!==");
-    }
-  } catch {
-  }
-  return a === b === equal;
-}
 
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dom/operations.js
 var $window;
@@ -2937,54 +2835,6 @@ var RUNES = (
     "$host"
   ]
 );
-function sanitize_location(location) {
-  return (
-    /** @type {T} */
-    location?.replace(/\//g, "/\u200B")
-  );
-}
-
-// node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dev/elements.js
-function add_locations(fn, filename, locations) {
-  return (...args) => {
-    const dom = fn(...args);
-    var node = hydrating ? dom : dom.nodeType === DOCUMENT_FRAGMENT_NODE ? dom.firstChild : dom;
-    assign_locations(node, filename, locations);
-    return dom;
-  };
-}
-function assign_location(element2, filename, location) {
-  element2.__svelte_meta = {
-    parent: dev_stack,
-    loc: { file: filename, line: location[0], column: location[1] }
-  };
-  if (location[2]) {
-    assign_locations(element2.firstChild, filename, location[2]);
-  }
-}
-function assign_locations(node, filename, locations) {
-  var i = 0;
-  var depth = 0;
-  while (node && i < locations.length) {
-    if (hydrating && node.nodeType === COMMENT_NODE) {
-      var comment2 = (
-        /** @type {Comment} */
-        node
-      );
-      if (comment2.data === HYDRATION_START || comment2.data === HYDRATION_START_ELSE) depth += 1;
-      else if (comment2.data[0] === HYDRATION_END) depth -= 1;
-    }
-    if (depth === 0 && node.nodeType === ELEMENT_NODE) {
-      assign_location(
-        /** @type {Element} */
-        node,
-        filename,
-        locations[i++]
-      );
-    }
-    node = node.nextSibling;
-  }
-}
 
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dom/elements/events.js
 var all_registered_events = /* @__PURE__ */ new Set();
@@ -3333,86 +3183,6 @@ function unmount(component2, options) {
     lifecycle_double_unmount();
   }
   return Promise.resolve();
-}
-
-// node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dev/ownership.js
-function create_ownership_validator(props) {
-  const component2 = component_context?.function;
-  const parent = component_context?.p?.function;
-  return {
-    /**
-     * @param {string} prop
-     * @param {any[]} path
-     * @param {any} result
-     * @param {number} line
-     * @param {number} column
-     */
-    mutation: (prop2, path, result, line, column) => {
-      const name = path[0];
-      if (is_bound_or_unset(props, name) || !parent) {
-        return result;
-      }
-      let value = props;
-      for (let i = 0; i < path.length - 1; i++) {
-        value = value[path[i]];
-        if (!value?.[STATE_SYMBOL]) {
-          return result;
-        }
-      }
-      const location = sanitize_location(`${component2[FILENAME]}:${line}:${column}`);
-      ownership_invalid_mutation(name, location, prop2, parent[FILENAME]);
-      return result;
-    },
-    /**
-     * @param {any} key
-     * @param {any} child_component
-     * @param {() => any} value
-     */
-    binding: (key2, child_component, value) => {
-      if (!is_bound_or_unset(props, key2) && parent && value()?.[STATE_SYMBOL]) {
-        ownership_invalid_binding(
-          component2[FILENAME],
-          key2,
-          child_component[FILENAME],
-          parent[FILENAME]
-        );
-      }
-    }
-  };
-}
-function is_bound_or_unset(props, prop_name) {
-  const is_entry_props = STATE_SYMBOL in props || LEGACY_PROPS in props;
-  return !!get_descriptor(props, prop_name)?.set || is_entry_props && prop_name in props || !(prop_name in props);
-}
-
-// node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dev/legacy.js
-function check_target(target) {
-  if (target) {
-    component_api_invalid_new(target[FILENAME] ?? "a component", target.name);
-  }
-}
-function legacy_api() {
-  const component2 = component_context?.function;
-  function error(method) {
-    component_api_changed(method, component2[FILENAME]);
-  }
-  return {
-    $destroy: () => error("$destroy()"),
-    $on: () => error("$on(...)"),
-    $set: () => error("$set(...)")
-  };
-}
-
-// node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dev/validation.js
-function validate_snippet_args(anchor, ...args) {
-  if (typeof anchor !== "object" || !(anchor instanceof Node)) {
-    invalid_snippet_arguments();
-  }
-  for (let arg of args) {
-    if (typeof arg !== "function") {
-      invalid_snippet_arguments();
-    }
-  }
 }
 
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dom/blocks/if.js
@@ -3968,15 +3738,6 @@ function link(state2, prev, next2) {
   }
 }
 
-// node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/shared/validate.js
-function prevent_snippet_stringification(fn) {
-  fn.toString = () => {
-    snippet_without_render_tag();
-    return "";
-  };
-  return fn;
-}
-
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dom/blocks/snippet.js
 function snippet(node, get_snippet, ...args) {
   var anchor = node;
@@ -3999,19 +3760,6 @@ function snippet(node, get_snippet, ...args) {
   if (hydrating) {
     anchor = hydrate_node;
   }
-}
-function wrap_snippet(component2, fn) {
-  const snippet2 = (node, ...args) => {
-    var previous_component_function = dev_current_component_function;
-    set_dev_current_component_function(component2);
-    try {
-      return fn(node, ...args);
-    } finally {
-      set_dev_current_component_function(previous_component_function);
-    }
-  };
-  prevent_snippet_stringification(snippet2);
-  return snippet2;
 }
 
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/shared/attributes.js
@@ -4237,29 +3985,6 @@ function prop(props, key2, flags2, fallback2) {
       return get(d);
     })
   );
-}
-
-// node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/validate.js
-function validate_binding(binding, get_object, get_property, line, column) {
-  var warned = false;
-  var filename = dev_current_component_function?.[FILENAME];
-  render_effect(() => {
-    if (warned) return;
-    var [object, is_store_sub] = capture_store_binding(get_object);
-    if (is_store_sub) return;
-    var property = get_property();
-    var ran = false;
-    var effect2 = render_effect(() => {
-      if (ran) return;
-      object[property];
-    });
-    ran = true;
-    if (effect2.deps === null) {
-      var location = `${filename}:${line}:${column}`;
-      binding_property_non_reactive(binding, location);
-      warned = true;
-    }
-  });
 }
 
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/legacy/legacy-client.js
@@ -4618,27 +4343,34 @@ if (typeof window !== "undefined") {
 }
 
 // client/RadioLink.svelte
-RadioLink[FILENAME] = "client/RadioLink.svelte";
-var onclick = (event2, disabled, href, group_value, $$props) => {
+var onclick = (event2, on_express_desire_to_navigate) => {
   event2.preventDefault();
-  if (disabled()) {
-    return;
-  }
-  history.replaceState(null, "", get(href));
-  group_value($$props.name);
+  on_express_desire_to_navigate();
 };
-var root = add_locations(from_html(`<a role="radio" class="svelte-eew6ub"><!></a>`), RadioLink[FILENAME], [[35, 0]]);
+var onkeydown = (event2, on_express_desire_to_navigate) => {
+  if (event2.code === "Space") {
+    event2.preventDefault();
+    on_express_desire_to_navigate();
+  }
+};
+var root = from_html(`<a role="radio" class="svelte-eew6ub"><!></a>`);
 function RadioLink($$anchor, $$props) {
-  check_target(new.target);
-  push($$props, true, RadioLink);
+  push($$props, true);
   let group_value = prop($$props, "group_value", 15), large = prop($$props, "large", 3, false), disabled = prop($$props, "disabled", 3, false);
-  let active = tag(user_derived(() => strict_equals(group_value(), $$props.name)), "active");
-  let href = tag(user_derived(() => $$props.get_altered_query_string($$props.group_name, $$props.name)), "href");
-  var $$exports = { ...legacy_api() };
+  let active = user_derived(() => group_value() === $$props.name);
+  let href = user_derived(() => $$props.get_altered_query_string($$props.group_name, $$props.name));
+  const on_express_desire_to_navigate = () => {
+    if (disabled()) {
+      return;
+    }
+    history.replaceState(null, "", get(href));
+    group_value($$props.name);
+  };
   var a = root();
-  a.__click = [onclick, disabled, href, group_value, $$props];
+  a.__click = [onclick, on_express_desire_to_navigate];
+  a.__keydown = [onkeydown, on_express_desire_to_navigate];
   var node = child(a);
-  add_svelte_meta(() => snippet(node, () => $$props.children), "render", RadioLink, 44, 1);
+  snippet(node, () => $$props.children);
   reset(a);
   template_effect(() => {
     set_attribute2(a, "href", disabled() ? null : get(href));
@@ -4648,257 +4380,186 @@ function RadioLink($$anchor, $$props) {
     set_attribute2(a, "data-large", large());
   });
   append($$anchor, a);
-  return pop($$exports);
+  pop();
 }
-delegate(["click"]);
+delegate(["click", "keydown"]);
 
 // client/ImageLinkLayout.svelte
-ImageLinkLayout[FILENAME] = "client/ImageLinkLayout.svelte";
-var root2 = add_locations(from_html(`<div class="image-link-layout svelte-nv020b"><div class="image svelte-nv020b"><!></div> <div class="text svelte-nv020b"><!></div></div>`), ImageLinkLayout[FILENAME], [[5, 0, [[6, 1], [9, 1]]]]);
+var root2 = from_html(`<div class="image-link-layout svelte-nv020b"><div class="image svelte-nv020b"><!></div> <div class="text svelte-nv020b"><!></div></div>`);
 function ImageLinkLayout($$anchor, $$props) {
-  check_target(new.target);
-  push($$props, true, ImageLinkLayout);
-  var $$exports = { ...legacy_api() };
   var div = root2();
   var div_1 = child(div);
   var node = child(div_1);
-  add_svelte_meta(() => snippet(node, () => $$props.image), "render", ImageLinkLayout, 7, 2);
+  snippet(node, () => $$props.image);
   reset(div_1);
   var div_2 = sibling(div_1, 2);
   var node_1 = child(div_2);
-  add_svelte_meta(() => snippet(node_1, () => $$props.text), "render", ImageLinkLayout, 10, 2);
+  snippet(node_1, () => $$props.text);
   reset(div_2);
   reset(div);
   append($$anchor, div);
-  return pop($$exports);
 }
 
 // client/PistolSizeSelector.svelte
-PistolSizeSelector[FILENAME] = "client/PistolSizeSelector.svelte";
-var root_2 = add_locations(from_html(`<img src="silhouettes/micro.svg" alt="Micro pistol silhouette" style="width: var(--base_image_width);"/>`), PistolSizeSelector[FILENAME], [[19, 4]]);
-var root_3 = add_locations(from_html(`<strong>Micro</strong> <small>It's pretty small</small>`, 1), PistolSizeSelector[FILENAME], [[26, 4], [27, 4]]);
-var root_5 = add_locations(from_html(`<img src="silhouettes/compact.svg" alt="Compact pistol silhouette" style="width: calc(var(--base_image_width) * 1.14369501);"/>`), PistolSizeSelector[FILENAME], [[34, 4]]);
-var root_6 = add_locations(from_html(`<strong>Compact</strong> <small>About half an inch longer, several credit cards wider</small>`, 1), PistolSizeSelector[FILENAME], [[41, 4], [42, 4]]);
-var root_8 = add_locations(from_html(`<img src="silhouettes/full_size_s.svg" alt="Full size pistol silhouette" style="width: calc(var(--base_image_width) * 1.14369501);"/>`), PistolSizeSelector[FILENAME], [[49, 4]]);
-var root_9 = add_locations(
-  from_html(
-    `<strong>Full Size</strong> <small>Longer handle if you have big hands or want an extra 2 rounds per
-					magazine</small>`,
-    1
-  ),
-  PistolSizeSelector[FILENAME],
-  [[56, 4], [57, 4]]
-);
-var root3 = add_locations(from_html(`<div class="pistol-size svelte-11eufp1"><!> <!> <!></div>`), PistolSizeSelector[FILENAME], [[15, 0]]);
+var root_2 = from_html(`<img src="silhouettes/micro.svg" alt="Micro pistol silhouette" style="width: var(--base_image_width);"/>`);
+var root_3 = from_html(`<div class="text_snippet svelte-11eufp1"><strong>Micro</strong> <small class="svelte-11eufp1">It's pretty small</small></div>`);
+var root_5 = from_html(`<img src="silhouettes/compact.svg" alt="Compact pistol silhouette" style="width: calc(var(--base_image_width) * 1.14369501);"/>`);
+var root_6 = from_html(`<div class="text_snippet svelte-11eufp1"><strong>Compact</strong> <small class="svelte-11eufp1">About half an inch longer, several credit cards wider</small></div>`);
+var root_8 = from_html(`<img src="silhouettes/full_size_s.svg" alt="Full size pistol silhouette" style="width: calc(var(--base_image_width) * 1.14369501);"/>`);
+var root_9 = from_html(`<div class="text_snippet svelte-11eufp1"><strong>Full Size</strong> <small class="svelte-11eufp1">Longer handle if you have big hands or want an extra 2 rounds per
+						magazine</small></div>`);
+var root3 = from_html(`<div class="pistol-size svelte-11eufp1"><!> <!> <!></div>`);
 function PistolSizeSelector($$anchor, $$props) {
-  check_target(new.target);
-  push($$props, true, PistolSizeSelector);
-  var $$ownership_validator = create_ownership_validator($$props);
+  push($$props, true);
   let size = prop($$props, "size", 15);
-  var $$exports = { ...legacy_api() };
   var div = root3();
   var node = child(div);
-  {
-    $$ownership_validator.binding("size", RadioLink, size);
-    add_svelte_meta(
-      () => RadioLink(node, {
-        group_name: "size",
-        name: "micro",
-        large: true,
-        get get_altered_query_string() {
-          return $$props.get_altered_query_string;
-        },
-        get group_value() {
-          return size();
-        },
-        set group_value($$value) {
-          size($$value);
-        },
-        children: wrap_snippet(PistolSizeSelector, ($$anchor2, $$slotProps) => {
-          {
-            const image = wrap_snippet(PistolSizeSelector, function($$anchor3) {
-              validate_snippet_args(...arguments);
-              var img = root_2();
-              append($$anchor3, img);
-            });
-            const text2 = wrap_snippet(PistolSizeSelector, function($$anchor3) {
-              validate_snippet_args(...arguments);
-              var fragment_1 = root_3();
-              next(2);
-              append($$anchor3, fragment_1);
-            });
-            add_svelte_meta(() => ImageLinkLayout($$anchor2, { image, text: text2, $$slots: { image: true, text: true } }), "component", PistolSizeSelector, 17, 2, { componentTag: "ImageLinkLayout" });
-          }
-        }),
-        $$slots: { default: true }
-      }),
-      "component",
-      PistolSizeSelector,
-      16,
-      1,
-      { componentTag: "RadioLink" }
-    );
-  }
+  RadioLink(node, {
+    group_name: "size",
+    name: "micro",
+    large: true,
+    get get_altered_query_string() {
+      return $$props.get_altered_query_string;
+    },
+    get group_value() {
+      return size();
+    },
+    set group_value($$value) {
+      size($$value);
+    },
+    children: ($$anchor2, $$slotProps) => {
+      {
+        const image = ($$anchor3) => {
+          var img = root_2();
+          append($$anchor3, img);
+        };
+        const text2 = ($$anchor3) => {
+          var div_1 = root_3();
+          append($$anchor3, div_1);
+        };
+        ImageLinkLayout($$anchor2, { image, text: text2, $$slots: { image: true, text: true } });
+      }
+    },
+    $$slots: { default: true }
+  });
   var node_1 = sibling(node, 2);
-  {
-    $$ownership_validator.binding("size", RadioLink, size);
-    add_svelte_meta(
-      () => RadioLink(node_1, {
-        group_name: "size",
-        name: "compact",
-        large: true,
-        get get_altered_query_string() {
-          return $$props.get_altered_query_string;
-        },
-        get group_value() {
-          return size();
-        },
-        set group_value($$value) {
-          size($$value);
-        },
-        children: wrap_snippet(PistolSizeSelector, ($$anchor2, $$slotProps) => {
-          {
-            const image = wrap_snippet(PistolSizeSelector, function($$anchor3) {
-              validate_snippet_args(...arguments);
-              var img_1 = root_5();
-              append($$anchor3, img_1);
-            });
-            const text2 = wrap_snippet(PistolSizeSelector, function($$anchor3) {
-              validate_snippet_args(...arguments);
-              var fragment_3 = root_6();
-              next(2);
-              append($$anchor3, fragment_3);
-            });
-            add_svelte_meta(() => ImageLinkLayout($$anchor2, { image, text: text2, $$slots: { image: true, text: true } }), "component", PistolSizeSelector, 32, 2, { componentTag: "ImageLinkLayout" });
-          }
-        }),
-        $$slots: { default: true }
-      }),
-      "component",
-      PistolSizeSelector,
-      31,
-      1,
-      { componentTag: "RadioLink" }
-    );
-  }
+  RadioLink(node_1, {
+    group_name: "size",
+    name: "compact",
+    large: true,
+    get get_altered_query_string() {
+      return $$props.get_altered_query_string;
+    },
+    get group_value() {
+      return size();
+    },
+    set group_value($$value) {
+      size($$value);
+    },
+    children: ($$anchor2, $$slotProps) => {
+      {
+        const image = ($$anchor3) => {
+          var img_1 = root_5();
+          append($$anchor3, img_1);
+        };
+        const text2 = ($$anchor3) => {
+          var div_2 = root_6();
+          append($$anchor3, div_2);
+        };
+        ImageLinkLayout($$anchor2, { image, text: text2, $$slots: { image: true, text: true } });
+      }
+    },
+    $$slots: { default: true }
+  });
   var node_2 = sibling(node_1, 2);
-  {
-    $$ownership_validator.binding("size", RadioLink, size);
-    add_svelte_meta(
-      () => RadioLink(node_2, {
-        group_name: "size",
-        name: "full_size_s",
-        large: true,
-        get get_altered_query_string() {
-          return $$props.get_altered_query_string;
-        },
-        get group_value() {
-          return size();
-        },
-        set group_value($$value) {
-          size($$value);
-        },
-        children: wrap_snippet(PistolSizeSelector, ($$anchor2, $$slotProps) => {
-          {
-            const image = wrap_snippet(PistolSizeSelector, function($$anchor3) {
-              validate_snippet_args(...arguments);
-              var img_2 = root_8();
-              append($$anchor3, img_2);
-            });
-            const text2 = wrap_snippet(PistolSizeSelector, function($$anchor3) {
-              validate_snippet_args(...arguments);
-              var fragment_5 = root_9();
-              next(2);
-              append($$anchor3, fragment_5);
-            });
-            add_svelte_meta(() => ImageLinkLayout($$anchor2, { image, text: text2, $$slots: { image: true, text: true } }), "component", PistolSizeSelector, 47, 2, { componentTag: "ImageLinkLayout" });
-          }
-        }),
-        $$slots: { default: true }
-      }),
-      "component",
-      PistolSizeSelector,
-      46,
-      1,
-      { componentTag: "RadioLink" }
-    );
-  }
+  RadioLink(node_2, {
+    group_name: "size",
+    name: "full_size_s",
+    large: true,
+    get get_altered_query_string() {
+      return $$props.get_altered_query_string;
+    },
+    get group_value() {
+      return size();
+    },
+    set group_value($$value) {
+      size($$value);
+    },
+    children: ($$anchor2, $$slotProps) => {
+      {
+        const image = ($$anchor3) => {
+          var img_2 = root_8();
+          append($$anchor3, img_2);
+        };
+        const text2 = ($$anchor3) => {
+          var div_3 = root_9();
+          append($$anchor3, div_3);
+        };
+        ImageLinkLayout($$anchor2, { image, text: text2, $$slots: { image: true, text: true } });
+      }
+    },
+    $$slots: { default: true }
+  });
   reset(div);
   append($$anchor, div);
-  return pop($$exports);
+  pop();
 }
 
 // client/FilterSelection.svelte
-FilterSelection[FILENAME] = "client/FilterSelection.svelte";
-var root4 = add_locations(from_html(`<div><strong class="svelte-8b3y4w"> </strong> <small class="svelte-8b3y4w"> </small> <div class="filter-options svelte-8b3y4w"></div></div>`), FilterSelection[FILENAME], [[25, 0, [[26, 1], [27, 1], [28, 1]]]]);
+var root4 = from_html(`<div class="filter-selection svelte-8b3y4w"><div class="explanation svelte-8b3y4w"><strong class="svelte-8b3y4w"> </strong> <small class="svelte-8b3y4w"> </small></div> <div class="filter-options svelte-8b3y4w"></div></div>`);
 function FilterSelection($$anchor, $$props) {
-  check_target(new.target);
-  push($$props, true, FilterSelection);
-  var $$ownership_validator = create_ownership_validator($$props);
+  push($$props, true);
   let selected_value = prop($$props, "selected_value", 15);
-  var $$exports = { ...legacy_api() };
   var div = root4();
-  var strong = child(div);
+  var div_1 = child(div);
+  var strong = child(div_1);
   var text2 = child(strong, true);
   reset(strong);
   var small = sibling(strong, 2);
   var text_1 = child(small, true);
   reset(small);
-  var div_1 = sibling(small, 2);
-  add_svelte_meta(
-    () => each(div_1, 21, () => $$props.options, index, ($$anchor2, option) => {
-      {
-        let $0 = user_derived(() => get(option).disabled ?? false);
-        $$ownership_validator.binding("selected_value", RadioLink, selected_value);
-        add_svelte_meta(
-          () => RadioLink($$anchor2, {
-            get group_name() {
-              return $$props.group_name;
-            },
-            get name() {
-              return get(option).value;
-            },
-            get get_altered_query_string() {
-              return $$props.get_altered_query_string;
-            },
-            get disabled() {
-              return get($0);
-            },
-            get group_value() {
-              return selected_value();
-            },
-            set group_value($$value) {
-              selected_value($$value);
-            },
-            children: wrap_snippet(FilterSelection, ($$anchor3, $$slotProps) => {
-              next();
-              var text_2 = text();
-              template_effect(() => set_text(text_2, get(option).label));
-              append($$anchor3, text_2);
-            }),
-            $$slots: { default: true }
-          }),
-          "component",
-          FilterSelection,
-          30,
-          3,
-          { componentTag: "RadioLink" }
-        );
-      }
-    }),
-    "each",
-    FilterSelection,
-    29,
-    2
-  );
   reset(div_1);
+  var div_2 = sibling(div_1, 2);
+  each(div_2, 21, () => $$props.options, index, ($$anchor2, option) => {
+    {
+      let $0 = user_derived(() => get(option).disabled ?? false);
+      RadioLink($$anchor2, {
+        get group_name() {
+          return $$props.group_name;
+        },
+        get name() {
+          return get(option).value;
+        },
+        get get_altered_query_string() {
+          return $$props.get_altered_query_string;
+        },
+        get disabled() {
+          return get($0);
+        },
+        get group_value() {
+          return selected_value();
+        },
+        set group_value($$value) {
+          selected_value($$value);
+        },
+        children: ($$anchor3, $$slotProps) => {
+          next();
+          var text_2 = text();
+          template_effect(() => set_text(text_2, get(option).label));
+          append($$anchor3, text_2);
+        },
+        $$slots: { default: true }
+      });
+    }
+  });
+  reset(div_2);
   reset(div);
   template_effect(() => {
     set_text(text2, $$props.title);
     set_text(text_1, $$props.description);
   });
   append($$anchor, div);
-  return pop($$exports);
+  pop();
 }
 
 // lib/assert.ts
@@ -7711,39 +7372,30 @@ var calculate_are_all_these_alternative_options_safe_to_click = (products, alter
 };
 
 // client/index.svelte
-Client[FILENAME] = "client/index.svelte";
-var root_62 = add_locations(from_html(`<div class="no-results svelte-15huzto">No results for these filter options</div>`), Client[FILENAME], [[152, 4]]);
-var root_7 = add_locations(from_html(`<a target="_blank" rel="noopener" class="product-card svelte-15huzto"><h3 class="svelte-15huzto"> </h3> <img class="svelte-15huzto"/> <div class="price svelte-15huzto"> </div></a>`), Client[FILENAME], [[155, 4, [[156, 5], [157, 5], [158, 5]]]]);
-var root5 = add_locations(from_html(`<div class="container svelte-15huzto"><div class="intro svelte-15huzto"><h1 style="color: var(--light_color)">Buy a PSA Dagger</h1> <div class="card"><!></div></div> <div class="filters-and-results svelte-15huzto"><div class="filters card svelte-15huzto"><h2 style="color: var(--dark_color); border-bottom: 1px solid var(--dark_color); padding-bottom: 8px;" class="svelte-15huzto">Filters</h2> <!> <!> <!> <!> <!></div> <div class="products-grid card svelte-15huzto"><!> <!></div></div></div>`), Client[FILENAME], [
-  [
-    65,
-    0,
-    [
-      [66, 1, [[67, 2], [68, 2]]],
-      [75, 1, [[76, 2, [[77, 3]]], [150, 2]]]
-    ]
-  ]
-]);
+var root_62 = from_html(`<div class="no-results svelte-15huzto">No results for these filter options</div>`);
+var root_7 = from_html(`<a target="_blank" rel="noopener" class="product-card svelte-15huzto"><h3 class="svelte-15huzto"> </h3> <img class="svelte-15huzto"/> <div class="price svelte-15huzto"> </div></a>`);
+var root5 = from_html(`<div class="container svelte-15huzto"><div class="intro svelte-15huzto"><h1 style="color: var(--light_color)">Buy a <abbr title="Palmetto State Armory">PSA</abbr> Dagger</h1> <details class="svelte-15huzto"><summary class="svelte-15huzto">Why?</summary> <div class="svelte-15huzto"><p>The Palmetto State Armory Dagger is based on the Glock 19, and <a href="https://palmettostatearmory.com/psa-dagger.html" rel="noopener" target="_blank" class="svelte-15huzto">is generally parts-compatible with the Glock 19 Gen 3</a>.
+					Palmetto State Armory sells reliable gun parts at pretty amazing prices.</p> <p>These pistols work with Glock 17 and 19 magazines, and might work in Glock holsters, though it's safer to use ones that are designed for the Dagger.
+					The Micro is about the size of a Glock 43x, the Compact is about the size of a Glock 19, and the Full Size is about the size of a Glock 43.</p></div></details> <div class="card intro-pistol-size-selector svelte-15huzto"><!></div></div> <div class="filters-and-results svelte-15huzto"><div class="filters card svelte-15huzto"><h2 style="color: var(--dark_color); border-bottom: 1px solid var(--dark_color); padding-bottom: 8px;" class="svelte-15huzto">Filters</h2> <div class="filters-pistol-size-selector svelte-15huzto"><!></div> <!> <!> <!> <!> <!></div> <div class="products-grid card svelte-15huzto"><!> <!></div></div></div>`);
 function Client($$anchor, $$props) {
-  check_target(new.target);
-  push($$props, true, Client);
+  push($$props, true);
   const querystring_instance = create_querystring_store(default_values);
   const get_displayed_filter_options_for_size = calculate_displayed_filter_options_per_pistol_size(daggers_data_default.daggers, SIZES, FILTER_PARAM_KEYS);
   const remove_has_cover_plate_if_optic_compatibility_is_none = (displayed_filter_options2, current_optic_compatibility) => {
     const new_set = new Set(displayed_filter_options2);
-    if (strict_equals(current_optic_compatibility, "none")) {
+    if (current_optic_compatibility === "none") {
       new_set.delete("has_cover_plate");
     }
     return new_set;
   };
-  const displayed_filter_options = tag(user_derived(() => remove_has_cover_plate_if_optic_compatibility_is_none(get_displayed_filter_options_for_size(querystring_instance.params_with_defaults.size), querystring_instance.params_with_defaults.optic_compatibility)), "displayed_filter_options");
+  const displayed_filter_options = user_derived(() => remove_has_cover_plate_if_optic_compatibility_is_none(get_displayed_filter_options_for_size(querystring_instance.params_with_defaults.size), querystring_instance.params_with_defaults.optic_compatibility));
   const ignore_filter_options_that_are_not_displayed = (displayed_filter_options2, current_filter_params) => {
     return {
       ...default_values,
-      ...object_from_entries(filter(object_entries(current_filter_params), ([key2]) => strict_equals(key2, "size") || displayed_filter_options2.has(key2)))
+      ...object_from_entries(filter(object_entries(current_filter_params), ([key2]) => key2 === "size" || displayed_filter_options2.has(key2)))
     };
   };
-  const filtered_daggers = tag(user_derived(() => filter_daggers(daggers_data_default.daggers, ignore_filter_options_that_are_not_displayed(get(displayed_filter_options), querystring_instance.params_with_defaults)).sort((a, b) => a.price - b.price)), "filtered_daggers");
+  const filtered_daggers = user_derived(() => filter_daggers(daggers_data_default.daggers, ignore_filter_options_that_are_not_displayed(get(displayed_filter_options), querystring_instance.params_with_defaults)).sort((a, b) => a.price - b.price));
   const add_disabled_to_unsafe_options = (key2, options) => {
     return map(options, (option) => {
       return {
@@ -7752,179 +7404,141 @@ function Client($$anchor, $$props) {
       };
     });
   };
-  const alternate_option_selections_we_need_to_consider = tag(user_derived(() => calculate_alternate_option_selections_we_need_to_consider(get(displayed_filter_options), querystring_instance.params_with_defaults)), "alternate_option_selections_we_need_to_consider");
-  const is_this_alternate_option_safe_to_click = tag(user_derived(() => calculate_are_all_these_alternative_options_safe_to_click(daggers_data_default.daggers, get(alternate_option_selections_we_need_to_consider), querystring_instance.params_with_defaults)), "is_this_alternate_option_safe_to_click");
-  const should_this_option_be_enabled = (key2, value) => strict_equals(value, ANY) || strict_equals(querystring_instance.params_with_defaults[key2], value) || get(is_this_alternate_option_safe_to_click)(key2, value);
-  var $$exports = { ...legacy_api() };
+  const alternate_option_selections_we_need_to_consider = user_derived(() => calculate_alternate_option_selections_we_need_to_consider(get(displayed_filter_options), querystring_instance.params_with_defaults));
+  const is_this_alternate_option_safe_to_click = user_derived(() => calculate_are_all_these_alternative_options_safe_to_click(daggers_data_default.daggers, get(alternate_option_selections_we_need_to_consider), querystring_instance.params_with_defaults));
+  const should_this_option_be_enabled = (key2, value) => value === ANY || querystring_instance.params_with_defaults[key2] === value || get(is_this_alternate_option_safe_to_click)(key2, value);
   var div = root5();
   var div_1 = child(div);
-  var div_2 = sibling(child(div_1), 2);
+  var div_2 = sibling(child(div_1), 4);
   var node = child(div_2);
-  validate_binding("bind:size={querystring_instance.params_with_defaults.size}", () => querystring_instance.params_with_defaults, () => "size", 70, 4);
-  add_svelte_meta(
-    () => PistolSizeSelector(node, {
-      get get_altered_query_string() {
-        return querystring_instance.get_altered_query_string;
-      },
-      get size() {
-        return querystring_instance.params_with_defaults.size;
-      },
-      set size($$value) {
-        querystring_instance.params_with_defaults.size = $$value;
-      }
-    }),
-    "component",
-    Client,
-    69,
-    3,
-    { componentTag: "PistolSizeSelector" }
-  );
+  PistolSizeSelector(node, {
+    get get_altered_query_string() {
+      return querystring_instance.get_altered_query_string;
+    },
+    get size() {
+      return querystring_instance.params_with_defaults.size;
+    },
+    set size($$value) {
+      querystring_instance.params_with_defaults.size = $$value;
+    }
+  });
   reset(div_2);
   reset(div_1);
   var div_3 = sibling(div_1, 2);
   var div_4 = child(div_3);
-  var node_1 = sibling(child(div_4), 2);
+  var div_5 = sibling(child(div_4), 2);
+  var node_1 = child(div_5);
+  PistolSizeSelector(node_1, {
+    get get_altered_query_string() {
+      return querystring_instance.get_altered_query_string;
+    },
+    get size() {
+      return querystring_instance.params_with_defaults.size;
+    },
+    set size($$value) {
+      querystring_instance.params_with_defaults.size = $$value;
+    }
+  });
+  reset(div_5);
+  var node_2 = sibling(div_5, 2);
   {
     var consequent = ($$anchor2) => {
-      validate_binding("bind:selected_value={querystring_instance.params_with_defaults.longer_barrel}", () => querystring_instance.params_with_defaults, () => "longer_barrel", 89, 5);
       {
         let $0 = user_derived(() => add_disabled_to_unsafe_options("longer_barrel", [
           { label: "Either", value: "any" },
           { label: "Yes", value: "true" },
           { label: "No", value: "false" }
         ]));
-        add_svelte_meta(
-          () => FilterSelection($$anchor2, {
-            title: "Longer Barrel",
-            description: "Adds about half an inch to the barrel. Makes it easier to hit what you're aiming at",
-            group_name: "longer_barrel",
-            get options() {
-              return get($0);
-            },
-            get get_altered_query_string() {
-              return querystring_instance.get_altered_query_string;
-            },
-            get selected_value() {
-              return querystring_instance.params_with_defaults.longer_barrel;
-            },
-            set selected_value($$value) {
-              querystring_instance.params_with_defaults.longer_barrel = $$value;
-            }
-          }),
-          "component",
-          Client,
-          79,
-          4,
-          { componentTag: "FilterSelection" }
-        );
+        FilterSelection($$anchor2, {
+          title: "Longer Barrel",
+          description: "Adds about half an inch to the barrel. Makes it easier to hit what you're aiming at",
+          group_name: "longer_barrel",
+          get options() {
+            return get($0);
+          },
+          get get_altered_query_string() {
+            return querystring_instance.get_altered_query_string;
+          },
+          get selected_value() {
+            return querystring_instance.params_with_defaults.longer_barrel;
+          },
+          set selected_value($$value) {
+            querystring_instance.params_with_defaults.longer_barrel = $$value;
+          }
+        });
       }
     };
-    add_svelte_meta(
-      () => if_block(node_1, ($$render) => {
-        if (get(displayed_filter_options).has("longer_barrel")) $$render(consequent);
-      }),
-      "if",
-      Client,
-      78,
-      3
-    );
+    if_block(node_2, ($$render) => {
+      if (get(displayed_filter_options).has("longer_barrel")) $$render(consequent);
+    });
   }
-  var node_2 = sibling(node_1, 2);
+  var node_3 = sibling(node_2, 2);
   {
     var consequent_1 = ($$anchor2) => {
-      validate_binding("bind:selected_value={querystring_instance.params_with_defaults.threaded_barrel}", () => querystring_instance.params_with_defaults, () => "threaded_barrel", 103, 5);
       {
         let $0 = user_derived(() => add_disabled_to_unsafe_options("threaded_barrel", [
           { label: "Either", value: "any" },
           { label: "Yes", value: "true" },
           { label: "No", value: "false" }
         ]));
-        add_svelte_meta(
-          () => FilterSelection($$anchor2, {
-            title: "Threaded Barrel",
-            description: "If you want to be able to stick a suppressor or flash hider or something on your gun",
-            group_name: "threaded_barrel",
-            get options() {
-              return get($0);
-            },
-            get get_altered_query_string() {
-              return querystring_instance.get_altered_query_string;
-            },
-            get selected_value() {
-              return querystring_instance.params_with_defaults.threaded_barrel;
-            },
-            set selected_value($$value) {
-              querystring_instance.params_with_defaults.threaded_barrel = $$value;
-            }
-          }),
-          "component",
-          Client,
-          93,
-          4,
-          { componentTag: "FilterSelection" }
-        );
+        FilterSelection($$anchor2, {
+          title: "Threaded Barrel",
+          description: "If you want to be able to stick a suppressor or flash hider or something on your gun",
+          group_name: "threaded_barrel",
+          get options() {
+            return get($0);
+          },
+          get get_altered_query_string() {
+            return querystring_instance.get_altered_query_string;
+          },
+          get selected_value() {
+            return querystring_instance.params_with_defaults.threaded_barrel;
+          },
+          set selected_value($$value) {
+            querystring_instance.params_with_defaults.threaded_barrel = $$value;
+          }
+        });
       }
     };
-    add_svelte_meta(
-      () => if_block(node_2, ($$render) => {
-        if (get(displayed_filter_options).has("threaded_barrel")) $$render(consequent_1);
-      }),
-      "if",
-      Client,
-      92,
-      3
-    );
+    if_block(node_3, ($$render) => {
+      if (get(displayed_filter_options).has("threaded_barrel")) $$render(consequent_1);
+    });
   }
-  var node_3 = sibling(node_2, 2);
+  var node_4 = sibling(node_3, 2);
   {
     var consequent_2 = ($$anchor2) => {
-      validate_binding("bind:selected_value={querystring_instance.params_with_defaults.night_sight}", () => querystring_instance.params_with_defaults, () => "night_sight", 117, 5);
       {
         let $0 = user_derived(() => add_disabled_to_unsafe_options("night_sight", [
           { label: "Either", value: "any" },
           { label: "Yes", value: "true" },
           { label: "No", value: "false" }
         ]));
-        add_svelte_meta(
-          () => FilterSelection($$anchor2, {
-            title: "Night Sight",
-            description: "The sights glow in the dark",
-            group_name: "night_sight",
-            get options() {
-              return get($0);
-            },
-            get get_altered_query_string() {
-              return querystring_instance.get_altered_query_string;
-            },
-            get selected_value() {
-              return querystring_instance.params_with_defaults.night_sight;
-            },
-            set selected_value($$value) {
-              querystring_instance.params_with_defaults.night_sight = $$value;
-            }
-          }),
-          "component",
-          Client,
-          107,
-          4,
-          { componentTag: "FilterSelection" }
-        );
+        FilterSelection($$anchor2, {
+          title: "Night Sight",
+          description: "The sights glow in the dark",
+          group_name: "night_sight",
+          get options() {
+            return get($0);
+          },
+          get get_altered_query_string() {
+            return querystring_instance.get_altered_query_string;
+          },
+          get selected_value() {
+            return querystring_instance.params_with_defaults.night_sight;
+          },
+          set selected_value($$value) {
+            querystring_instance.params_with_defaults.night_sight = $$value;
+          }
+        });
       }
     };
-    add_svelte_meta(
-      () => if_block(node_3, ($$render) => {
-        if (get(displayed_filter_options).has("night_sight")) $$render(consequent_2);
-      }),
-      "if",
-      Client,
-      106,
-      3
-    );
+    if_block(node_4, ($$render) => {
+      if (get(displayed_filter_options).has("night_sight")) $$render(consequent_2);
+    });
   }
-  var node_4 = sibling(node_3, 2);
+  var node_5 = sibling(node_4, 2);
   {
     var consequent_3 = ($$anchor2) => {
-      validate_binding("bind:selected_value={querystring_instance.params_with_defaults.optic_compatibility}", () => querystring_instance.params_with_defaults, () => "optic_compatibility", 132, 5);
       {
         let $0 = user_derived(() => add_disabled_to_unsafe_options("optic_compatibility", [
           { label: "Any", value: "any" },
@@ -7932,143 +7546,104 @@ function Client($$anchor, $$props) {
           { label: "RMR", value: "rmr" },
           { label: "Shield RMSc", value: "shield_rmsc" }
         ]));
-        add_svelte_meta(
-          () => FilterSelection($$anchor2, {
-            title: "Optic Compatibility",
-            description: "",
-            group_name: "optic_compatibility",
-            get options() {
-              return get($0);
-            },
-            get get_altered_query_string() {
-              return querystring_instance.get_altered_query_string;
-            },
-            get selected_value() {
-              return querystring_instance.params_with_defaults.optic_compatibility;
-            },
-            set selected_value($$value) {
-              querystring_instance.params_with_defaults.optic_compatibility = $$value;
-            }
-          }),
-          "component",
-          Client,
-          121,
-          4,
-          { componentTag: "FilterSelection" }
-        );
+        FilterSelection($$anchor2, {
+          title: "Optic Compatibility",
+          description: "",
+          group_name: "optic_compatibility",
+          get options() {
+            return get($0);
+          },
+          get get_altered_query_string() {
+            return querystring_instance.get_altered_query_string;
+          },
+          get selected_value() {
+            return querystring_instance.params_with_defaults.optic_compatibility;
+          },
+          set selected_value($$value) {
+            querystring_instance.params_with_defaults.optic_compatibility = $$value;
+          }
+        });
       }
     };
-    add_svelte_meta(
-      () => if_block(node_4, ($$render) => {
-        if (get(displayed_filter_options).has("optic_compatibility")) $$render(consequent_3);
-      }),
-      "if",
-      Client,
-      120,
-      3
-    );
+    if_block(node_5, ($$render) => {
+      if (get(displayed_filter_options).has("optic_compatibility")) $$render(consequent_3);
+    });
   }
-  var node_5 = sibling(node_4, 2);
+  var node_6 = sibling(node_5, 2);
   {
     var consequent_4 = ($$anchor2) => {
-      validate_binding("bind:selected_value={querystring_instance.params_with_defaults.has_cover_plate}", () => querystring_instance.params_with_defaults, () => "has_cover_plate", 146, 5);
       {
         let $0 = user_derived(() => add_disabled_to_unsafe_options("has_cover_plate", [
           { label: "Either", value: "any" },
           { label: "Yes", value: "true" },
           { label: "No", value: "false" }
         ]));
-        add_svelte_meta(
-          () => FilterSelection($$anchor2, {
-            title: "Has Cover Plate",
-            description: "If you're not going to put an optic on right away",
-            group_name: "has_cover_plate",
-            get options() {
-              return get($0);
-            },
-            get get_altered_query_string() {
-              return querystring_instance.get_altered_query_string;
-            },
-            get selected_value() {
-              return querystring_instance.params_with_defaults.has_cover_plate;
-            },
-            set selected_value($$value) {
-              querystring_instance.params_with_defaults.has_cover_plate = $$value;
-            }
-          }),
-          "component",
-          Client,
-          136,
-          4,
-          { componentTag: "FilterSelection" }
-        );
+        FilterSelection($$anchor2, {
+          title: "Has Cover Plate",
+          description: "If you're not going to put an optic on right away",
+          group_name: "has_cover_plate",
+          get options() {
+            return get($0);
+          },
+          get get_altered_query_string() {
+            return querystring_instance.get_altered_query_string;
+          },
+          get selected_value() {
+            return querystring_instance.params_with_defaults.has_cover_plate;
+          },
+          set selected_value($$value) {
+            querystring_instance.params_with_defaults.has_cover_plate = $$value;
+          }
+        });
       }
     };
-    add_svelte_meta(
-      () => if_block(node_5, ($$render) => {
-        if (get(displayed_filter_options).has("has_cover_plate")) $$render(consequent_4);
-      }),
-      "if",
-      Client,
-      135,
-      3
-    );
+    if_block(node_6, ($$render) => {
+      if (get(displayed_filter_options).has("has_cover_plate")) $$render(consequent_4);
+    });
   }
   reset(div_4);
-  var div_5 = sibling(div_4, 2);
-  var node_6 = child(div_5);
+  var div_6 = sibling(div_4, 2);
+  var node_7 = child(div_6);
   {
     var consequent_5 = ($$anchor2) => {
-      var div_6 = root_62();
-      append($$anchor2, div_6);
+      var div_7 = root_62();
+      append($$anchor2, div_7);
     };
-    add_svelte_meta(
-      () => if_block(node_6, ($$render) => {
-        if (strict_equals(get(filtered_daggers).length, 0)) $$render(consequent_5);
-      }),
-      "if",
-      Client,
-      151,
-      3
-    );
+    if_block(node_7, ($$render) => {
+      if (get(filtered_daggers).length === 0) $$render(consequent_5);
+    });
   }
-  var node_7 = sibling(node_6, 2);
-  add_svelte_meta(
-    () => each(node_7, 17, () => get(filtered_daggers), index, ($$anchor2, product) => {
-      var a_1 = root_7();
-      var h3 = child(a_1);
-      var text2 = child(h3, true);
-      reset(h3);
-      var img = sibling(h3, 2);
-      var div_7 = sibling(img, 2);
-      var text_1 = child(div_7);
-      reset(div_7);
-      reset(a_1);
-      template_effect(
-        ($0, $1) => {
-          set_attribute2(a_1, "href", get(product).psa_url);
-          set_text(text2, $0);
-          set_attribute2(img, "src", `/images/${get(product).image_file_name ?? ""}`);
-          set_attribute2(img, "alt", get(product).psa_product_name);
-          set_text(text_1, `$${$1 ?? ""}`);
-        },
-        [
-          () => generate_title_default(get(product), daggers_data_default, querystring_instance.params_with_defaults),
-          () => get(product).price.toFixed(2)
-        ]
-      );
-      append($$anchor2, a_1);
-    }),
-    "each",
-    Client,
-    154,
-    3
-  );
-  reset(div_5);
+  var node_8 = sibling(node_7, 2);
+  each(node_8, 17, () => get(filtered_daggers), index, ($$anchor2, product) => {
+    var a_1 = root_7();
+    var h3 = child(a_1);
+    var text2 = child(h3, true);
+    reset(h3);
+    var img = sibling(h3, 2);
+    var div_8 = sibling(img, 2);
+    var text_1 = child(div_8);
+    reset(div_8);
+    reset(a_1);
+    template_effect(
+      ($0, $1) => {
+        set_attribute2(a_1, "href", get(product).psa_url);
+        set_text(text2, $0);
+        set_attribute2(img, "src", `/images/${get(product).image_file_name ?? ""}`);
+        set_attribute2(img, "alt", get(product).psa_product_name);
+        set_text(text_1, `$${$1 ?? ""}`);
+      },
+      [
+        () => generate_title_default(get(product), daggers_data_default, querystring_instance.params_with_defaults),
+        () => get(product).price.toFixed(2)
+      ]
+    );
+    append($$anchor2, a_1);
+  });
+  reset(div_6);
   reset(div_3);
   reset(div);
   append($$anchor, div);
-  return pop($$exports);
+  pop();
 }
 
 // client/index.ts
