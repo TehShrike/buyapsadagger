@@ -64,7 +64,20 @@
 
 <div class="container">
 	<div class="intro">
-		<h1 style="color: var(--light_color)">Buy a PSA Dagger</h1>
+		<h1 style="color: var(--light_color)">Buy a <abbr title="Palmetto State Armory">PSA</abbr> Dagger</h1>
+		<details>
+			<summary>Why?</summary>
+			<div>
+				<p>
+					The Palmetto State Armory Dagger is based on the Glock 19, and <a href="https://palmettostatearmory.com/psa-dagger.html" rel="noopener" target="_blank">is generally parts-compatible with the Glock 19 Gen 3</a>.
+					Palmetto State Armory sells reliable gun parts at pretty amazing prices.
+				</p>
+				<p>
+					These pistols work with Glock 17 and 19 magazines, and might work in Glock holsters, though it's safer to use ones that are designed for the Dagger.
+					The Micro is about the size of a Glock 43x, the Compact is about the size of a Glock 19, and the Full Size is about the size of a Glock 43.
+				</p>
+			</div>
+		</details>
 		<div class="card">
 			<PistolSizeSelector
 				bind:size={querystring_instance.params_with_defaults.size}
@@ -175,7 +188,7 @@
 		align-items: stretch;
 		justify-content: center;
 		width: 100%;
-		max-width: 1200px;
+		max-width: 1400px;
 		box-sizing: border-box;
 		gap: calc(var(--spacing) * 2);
 		padding: calc(var(--spacing) * 2);
@@ -184,7 +197,26 @@
 	.intro {
 		display: flex;
 		flex-direction: column;
-		gap: calc(var(--spacing) * 2);
+		gap: var(--spacing);
+	}
+
+	details {
+		max-width: 600px;
+		color: var(--light_color);
+
+		&, & > div {
+			display: flex;
+			flex-direction: column;
+			gap: var(--spacing);
+		}
+
+		& > div {
+			font-size: 16px;
+		}
+
+		summary {
+			cursor: pointer;
+		}
 	}
 
 	.filters-and-results {
@@ -193,6 +225,10 @@
 		align-items: flex-start;
 		justify-content: space-between;
 		gap: calc(var(--spacing) * 1.5);
+	}
+
+	a {
+		color: var(--light_color);
 	}
 
 	@media (max-width: 800px) {
