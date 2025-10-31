@@ -73,7 +73,9 @@ const extract_product_details = (
 
 					if (key_text && value) {
 						const key = normalize_key(key_text)
-						product_details[key] = value
+						if (!(key in product_details)) {
+							product_details[key] = value
+						}
 					}
 				}
 			}
