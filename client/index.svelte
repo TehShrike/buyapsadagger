@@ -148,6 +148,9 @@
 			{/if}
 		</div>
 		<div class="products-grid card">
+			{#if filtered_daggers.length === 0}
+				<div class="no-results">No results for these filter options</div>
+			{/if}
 			{#each filtered_daggers as product}
 				<a href={product.psa_url} target="_blank" rel="noopener" class="product-card">
 					<h3>{generate_title(product, daggers_data, querystring_instance.params_with_defaults)}</h3>
@@ -213,6 +216,17 @@
 		flex-wrap: wrap;
 		gap: var(--spacing);
 		align-items: stretch;
+		flex-grow: 1;
+	}
+
+	.no-results {
+		flex-grow: 1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 16px;
+		font-weight: bold;
+		color: var(--dark_color);
 	}
 
 	.product-card {
