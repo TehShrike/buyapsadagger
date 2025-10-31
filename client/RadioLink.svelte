@@ -84,17 +84,12 @@
 		background-color: var(--light_color);
 	}
 
-	/* a:hover {
-		border-color: var(--dark_color);
-	} */
-
 	a:focus {
 		outline: 2px solid var(--accent_color);
-		/* outline-offset: 2px; */
+		outline-offset: 0;
 	}
 
 	a[data-active='true'] {
-		/* border-color: var(--accent_color); */
 		background-color: var(--selected_color);
 	}
 </style>
