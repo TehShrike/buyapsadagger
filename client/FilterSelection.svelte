@@ -15,6 +15,7 @@
 		options: {
 			label: string,
 			value: Value,
+			disabled?: boolean,
 		}[]
 		selected_value: Value,
 		get_altered_query_string: (param: string, value: string | boolean) => string,
@@ -26,7 +27,13 @@
 	<small>{description}</small>
 	<div class="filter-options">
 		{#each options as option}
-			<RadioLink {group_name} name={option.value} bind:group_value={selected_value} {get_altered_query_string}>
+			<RadioLink
+				{group_name}
+				name={option.value}
+				bind:group_value={selected_value}
+				{get_altered_query_string}
+				disabled={option.disabled ?? false}
+			>
 				{option.label}
 			</RadioLink>
 		{/each}

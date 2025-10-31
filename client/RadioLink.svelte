@@ -7,6 +7,7 @@
 		group_value = $bindable<PossibleValue>(),
 		children,
 		large = false,
+		disabled = false,
 		get_altered_query_string
 	}: {
 		group_name: string
@@ -14,6 +15,7 @@
 		group_value: PossibleValue
 		children: Snippet
 		large?: boolean
+		disabled?: boolean
 		get_altered_query_string: (param: string, value: string | boolean) => string
 	} = $props()
 
@@ -22,12 +24,23 @@
 
 	const onclick = (event: MouseEvent) => {
 		event.preventDefault()
+		if (disabled) {
+			return
+		}
 		history.replaceState(null, '', href)
 		group_value = name
 	}
 </script>
 
-<a {href} data-active={active} aria-checked={active} role="radio" {onclick} data-large={large}>
+<a
+	href={disabled ? null :href}
+	data-disabled={disabled}
+	data-active={active}
+	aria-checked={active}
+	role="radio"
+	{onclick}
+	data-large={large}
+>
 	{@render children()}
 </a>
 
@@ -51,6 +64,12 @@
 		align-items: flex-start;
 		padding: 12px calc(var(--spacing));
 		white-space: normal;
+	}
+
+	a[data-disabled='true'] {
+		opacity: 0.5;
+		cursor: not-allowed;
+		background-color: var(--light_color);
 	}
 
 	/* a:hover {
