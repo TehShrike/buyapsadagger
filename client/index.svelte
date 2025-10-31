@@ -7,8 +7,9 @@
 	import { filter_daggers, type FilterParams, type FilterParamKey, type OpticCompatibilityOrAny } from './filter-daggers.ts'
 	import { ANY, default_values, FILTER_PARAM_KEYS, SIZES } from './querystring_options.ts'
 	import { calculate_displayed_filter_options_per_pistol_size } from './count_possible_options.ts'
-	import { map } from '#lib/array.ts'
+	import { map, filter } from '#lib/array.ts'
 	import { calculate_alternate_option_selections_we_need_to_consider, calculate_are_all_these_alternative_options_safe_to_click } from './determine_if_alternate_filter_options_are_safe_to_click.ts'
+	import { object_entries, object_from_entries } from '#lib/object.ts'
 
 	const querystring_instance = create_querystring_store<FilterParams>(default_values)
 
@@ -29,8 +30,16 @@
 		)
 	)
 
+	const ignore_filter_options_that_are_not_displayed = (displayed_filter_options: Set<FilterParamKey>, current_filter_params: FilterParams) => {
+		return {
+			...default_values,
+			...object_from_entries(filter(object_entries(current_filter_params), ([key]) => key === 'size' || displayed_filter_options.has(key))),
+		}
+	}
+
 	const filtered_daggers = $derived(
-		filter_daggers(daggers_data.daggers, querystring_instance.params_with_defaults).sort((a, b) => a.price - b.price)
+		filter_daggers(daggers_data.daggers, ignore_filter_options_that_are_not_displayed(displayed_filter_options, querystring_instance.params_with_defaults))
+			.sort((a, b) => a.price - b.price)
 	)
 
 	const add_disabled_to_unsafe_options = (key: FilterParamKey, options: { label: string, value: FilterParams[FilterParamKey] }[]) => {
