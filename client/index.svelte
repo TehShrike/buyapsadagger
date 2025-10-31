@@ -211,12 +211,11 @@
 	}
 
 	.products-grid {
-		display: flex;
-		flex-direction: row;
-		flex-wrap: wrap;
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
 		gap: var(--spacing);
-		align-items: stretch;
 		flex-grow: 1;
+		align-items: start;
 	}
 
 	.no-results {
@@ -233,8 +232,6 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
-		flex-basis: 190px;
-		flex-grow: 1;
 		padding: var(--spacing);
 		border: 1px solid #ccc;
 		border-radius: 8px;
