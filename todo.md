@@ -1,11 +1,11 @@
 - [x] implement the dark theme
 - [x] get "dlc" in frame coating metadata
 - [x] make the buttons in the filters card stretch to fill the width of the bar
-- [ ] make it so "has cover plate" only shows up if you pick an optic compatibility other than "none"
-- [ ] make it so that optic compatibility options only show up if there are any pistols with that option in the current size
-- [ ] make it so the boolean filter options only show up if there are some options to choose from
+- [x] make it so "has cover plate" only shows up if you pick an optic compatibility other than "none"
+- [x] make it so that optic compatibility options only show up if there are any pistols with that option in the current size
+- [x] make it so the boolean filter options only show up if there are some options to choose from
 - [ ] make it so the "has cover plate" filter only applies if the pistol is optic capable
-- [ ] make it not look jank when there are no results (might not be necessary when the above is done)
+- [ ] ~~make it not look jank when there are no results (might not be necessary when the above is done)~~
 - [ ] make it so that the pistol result cards are all the same smaller width even when there are <3 results in a row
 - [x] sans serif fonts
 - [x] generate custom title

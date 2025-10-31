@@ -4,9 +4,9 @@
 	import generate_title from './generate_title.ts'
 	import { create_querystring_store } from './querystring_store.svelte.ts'
 	import daggers_data from './daggers-data.ts'
-	import { filter_daggers, type FilterParams, type FilterParamKey, product_matches } from './filter-daggers.ts'
+	import { filter_daggers, type FilterParams, type FilterParamKey, type OpticCompatibilityOrAny } from './filter-daggers.ts'
 	import { ANY, default_values, FILTER_PARAM_KEYS, SIZES } from './querystring_options.ts'
-	import { calculate_displayed_filter_options_per_pistol_size, calculate_enabled_filter_options } from './count_possible_options.ts'
+	import { calculate_displayed_filter_options_per_pistol_size } from './count_possible_options.ts'
 	import { map } from '#lib/array.ts'
 	import { calculate_alternate_option_selections_we_need_to_consider, calculate_are_all_these_alternative_options_safe_to_click } from './determine_if_alternate_filter_options_are_safe_to_click.ts'
 
@@ -14,8 +14,19 @@
 
 	const get_displayed_filter_options_for_size = calculate_displayed_filter_options_per_pistol_size(daggers_data.daggers, SIZES, FILTER_PARAM_KEYS)
 
+	const remove_has_cover_plate_if_optic_compatibility_is_none = (displayed_filter_options: Set<FilterParamKey>, current_optic_compatibility: OpticCompatibilityOrAny) => {
+		const new_set = new Set(displayed_filter_options)
+		if (current_optic_compatibility === 'none') {
+			new_set.delete('has_cover_plate')
+		}
+		return new_set
+	}
+
 	const displayed_filter_options = $derived(
-		get_displayed_filter_options_for_size(querystring_instance.params_with_defaults.size)
+		remove_has_cover_plate_if_optic_compatibility_is_none(
+			get_displayed_filter_options_for_size(querystring_instance.params_with_defaults.size),
+			querystring_instance.params_with_defaults.optic_compatibility
+		)
 	)
 
 	const filtered_daggers = $derived(

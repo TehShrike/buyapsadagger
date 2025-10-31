@@ -4,7 +4,7 @@ import { ANY, type Any } from './querystring_options.ts'
 import { filter } from '#lib/array.ts'
 
 type TrueFalseOrAny = 'true' | 'false' | Any
-type OpticCompatibilityOrAny = OpticCompatibility | Any
+export type OpticCompatibilityOrAny = OpticCompatibility | Any
 
 export type FilterParams = {
 	size: Size
