@@ -74,7 +74,7 @@
 				</p>
 				<p>
 					These pistols work with Glock 17 and 19 magazines, and might work in Glock holsters, though it's safer to use ones that are designed for the Dagger.
-					The Micro is about the size of a Glock 43x, the Compact is about the size of a Glock 19, and the Full Size is about the size of a Glock 43.
+					The Micro is about the size of a Glock 43x, the Compact is about the size of a Glock 19, and the Full Size is about the size of a Glock 45.
 				</p>
 			</div>
 		</details>

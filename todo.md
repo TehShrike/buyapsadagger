@@ -9,7 +9,7 @@
 - [x] make it so that the pistol result cards are all the same smaller width even when there are <3 results in a row
 - [x] sans serif fonts
 - [x] generate custom title
-- [ ] deploy to CF Pages
+- [x] deploy to CF Pages
 - [x] look into why the images didn't get shrunk to 400px last time?
 - [ ] sign up for PSA affiliate program
 - [ ] find out why the filters card is wider than 250px
