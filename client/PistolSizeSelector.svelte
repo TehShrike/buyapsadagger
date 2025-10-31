@@ -23,8 +23,10 @@
 				/>
 			{/snippet}
 			{#snippet text()}
-				<strong>Micro</strong>
-				<small>It's pretty small</small>
+				<div class="text_snippet">
+					<strong>Micro</strong>
+					<small>It's pretty small</small>
+				</div>
 			{/snippet}
 		</ImageLinkLayout>
 	</RadioLink>
@@ -38,8 +40,10 @@
 				/>
 			{/snippet}
 			{#snippet text()}
-				<strong>Compact</strong>
-				<small>About half an inch longer, several credit cards wider</small>
+				<div class="text_snippet">
+					<strong>Compact</strong>
+					<small>About half an inch longer, several credit cards wider</small>
+				</div>
 			{/snippet}
 		</ImageLinkLayout>
 	</RadioLink>
@@ -53,11 +57,13 @@
 				/>
 			{/snippet}
 			{#snippet text()}
-				<strong>Full Size</strong>
-				<small>
-					Longer handle if you have big hands or want an extra 2 rounds per
-					magazine
-				</small>
+				<div class="text_snippet">
+					<strong>Full Size</strong>
+					<small>
+						Longer handle if you have big hands or want an extra 2 rounds per
+						magazine
+					</small>
+				</div>
 			{/snippet}
 		</ImageLinkLayout>
 	</RadioLink>
@@ -65,6 +71,12 @@
 
 <style>
 	.pistol-size {
+		--base_image_width: 100px;
+
+		@media (max-width: 1100px) {
+			--base_image_width: 80px;
+		}
+
 		display: flex;
 		flex-direction: row;
 		gap: var(--spacing);
@@ -78,5 +90,15 @@
 		@media (max-width: 800px) {
 			flex-direction: column;
 		}
+	}
+
+	.text_snippet {
+		display: flex;
+		flex-direction: column;
+		gap: calc(var(--spacing) / 2);
+	}
+
+	small {
+		color: var(--lighter_foreground_text_color);
 	}
 </style>

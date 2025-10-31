@@ -15,8 +15,11 @@
 	.image-link-layout {
 		display: flex;
 		flex-direction: row;
-		align-items: flex-start;
-		gap: 12px;
+		align-items: stretch;
+		gap: 20px;
+
+		flex-grow: 1;
+		align-self: stretch;
 	}
 
 	.image {
@@ -29,6 +32,6 @@
 		display: flex;
 		flex-grow: 1;
 		flex-direction: column;
-		justify-content: flex-start;
+		justify-content: stretch;
 	}
 </style>

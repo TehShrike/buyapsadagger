@@ -22,9 +22,11 @@
 	} = $props()
 </script>
 
-<div>
-	<strong>{title}</strong>
-	<small>{description}</small>
+<div class=filter-selection>
+	<div class="explanation">
+		<strong>{title}</strong>
+		<small>{description}</small>
+	</div>
 	<div class="filter-options">
 		{#each options as option}
 			<RadioLink
@@ -41,17 +43,34 @@
 </div>
 
 <style>
+	.filter-selection {
+		display: flex;
+		flex-direction: column;
+		gap: calc(var(--spacing) / 2);
+		--close: 4px;
+	}
+
+	@media (max-width: 800px) {
+		.filter-selection {
+			--close: 2px;
+		}
+	}
+
+	.explanation {
+		display: flex;
+		flex-direction: column;
+		gap: var(--close);
+	}
+
 	strong {
 		font-weight: 600;
 		font-size: 14px;
-		margin-bottom: 4px;
 		display: block;
 	}
 
 	small {
 		font-size: 12px;
-		color: #666;
-		margin-bottom: 8px;
+		color: var(--lighter_foreground_text_color);
 		line-height: 1.4;
 		display: block;
 	}

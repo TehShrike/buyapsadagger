@@ -78,7 +78,7 @@
 				</p>
 			</div>
 		</details>
-		<div class="card">
+		<div class="card intro-pistol-size-selector">
 			<PistolSizeSelector
 				bind:size={querystring_instance.params_with_defaults.size}
 				get_altered_query_string={querystring_instance.get_altered_query_string}
@@ -88,6 +88,12 @@
 	<div class="filters-and-results">
 		<div class="filters card">
 			<h2 style="color: var(--dark_color); border-bottom: 1px solid var(--dark_color); padding-bottom: 8px;">Filters</h2>
+			<div class="filters-pistol-size-selector">
+				<PistolSizeSelector
+					bind:size={querystring_instance.params_with_defaults.size}
+					get_altered_query_string={querystring_instance.get_altered_query_string}
+				/>
+			</div>
 			{#if displayed_filter_options.has('longer_barrel')}
 				<FilterSelection
 					title="Longer Barrel"
@@ -177,12 +183,6 @@
 
 <style>
 	.container {
-		--base_image_width: 100px;
-
-		@media (max-width: 800px) {
-			--base_image_width: 80px;
-		}
-
 		display: flex;
 		flex-direction: column;
 		align-items: stretch;
@@ -231,6 +231,10 @@
 		color: var(--light_color);
 	}
 
+	.filters-pistol-size-selector {
+		display: none;
+	}
+
 	@media (max-width: 800px) {
 		.filters-and-results {
 			flex-direction: column;
@@ -243,6 +247,14 @@
 
 		.intro {
 			align-items: center;
+		}
+
+		.intro-pistol-size-selector {
+			display: none;
+		}
+
+		.filters-pistol-size-selector {
+			display: block;
 		}
 	}
 

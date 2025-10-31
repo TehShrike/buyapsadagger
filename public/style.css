@@ -1,5 +1,6 @@
 :root {
 	--light_color: #f5f8f5;
+	--lighter_foreground_text_color: #666;
 	--dark_color: #1a2e1a;
 	--background_color: var(--dark_color);
 	--selected_color: #e8f4e0;
