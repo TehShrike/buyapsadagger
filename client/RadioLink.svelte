@@ -22,13 +22,24 @@
 	let active = $derived(group_value === name)
 	let href = $derived(get_altered_query_string(group_name, name))
 
-	const onclick = (event: MouseEvent) => {
-		event.preventDefault()
+	const on_express_desire_to_navigate = () => {
 		if (disabled) {
 			return
 		}
 		history.replaceState(null, '', href)
 		group_value = name
+	}
+
+	const onclick = (event: MouseEvent) => {
+		event.preventDefault()
+		on_express_desire_to_navigate()
+	}
+
+	const onkeydown = (event: KeyboardEvent) => {
+		if (event.code === 'Space') {
+			event.preventDefault()
+			on_express_desire_to_navigate()
+		}
 	}
 </script>
 
@@ -39,6 +50,7 @@
 	aria-checked={active}
 	role="radio"
 	{onclick}
+	{onkeydown}
 	data-large={large}
 >
 	{@render children()}
