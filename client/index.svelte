@@ -170,7 +170,7 @@
 			{#if filtered_daggers.length === 0}
 				<div class="no-results">No results for these filter options</div>
 			{/if}
-			{#each filtered_daggers as product}
+			{#each filtered_daggers as product (product.psa_url)}
 				<a href={product.psa_url} target="_blank" rel="noopener" class="product-card">
 					<h3>{generate_title(product, daggers_data, querystring_instance.params_with_defaults)}</h3>
 					<img src="/images/{product.image_file_name}" alt={product.psa_product_name} />

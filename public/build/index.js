@@ -7614,7 +7614,7 @@ function Client($$anchor, $$props) {
     });
   }
   var node_8 = sibling(node_7, 2);
-  each(node_8, 17, () => get(filtered_daggers), index, ($$anchor2, product) => {
+  each(node_8, 17, () => get(filtered_daggers), (product) => product.psa_url, ($$anchor2, product) => {
     var a_1 = root_7();
     var h3 = child(a_1);
     var text2 = child(h3, true);
