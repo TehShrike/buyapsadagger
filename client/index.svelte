@@ -190,7 +190,7 @@
 	.filters-and-results {
 		display: flex;
 		flex-direction: row;
-		align-items: stretch;
+		align-items: flex-start;
 		justify-content: space-between;
 		gap: calc(var(--spacing) * 1.5);
 	}
@@ -215,7 +215,6 @@
 		grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
 		gap: var(--spacing);
 		flex-grow: 1;
-		align-items: start;
 	}
 
 	.no-results {
