@@ -83,7 +83,7 @@ const extract_product_details = (
 	return product_details
 }
 
-const extract_text = ($element: cheerio.Cheerio<cheerio.Element>): string => {
+const extract_text = ($element: cheerio.Cheerio<any>): string => {
 	// Clone the element to avoid modifying the original
 	const $clone = $element.clone()
 

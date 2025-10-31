@@ -2,6 +2,7 @@ import * as fs from 'fs/promises'
 import * as path from 'path'
 import { fileURLToPath } from 'url'
 import type { DaggersData } from '../client/product.d.ts'
+import assert from '#lib/assert.ts'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -32,7 +33,9 @@ const download_product_images = async (): Promise<void> => {
 		return
 	}
 
-	const daggers_data: DaggersData = JSON.parse(json_match[1])
+	const json_str = json_match[1]
+	assert(json_str)
+	const daggers_data: DaggersData = JSON.parse(json_str)
 	const products = daggers_data.daggers
 
 	console.log(`Downloading images for ${products.length} products...`)
@@ -42,6 +45,7 @@ const download_product_images = async (): Promise<void> => {
 
 	for (let i = 0; i < products.length; i++) {
 		const product = products[i]
+		assert(product)
 		const output_path = path.join(images_dir, product.image_file_name)
 
 		try {

@@ -1,5 +1,5 @@
 {
-  "include": ["client/**/*.ts", "client/**/*.svelte"],
+  "include": ["client/**/*.ts", "client/**/*.svelte", "lib/**/*.ts", "psa-parsers/**/*.ts"],
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
     // File Layout
@@ -13,6 +13,11 @@
     "lib": ["esnext", "dom"],
     "types": ["node"],
     // and npm install -D @types/node
+
+    // Path mappings
+    "paths": {
+      "#lib/*": ["./lib/*"]
+    },
 
     // Other Outputs
     "sourceMap": true,

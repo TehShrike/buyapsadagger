@@ -28,12 +28,16 @@ type RawProduct = {
 
 const extract_numeric_value = (value: string): number => {
 	const match = value.match(/(\d+\.?\d*)/)
-	return match ? parseFloat(match[1]) : 0
+	if (!match) return 0
+	const captured = match[1]
+	assert(captured)
+	return parseFloat(captured)
 }
 
 const get_image_filename_from_url = (psa_url: string): string => {
 	const url_parts = psa_url.split('/')
 	const filename_with_extension = url_parts[url_parts.length - 1]
+	assert(filename_with_extension)
 	const filename_without_extension = filename_with_extension.replace('.html', '')
 	return `${filename_without_extension}.jpg`
 }
@@ -107,7 +111,9 @@ const extract_color_from_frame = (frame_string: string): string | null => {
 	// Look for "Polymer, [color name]" pattern
 	const match = frame_string.match(/Polymer,\s*(.+)/i)
 	if (match) {
-		let color = match[1].trim()
+		const captured = match[1]
+		assert(captured)
+		let color = captured.trim()
 
 		// Ignore if the color is just "Laser Stippled"
 		if (color.toLowerCase() === 'laser stippled') {
@@ -242,8 +248,12 @@ const extract_magazine_info = (
 	for (const pattern of count_patterns) {
 		const match = combined_text.match(pattern)
 		if (match) {
-			const count = parseInt(match[1])
-			const size = parseInt(match[2])
+			const count_str = match[1]
+			const size_str = match[2]
+			assert(count_str)
+			assert(size_str)
+			const count = parseInt(count_str)
+			const size = parseInt(size_str)
 			return { count, size }
 		}
 	}
@@ -268,7 +278,9 @@ const extract_magazine_info = (
 		let size: number | null = null
 		const size_match = magazine_info.match(/(\d+)rd/i)
 		if (size_match) {
-			const parsed_size = parseInt(size_match[1])
+			const size_str = size_match[1]
+			assert(size_str)
+			const parsed_size = parseInt(size_str)
 			// Only accept PSA standard magazine sizes
 			if (parsed_size === 15 || parsed_size === 17) {
 				size = parsed_size
@@ -281,7 +293,9 @@ const extract_magazine_info = (
 	// Look in features for magazine info as fallback
 	const features_size_match = features.match(/(\d{2})rd\s+magazine/i)
 	if (features_size_match) {
-		const parsed_size = parseInt(features_size_match[1])
+		const size_str = features_size_match[1]
+		assert(size_str)
+		const parsed_size = parseInt(size_str)
 		if (parsed_size === 15 || parsed_size === 17) {
 			return { count: 1, size: parsed_size }
 		}

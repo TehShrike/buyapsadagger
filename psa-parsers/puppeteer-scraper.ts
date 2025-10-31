@@ -69,7 +69,7 @@ export const scrape_listing_pages = async (
 					timeout: 30000,
 				})
 			} catch (error) {
-				console.log('Failed to navigate to next page:', error.message)
+				console.log('Failed to navigate to next page:', error instanceof Error ? error.message : String(error))
 				break
 			}
 
