@@ -3415,6 +3415,95 @@ function validate_snippet_args(anchor, ...args) {
   }
 }
 
+// node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dom/blocks/if.js
+function if_block(node, fn, elseif = false) {
+  if (hydrating) {
+    hydrate_next();
+  }
+  var anchor = node;
+  var consequent_effect = null;
+  var alternate_effect = null;
+  var condition = UNINITIALIZED;
+  var flags2 = elseif ? EFFECT_TRANSPARENT : 0;
+  var has_branch = false;
+  const set_branch = (fn2, flag = true) => {
+    has_branch = true;
+    update_branch(flag, fn2);
+  };
+  var offscreen_fragment = null;
+  function commit() {
+    if (offscreen_fragment !== null) {
+      offscreen_fragment.lastChild.remove();
+      anchor.before(offscreen_fragment);
+      offscreen_fragment = null;
+    }
+    var active = condition ? consequent_effect : alternate_effect;
+    var inactive = condition ? alternate_effect : consequent_effect;
+    if (active) {
+      resume_effect(active);
+    }
+    if (inactive) {
+      pause_effect(inactive, () => {
+        if (condition) {
+          alternate_effect = null;
+        } else {
+          consequent_effect = null;
+        }
+      });
+    }
+  }
+  const update_branch = (new_condition, fn2) => {
+    if (condition === (condition = new_condition)) return;
+    let mismatch = false;
+    if (hydrating) {
+      const is_else = read_hydration_instruction(anchor) === HYDRATION_START_ELSE;
+      if (!!condition === is_else) {
+        anchor = remove_nodes();
+        set_hydrate_node(anchor);
+        set_hydrating(false);
+        mismatch = true;
+      }
+    }
+    var defer = should_defer_append();
+    var target = anchor;
+    if (defer) {
+      offscreen_fragment = document.createDocumentFragment();
+      offscreen_fragment.append(target = create_text());
+    }
+    if (condition) {
+      consequent_effect ?? (consequent_effect = fn2 && branch(() => fn2(target)));
+    } else {
+      alternate_effect ?? (alternate_effect = fn2 && branch(() => fn2(target)));
+    }
+    if (defer) {
+      var batch = (
+        /** @type {Batch} */
+        current_batch
+      );
+      var active = condition ? consequent_effect : alternate_effect;
+      var inactive = condition ? alternate_effect : consequent_effect;
+      if (active) batch.skipped_effects.delete(active);
+      if (inactive) batch.skipped_effects.add(inactive);
+      batch.add_callback(commit);
+    } else {
+      commit();
+    }
+    if (mismatch) {
+      set_hydrating(true);
+    }
+  };
+  block(() => {
+    has_branch = false;
+    fn(set_branch);
+    if (!has_branch) {
+      update_branch(null, null);
+    }
+  }, flags2);
+  if (hydrating) {
+    anchor = hydrate_node;
+  }
+}
+
 // node_modules/.pnpm/svelte@5.38.10/node_modules/svelte/src/internal/client/dom/blocks/each.js
 var current_each_item = null;
 function index(_, i) {
@@ -4530,26 +4619,30 @@ if (typeof window !== "undefined") {
 
 // client/RadioLink.svelte
 RadioLink[FILENAME] = "client/RadioLink.svelte";
-var onclick = (event2, href, group_value, $$props) => {
+var onclick = (event2, disabled, href, group_value, $$props) => {
   event2.preventDefault();
+  if (disabled()) {
+    return;
+  }
   history.replaceState(null, "", get(href));
   group_value($$props.name);
 };
-var root = add_locations(from_html(`<a role="radio" class="svelte-eew6ub"><!></a>`), RadioLink[FILENAME], [[30, 0]]);
+var root = add_locations(from_html(`<a role="radio" class="svelte-eew6ub"><!></a>`), RadioLink[FILENAME], [[35, 0]]);
 function RadioLink($$anchor, $$props) {
   check_target(new.target);
   push($$props, true, RadioLink);
-  let group_value = prop($$props, "group_value", 15), large = prop($$props, "large", 3, false);
+  let group_value = prop($$props, "group_value", 15), large = prop($$props, "large", 3, false), disabled = prop($$props, "disabled", 3, false);
   let active = tag(user_derived(() => strict_equals(group_value(), $$props.name)), "active");
   let href = tag(user_derived(() => $$props.get_altered_query_string($$props.group_name, $$props.name)), "href");
   var $$exports = { ...legacy_api() };
   var a = root();
-  a.__click = [onclick, href, group_value, $$props];
+  a.__click = [onclick, disabled, href, group_value, $$props];
   var node = child(a);
-  add_svelte_meta(() => snippet(node, () => $$props.children), "render", RadioLink, 31, 1);
+  add_svelte_meta(() => snippet(node, () => $$props.children), "render", RadioLink, 44, 1);
   reset(a);
   template_effect(() => {
-    set_attribute2(a, "href", get(href));
+    set_attribute2(a, "href", disabled() ? null : get(href));
+    set_attribute2(a, "data-disabled", disabled());
     set_attribute2(a, "data-active", get(active));
     set_attribute2(a, "aria-checked", get(active));
     set_attribute2(a, "data-large", large());
@@ -4737,7 +4830,7 @@ function PistolSizeSelector($$anchor, $$props) {
 
 // client/FilterSelection.svelte
 FilterSelection[FILENAME] = "client/FilterSelection.svelte";
-var root4 = add_locations(from_html(`<div><strong class="svelte-8b3y4w"> </strong> <small class="svelte-8b3y4w"> </small> <div class="filter-options svelte-8b3y4w"></div></div>`), FilterSelection[FILENAME], [[24, 0, [[25, 1], [26, 1], [27, 1]]]]);
+var root4 = add_locations(from_html(`<div><strong class="svelte-8b3y4w"> </strong> <small class="svelte-8b3y4w"> </small> <div class="filter-options svelte-8b3y4w"></div></div>`), FilterSelection[FILENAME], [[25, 0, [[26, 1], [27, 1], [28, 1]]]]);
 function FilterSelection($$anchor, $$props) {
   check_target(new.target);
   push($$props, true, FilterSelection);
@@ -4755,6 +4848,7 @@ function FilterSelection($$anchor, $$props) {
   add_svelte_meta(
     () => each(div_1, 21, () => $$props.options, index, ($$anchor2, option) => {
       {
+        let $0 = user_derived(() => get(option).disabled ?? false);
         $$ownership_validator.binding("selected_value", RadioLink, selected_value);
         add_svelte_meta(
           () => RadioLink($$anchor2, {
@@ -4766,6 +4860,9 @@ function FilterSelection($$anchor, $$props) {
             },
             get get_altered_query_string() {
               return $$props.get_altered_query_string;
+            },
+            get disabled() {
+              return get($0);
             },
             get group_value() {
               return selected_value();
@@ -4783,7 +4880,7 @@ function FilterSelection($$anchor, $$props) {
           }),
           "component",
           FilterSelection,
-          29,
+          30,
           3,
           { componentTag: "RadioLink" }
         );
@@ -4791,7 +4888,7 @@ function FilterSelection($$anchor, $$props) {
     }),
     "each",
     FilterSelection,
-    28,
+    29,
     2
   );
   reset(div_1);
@@ -4804,7 +4901,7 @@ function FilterSelection($$anchor, $$props) {
   return pop($$exports);
 }
 
-// psa-parsers/assert.ts
+// lib/assert.ts
 function assert(condition, message) {
   if (!condition) {
     throw new Error(message || "Assertion failed");
@@ -4814,40 +4911,17 @@ var assert_default = assert;
 
 // client/generate_title.ts
 var get_size = (product) => {
-  const { size_name } = product;
-  if (size_name === "micro") {
+  const { size } = product;
+  if (size === "micro") {
     return "Micro";
   }
-  if (size_name === "compact") {
+  if (size === "compact") {
     return "Compact";
   }
-  if (size_name === "full_size_s") {
+  if (size === "full_size_s") {
     return "Full Size";
   }
-  throw new Error(`Unknown size: ${size_name}`);
-};
-var get_slide_color_name = (color_key, metadata) => {
-  const color_name = metadata.slide_colors[color_key];
-  assert_default(color_name);
-  return color_name;
-};
-var get_frame_color_name = (color_key, metadata) => {
-  const color_name = metadata.frame_colors[color_key];
-  assert_default(color_name);
-  return color_name;
-};
-var get_color = (product, metadata) => {
-  const { slide_color, frame_color } = product;
-  if (!slide_color && !frame_color) {
-    return null;
-  }
-  if (slide_color === frame_color) {
-    return get_slide_color_name(slide_color, metadata);
-  }
-  if (slide_color && frame_color) {
-    return `${get_slide_color_name(slide_color, metadata)} + ${get_frame_color_name(frame_color, metadata)}`;
-  }
-  return slide_color ? get_slide_color_name(slide_color, metadata) : get_frame_color_name(frame_color, metadata);
+  throw new Error(`Unknown size: ${size}`);
 };
 var join_non_null_values = (values) => {
   return values.filter(Boolean).join(", ");
@@ -4865,15 +4939,29 @@ var get_optic_compatibility = (product) => {
   }
   throw new Error(`Unknown optic compatibility: ${optic_compatibility}`);
 };
+var get_slide_coating = (product) => {
+  const { slide_coating } = product;
+  if (slide_coating === "none") {
+    return null;
+  }
+  if (slide_coating === "dlc") {
+    return "diamond-like slide coating";
+  }
+  if (slide_coating === "cerakote") {
+    return "ceramic slide coating";
+  }
+  throw new Error(`Unknown slide coating: ${slide_coating}`);
+};
 var generate_title = (product, metadata, current_filters) => {
   return join_non_null_values([
     get_size(product),
-    get_color(product, metadata),
+    // get_color(product, metadata),
     product.threaded_barrel && current_filters.threaded_barrel === "any" ? "Threaded" : null,
     product.night_sight && current_filters.night_sight === "any" ? "Night Sights" : null,
     // (product.compensated_slide && current_filters.compensated_slide === 'any') ? 'Compensated Slide' : null,
-    product.longer_barrel && current_filters.extra_long_barrel === "any" ? "(Longer Barrel)" : null,
-    get_optic_compatibility(product),
+    product.longer_barrel && current_filters.longer_barrel === "any" ? "(Longer Barrel)" : null,
+    current_filters.optic_compatibility === "any" ? get_optic_compatibility(product) : null,
+    get_slide_coating(product),
     product.number_of_included_mags > 1 ? `${product.number_of_included_mags} Magazines` : null
   ]);
 };
@@ -4945,7 +5033,7 @@ var data = {
       "price": 369.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/5/1/51655130972_1.jpg",
       "image_file_name": "dg02-51655130972.jpg",
-      "size_name": "full_size_s",
+      "size": "full_size_s",
       "width": 1.28,
       "length": 7.65,
       "height": 5.38,
@@ -4955,7 +5043,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "sniper_green",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "black",
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -4964,36 +5052,12 @@ var data = {
       "mag_size": 17
     },
     {
-      "psa_product_name": "PSA Dagger Complete SW1 RMR Pistol With Black Fluted Threaded Barrel, FDE",
-      "psa_url": "https://palmettostatearmory.com/disc-psa-dagger-complete-sw1-rmr-pistol-with-black-fluted-threaded-barrel-extreme-carry-cut-fde-rear-sight-rear.html",
-      "price": 399.99,
-      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655187645_4425_1.jpg",
-      "image_file_name": "disc-psa-dagger-complete-sw1-rmr-pistol-with-black-fluted-threaded-barrel-extreme-carry-cut-fde-rear-sight-rear.jpg",
-      "size_name": "compact",
-      "width": 1.28,
-      "length": 7.15,
-      "height": 4.78,
-      "barrel_length": 4.5,
-      "longer_barrel": false,
-      "threaded_barrel": true,
-      "night_sight": false,
-      "compensated_slide": false,
-      "slide_color": "flat_dark_earth",
-      "cerakote_slide_coating": true,
-      "frame_color": null,
-      "optic_compatibility": "rmr",
-      "has_cover_plate": true,
-      "mag_bag_bonus": true,
-      "number_of_included_mags": 1,
-      "mag_size": 15
-    },
-    {
       "psa_product_name": "PSA Custom Compact Dagger RMR Pistol With Chameleon Fluted Barrel, Black",
       "psa_url": "https://palmettostatearmory.com/psa-custom-compact-dagger-rmr-pistol-with-chameleon-spiral-fluted-barrel-black.html",
       "price": 449.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655189569_52125_1.jpg",
       "image_file_name": "psa-custom-compact-dagger-rmr-pistol-with-chameleon-spiral-fluted-barrel-black.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.65,
       "height": 4.78,
@@ -5003,7 +5067,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "black",
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -5017,7 +5081,7 @@ var data = {
       "price": 449.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655189566_51225_1.jpg",
       "image_file_name": "psa-custom-compact-dagger-rmr-pistol-with-threaded-dlc-barrel-black.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.65,
       "height": 4.78,
@@ -5027,7 +5091,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "black",
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -5041,7 +5105,7 @@ var data = {
       "price": 449.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655189568_51225_1.jpg",
       "image_file_name": "psa-custom-compact-dagger-rmr-pistol-with-threaded-rose-gold-barrel-black.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.65,
       "height": 4.78,
@@ -5051,7 +5115,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "black",
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -5065,7 +5129,7 @@ var data = {
       "price": 449.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655189567_51225_1.jpg",
       "image_file_name": "psa-custom-compact-dagger-rmr-pistol-with-threaded-stainless-barrel-black.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.65,
       "height": 4.78,
@@ -5075,7 +5139,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "black",
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -5089,7 +5153,7 @@ var data = {
       "price": 449.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655186852_51225_1.jpg",
       "image_file_name": "psa-custom-compact-dagger-rmr-pistol-with-threaded-tin-barrel-black.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.65,
       "height": 4.78,
@@ -5099,7 +5163,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "black",
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -5113,7 +5177,7 @@ var data = {
       "price": 359.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655152685_42524_1_1_.jpg",
       "image_file_name": "psa-dagger-9mm-pistol-shield-cut-with-night-sights-black.jpg",
-      "size_name": "micro",
+      "size": "micro",
       "width": 1.1,
       "length": 6.5,
       "height": 4.7,
@@ -5123,7 +5187,7 @@ var data = {
       "night_sight": true,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
@@ -5137,7 +5201,7 @@ var data = {
       "price": 329.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/5/1/51655129779_1.jpg",
       "image_file_name": "psa-dagger-compact-9mm-pistol-extreme-carry-cut-slide-with-night-sights-non-threaded-barrel-sniper-green-2.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.15,
       "height": 4.78,
@@ -5147,7 +5211,7 @@ var data = {
       "night_sight": true,
       "compensated_slide": false,
       "slide_color": "sniper_green",
-      "cerakote_slide_coating": false,
+      "slide_coating": "none",
       "frame_color": "sniper_green",
       "optic_compatibility": "none",
       "has_cover_plate": false,
@@ -5161,7 +5225,7 @@ var data = {
       "price": 379.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655185370_3725_1.jpg",
       "image_file_name": "psa-dagger-compact-9mm-pistol-with-c-1-rmr-compensated-slide-black.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.15,
       "height": 4.78,
@@ -5171,7 +5235,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": true,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -5185,7 +5249,7 @@ var data = {
       "price": 379.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655185371_3725_1.jpg",
       "image_file_name": "psa-dagger-compact-9mm-pistol-with-c-1-rmr-compensated-slide-flat-dark-earth.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.15,
       "height": 4.78,
@@ -5195,7 +5259,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": true,
       "slide_color": "flat_dark_earth",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -5209,7 +5273,7 @@ var data = {
       "price": 379.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655185372_3725_1_1_.jpg",
       "image_file_name": "psa-dagger-compact-9mm-pistol-with-c-1-rmr-compensated-slide-sniper-green.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.15,
       "height": 4.78,
@@ -5219,7 +5283,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": true,
       "slide_color": "sniper_green",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -5233,7 +5297,7 @@ var data = {
       "price": 299.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/9/1/910115111_51024_1.jpg",
       "image_file_name": "psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-black-dlc.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.15,
       "height": 4.78,
@@ -5243,7 +5307,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "none",
       "has_cover_plate": false,
@@ -5257,7 +5321,7 @@ var data = {
       "price": 299.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655128741_51024_1.jpg",
       "image_file_name": "psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-flat-dark-earth.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.15,
       "height": 4.78,
@@ -5267,7 +5331,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "flat_dark_earth",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "flat_dark_earth",
       "optic_compatibility": "none",
       "has_cover_plate": false,
@@ -5281,7 +5345,7 @@ var data = {
       "price": 329.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/9/1/910125111_1.jpg",
       "image_file_name": "psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-night-sights-black-dlc-2.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.15,
       "height": 4.78,
@@ -5291,7 +5355,7 @@ var data = {
       "night_sight": true,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "none",
       "has_cover_plate": false,
@@ -5305,7 +5369,7 @@ var data = {
       "price": 359.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655116726_1_1.jpg",
       "image_file_name": "psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-rmr-slide-ameriglo-lower-1-3-co-witness-sights-2-tone-flat-dark-earth-with-psa-soft-case.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.65,
       "height": 4.78,
@@ -5315,7 +5379,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "flat_dark_earth",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -5329,7 +5393,7 @@ var data = {
       "price": 359.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655116727_1_1.jpg",
       "image_file_name": "psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-rmr-slide-ameriglo-lower-1-3-co-witness-sights-threaded-barrel-2-tone-sniper-green-with-psa-soft-case.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.65,
       "height": 4.78,
@@ -5339,7 +5403,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "sniper_green",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -5353,7 +5417,7 @@ var data = {
       "price": 349.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/9/1/910132111-1_1.jpg",
       "image_file_name": "psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-rmr-slide-black.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.15,
       "height": 4.78,
@@ -5363,7 +5427,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": null,
-      "cerakote_slide_coating": false,
+      "slide_coating": "dlc",
       "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -5377,7 +5441,7 @@ var data = {
       "price": 459.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/s/c/screenshot_2023-03-08_at_9.24.34_am_1.png",
       "image_file_name": "psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-rmr-threaded-barrel-with-10-15rd-magazines-pistol-case-flat-dark-earth.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 0,
       "length": 0,
       "height": 0,
@@ -5387,7 +5451,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": null,
-      "cerakote_slide_coating": false,
+      "slide_coating": "none",
       "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -5401,7 +5465,7 @@ var data = {
       "price": 299.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/5/1/51655129773_1.jpg",
       "image_file_name": "psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-sniper-green.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.15,
       "height": 4.78,
@@ -5411,7 +5475,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "sniper_green",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "sniper_green",
       "optic_compatibility": "none",
       "has_cover_plate": false,
@@ -5425,7 +5489,7 @@ var data = {
       "price": 469.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/5/1/51655134997_1_1.jpg",
       "image_file_name": "psa-dagger-compact-9mm-pistol-with-sw1-ecc-rmr-slide-threaded-barrel-w-10-15rd-mag-and-bag-sniper-green-rear-sight-rear.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 0,
       "length": 0,
       "height": 0,
@@ -5435,7 +5499,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": null,
-      "cerakote_slide_coating": false,
+      "slide_coating": "none",
       "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -5449,7 +5513,7 @@ var data = {
       "price": 369.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655125591_1.jpg",
       "image_file_name": "psa-dagger-compact-9mm-pistol-with-sw1-extreme-carry-cut-rmr-slide-non-threaded-barrel-2-tone-flat-dark-earth.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.15,
       "height": 4.78,
@@ -5459,7 +5523,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "flat_dark_earth",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -5473,7 +5537,7 @@ var data = {
       "price": 369.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655125592_1.jpg",
       "image_file_name": "psa-dagger-compact-9mm-pistol-with-sw1-extreme-carry-cut-rmr-slide-non-threaded-barrel-2-tone-sniper-green.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.15,
       "height": 4.78,
@@ -5483,7 +5547,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "sniper_green",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -5497,7 +5561,7 @@ var data = {
       "price": 369.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655125590_1.jpg",
       "image_file_name": "psa-dagger-compact-9mm-pistol-with-sw1-extreme-carry-cut-rmr-slide-non-threaded-barrel-black-dlc.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.15,
       "height": 4.78,
@@ -5507,7 +5571,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -5521,7 +5585,7 @@ var data = {
       "price": 379.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/7/a/7a4a2500_1.jpg",
       "image_file_name": "psa-dagger-compact-9mm-pistol-with-sw1-extreme-carry-cut-rmr-slide-threaded-barrel-2-tone-flat-dark-earth2.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.65,
       "height": 4.78,
@@ -5531,7 +5595,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "flat_dark_earth",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "flat_dark_earth",
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -5545,7 +5609,7 @@ var data = {
       "price": 379.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/7/a/7a4a7801_1_.jpg",
       "image_file_name": "psa-dagger-compact-9mm-pistol-with-sw1-extreme-carry-cut-rmr-slide-threaded-barrel-2-tone-sniper-green.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.15,
       "height": 4.78,
@@ -5555,7 +5619,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "sniper_green",
-      "cerakote_slide_coating": false,
+      "slide_coating": "none",
       "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -5569,7 +5633,7 @@ var data = {
       "price": 379.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655124750_1.jpg",
       "image_file_name": "psa-dagger-compact-9mm-pistol-with-sw1-extreme-carry-cut-rmr-slide-threaded-barrel-black-dlc.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.15,
       "height": 4.78,
@@ -5579,7 +5643,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -5593,7 +5657,7 @@ var data = {
       "price": 389.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655135871_32224_1_1_.jpg",
       "image_file_name": "psa-dagger-compact-9mm-pistol-with-sw1-rmr-slide-stainless-threaded-barrel-black.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.15,
       "height": 4.78,
@@ -5603,7 +5667,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -5617,7 +5681,7 @@ var data = {
       "price": 379.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655123178_1.jpg",
       "image_file_name": "psa-dagger-compact-9mm-pistol-with-sw2-extreme-carry-cut-rmr-slide-threaded-barrel-2-tone-flat-dark-earth.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.65,
       "height": 4.78,
@@ -5627,7 +5691,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "flat_dark_earth",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -5641,7 +5705,7 @@ var data = {
       "price": 379.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/7/a/7a4a7832.jpg",
       "image_file_name": "psa-dagger-compact-9mm-pistol-with-sw2-extreme-carry-cut-rmr-slide-threaded-barrel-2-tone-sniper-green.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.65,
       "height": 4.78,
@@ -5651,7 +5715,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "sniper_green",
-      "cerakote_slide_coating": false,
+      "slide_coating": "none",
       "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -5665,7 +5729,7 @@ var data = {
       "price": 379.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/7/a/7a4a7005.jpg",
       "image_file_name": "psa-dagger-compact-9mm-pistol-with-sw2-extreme-carry-cut-rmr-slide-threaded-barrel-black-dlc.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.65,
       "height": 4.78,
@@ -5675,7 +5739,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -5689,7 +5753,7 @@ var data = {
       "price": 379.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655128774_4.jpg",
       "image_file_name": "psa-dagger-compact-9mm-pistol-with-sw2-extreme-carry-cut-rmr-slide-threaded-barrel-flat-dark-earth.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.65,
       "height": 4.78,
@@ -5699,7 +5763,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "flat_dark_earth",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -5713,7 +5777,7 @@ var data = {
       "price": 379.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg0151655142747_82223_1_1_.jpg",
       "image_file_name": "psa-dagger-compact-9mm-pistol-with-sw6-rmr-slide-non-threaded-barrel-dlc-black.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.15,
       "height": 4.78,
@@ -5723,7 +5787,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -5737,7 +5801,7 @@ var data = {
       "price": 379.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg0151655142749_82223_1_1_.jpg",
       "image_file_name": "psa-dagger-compact-9mm-pistol-with-sw6-rmr-slide-non-threaded-barrel-fde.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.15,
       "height": 4.78,
@@ -5747,7 +5811,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "flat_dark_earth",
-      "cerakote_slide_coating": false,
+      "slide_coating": "none",
       "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -5761,7 +5825,7 @@ var data = {
       "price": 389.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655145936_112823_1_1_.jpg",
       "image_file_name": "psa-dagger-compact-9mm-pistol-with-sw6-rmr-slide-stainless-non-threaded-barrel-black.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.15,
       "height": 4.78,
@@ -5771,7 +5835,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -5785,7 +5849,7 @@ var data = {
       "price": 389.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg0151655142748_82223_1_1_.jpg",
       "image_file_name": "psa-dagger-compact-9mm-pistol-with-sw6-rmr-slide-threaded-barrel-dlc-black.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.15,
       "height": 4.78,
@@ -5795,7 +5859,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -5809,7 +5873,7 @@ var data = {
       "price": 389.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655140148_5724_1_1_.jpg",
       "image_file_name": "psa-dagger-compact-9mm-pistol-with-swr-rmr-slide-green-copper-threaded-barrel.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.65,
       "height": 4.78,
@@ -5819,7 +5883,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "sniper_green",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "sniper_green",
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -5833,7 +5897,7 @@ var data = {
       "price": 389.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655131023_32824_1_1_.jpg",
       "image_file_name": "psa-dagger-compact-9mm-pistol-with-swr-rmr-slide-threaded-barrel-dlc-black-rear-sight-rear.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.15,
       "height": 4.78,
@@ -5843,7 +5907,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": false,
+      "slide_coating": "dlc",
       "frame_color": "black",
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -5857,7 +5921,7 @@ var data = {
       "price": 379.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655131076_32824_1_1_.jpg",
       "image_file_name": "psa-dagger-compact-9mm-pistol-with-swr-rmr-slide-threaded-barrel-fde-2-tone-rear-sight-rear.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.15,
       "height": 4.78,
@@ -5867,7 +5931,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "flat_dark_earth",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "black",
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -5881,7 +5945,7 @@ var data = {
       "price": 379.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655131077_32924_1_1_.jpg",
       "image_file_name": "psa-dagger-compact-9mm-pistol-with-swr-rmr-slide-threaded-barrel-green-2-tone-rear-sight-rear.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.15,
       "height": 4.78,
@@ -5891,7 +5955,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "sniper_green",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "black",
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -5905,7 +5969,7 @@ var data = {
       "price": 379.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655130872_32824_1_1_.jpg",
       "image_file_name": "psa-dagger-compact-9mm-pistol-with-swr-rmr-slide-tin-non-threaded-barrel-flat-dark-earth.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.15,
       "height": 4.78,
@@ -5915,7 +5979,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "flat_dark_earth",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "flat_dark_earth",
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -5929,7 +5993,7 @@ var data = {
       "price": 379.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655130873_32924_1_1_.jpg",
       "image_file_name": "psa-dagger-compact-9mm-pistol-with-swr-rmr-slide-tin-non-threaded-barrel-sniper-green-rear-sight-rear.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.15,
       "height": 4.78,
@@ -5939,7 +6003,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "sniper_green",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "sniper_green",
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -5953,7 +6017,7 @@ var data = {
       "price": 379.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655187397_4225_1_1.jpg",
       "image_file_name": "psa-dagger-compact-9mm-pistol-with-x-1-rmr-long-slide-black.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.15,
       "height": 5.38,
@@ -5963,7 +6027,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -5977,7 +6041,7 @@ var data = {
       "price": 379.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655187398_4225_1_1.jpg",
       "image_file_name": "psa-dagger-compact-9mm-pistol-with-x-1-rmr-long-slide-flat-dark-earth.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.15,
       "height": 5.38,
@@ -5987,7 +6051,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "flat_dark_earth",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -6001,7 +6065,7 @@ var data = {
       "price": 449.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655136745_1.jpeg",
       "image_file_name": "psa-dagger-compact-9mm-rmr-pistol-w-10-pmag-27rd-15rd-magazines-psa-pistol-bag2.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 0,
       "length": 0,
       "height": 0,
@@ -6011,7 +6075,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": null,
-      "cerakote_slide_coating": false,
+      "slide_coating": "none",
       "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -6025,7 +6089,7 @@ var data = {
       "price": 349.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655128744_4.jpg",
       "image_file_name": "psa-dagger-compact-9mm-rmr-pistol-with-extreme-carry-cuts-flat-dark-earth.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.15,
       "height": 4.78,
@@ -6035,7 +6099,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "flat_dark_earth",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "flat_dark_earth",
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -6049,7 +6113,7 @@ var data = {
       "price": 359.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655129121_2.jpeg",
       "image_file_name": "psa-dagger-compact-9mm-rmr-pistol-with-threaded-barrel-black-dlc.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.15,
       "height": 4.78,
@@ -6059,7 +6123,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -6073,7 +6137,7 @@ var data = {
       "price": 359.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655128743_3.jpg",
       "image_file_name": "psa-dagger-compact-9mm-rmr-pistol-with-threaded-barrel-flat-dark-earth.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.65,
       "height": 4.78,
@@ -6083,7 +6147,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "flat_dark_earth",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "flat_dark_earth",
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -6097,7 +6161,7 @@ var data = {
       "price": 379.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg0151655129980_032423_1_1.jpg",
       "image_file_name": "psa-dagger-compact-9mm-rmr-pistol-with-threaded-barrel-sniper-green.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.65,
       "height": 4.78,
@@ -6107,7 +6171,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "sniper_green",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "sniper_green",
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -6121,7 +6185,7 @@ var data = {
       "price": 469.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg0151655139887_052623_1.jpg",
       "image_file_name": "psa-dagger-complete-sw1-rmr-pistol-w-gold-barrel-10-15rd-mags-black-dlc.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 0,
       "length": 0,
       "height": 0,
@@ -6131,7 +6195,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": null,
-      "cerakote_slide_coating": false,
+      "slide_coating": "none",
       "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -6145,7 +6209,7 @@ var data = {
       "price": 429.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655175124_10724_1.jpg",
       "image_file_name": "psa-dagger-complete-sw3-rmr-slide-assembly-w-copper-spiral-fluted-non-threaded-barrel-flat-dark-earth.jpg",
-      "size_name": "compact",
+      "size": "compact",
       "width": 1.28,
       "length": 7.15,
       "height": 4.78,
@@ -6155,7 +6219,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "flat_dark_earth",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -6169,7 +6233,7 @@ var data = {
       "price": 379.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655185368_3625_1_1_.jpg",
       "image_file_name": "psa-dagger-full-size-s-9mm-pistol-with-c-1-rmr-compensated-slide-black.jpg",
-      "size_name": "full_size_s",
+      "size": "full_size_s",
       "width": 1.28,
       "length": 7.15,
       "height": 5.38,
@@ -6179,7 +6243,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": true,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -6193,7 +6257,7 @@ var data = {
       "price": 379.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655185369_3625_1_1_.jpg",
       "image_file_name": "psa-dagger-full-size-s-9mm-pistol-with-c-1-rmr-compensated-slide-flat-dark-earth.jpg",
-      "size_name": "full_size_s",
+      "size": "full_size_s",
       "width": 1.28,
       "length": 7.15,
       "height": 5.38,
@@ -6203,10 +6267,34 @@ var data = {
       "night_sight": false,
       "compensated_slide": true,
       "slide_color": "flat_dark_earth",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
+      "mag_bag_bonus": true,
+      "number_of_included_mags": 1,
+      "mag_size": 17
+    },
+    {
+      "psa_product_name": "PSA Dagger Full Size - S 9mm Pistol With Extreme Carry Cut & Non-Threaded Barrel, Two-Tone Flat Sniper Green",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-full-size-s-9mm-pistol-with-extreme-carry-cut-non-threaded-barrel-two-tone-flat-sniper-green-v2.html",
+      "price": 309.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/5/1/51655130372_1.jpg",
+      "image_file_name": "psa-dagger-full-size-s-9mm-pistol-with-extreme-carry-cut-non-threaded-barrel-two-tone-flat-sniper-green-v2.jpg",
+      "size": "full_size_s",
+      "width": 1.28,
+      "length": 7.15,
+      "height": 5.38,
+      "barrel_length": 3.9,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black_dlc_coating",
+      "slide_coating": "dlc",
+      "frame_color": "sniper_green",
+      "optic_compatibility": "none",
+      "has_cover_plate": false,
       "mag_bag_bonus": true,
       "number_of_included_mags": 1,
       "mag_size": 17
@@ -6217,7 +6305,7 @@ var data = {
       "price": 369.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/5/1/51655130273_1.jpg",
       "image_file_name": "psa-dagger-full-size-s-9mm-pistol-with-extreme-carry-cut-rmr-slide-threaded-barrel-two-tone-sniper-green.jpg",
-      "size_name": "full_size_s",
+      "size": "full_size_s",
       "width": 1.28,
       "length": 7.15,
       "height": 5.38,
@@ -6227,7 +6315,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "sniper_green",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -6241,7 +6329,7 @@ var data = {
       "price": 479.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/5/1/51655132791_1_1.jpg",
       "image_file_name": "psa-dagger-full-size-s-9mm-pistol-with-sw1-rmr-with-threaded-barrel-ameriglo-lower-1-3-co-witness-10-17rd-mags-bag-fde-rear-sight-rear.jpg",
-      "size_name": "full_size_s",
+      "size": "full_size_s",
       "width": 0,
       "length": 0,
       "height": 0,
@@ -6251,7 +6339,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": null,
-      "cerakote_slide_coating": false,
+      "slide_coating": "none",
       "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -6265,7 +6353,7 @@ var data = {
       "price": 379.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655130875_41924_1_1_.jpg",
       "image_file_name": "psa-dagger-full-size-s-9mm-pistol-with-swr-rmr-slide-tin-non-threaded-barrel-sniper-green.jpg",
-      "size_name": "full_size_s",
+      "size": "full_size_s",
       "width": 1.28,
       "length": 7.65,
       "height": 5.38,
@@ -6275,7 +6363,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "sniper_green",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "sniper_green",
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -6289,7 +6377,7 @@ var data = {
       "price": 469.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/s/c/screenshot_2023-06-21_at_1.45.16_pm_1.png",
       "image_file_name": "psa-dagger-full-size-s-9mm-pistol-with-swr-rmr-slide-w-gold-barrel-sniper-green-with-10-17rd-pmags-psa-pistol-bag.jpg",
-      "size_name": "full_size_s",
+      "size": "full_size_s",
       "width": 0,
       "length": 0,
       "height": 0,
@@ -6299,7 +6387,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": null,
-      "cerakote_slide_coating": false,
+      "slide_coating": "none",
       "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -6313,7 +6401,7 @@ var data = {
       "price": 369.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/5/1/51655130985_1.jpg",
       "image_file_name": "psa-dagger-full-size-s-9mm-sw1-rmr-pistol-with-threaded-barrel-1-3-lower-sights.jpg",
-      "size_name": "full_size_s",
+      "size": "full_size_s",
       "width": 1.28,
       "length": 7.65,
       "height": 5.38,
@@ -6323,7 +6411,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "sniper_green",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "sniper_green",
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -6337,7 +6425,7 @@ var data = {
       "price": 369.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg0251655139253_8423_1.jpg",
       "image_file_name": "psa-dagger-full-size-s-9mm-sw2-rmr-pistol-black.jpg",
-      "size_name": "full_size_s",
+      "size": "full_size_s",
       "width": 1.28,
       "length": 7.65,
       "height": 5.38,
@@ -6347,7 +6435,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": false,
+      "slide_coating": "dlc",
       "frame_color": "black",
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -6361,7 +6449,7 @@ var data = {
       "price": 379.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg0251655139258_8423_1.jpg",
       "image_file_name": "psa-dagger-full-size-s-9mm-sw2-rmr-pistol-w-chameleon-threaded-barrel-black.jpg",
-      "size_name": "full_size_s",
+      "size": "full_size_s",
       "width": 1.28,
       "length": 7.65,
       "height": 5.38,
@@ -6371,7 +6459,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": false,
+      "slide_coating": "dlc",
       "frame_color": "black",
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -6385,7 +6473,7 @@ var data = {
       "price": 469.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg0251655137031_041723_1.jpg",
       "image_file_name": "psa-dagger-full-size-s-9mm-sw3-rmr-pistol-with-stainless-non-threaded-barrel-lower-1-3-day-sights-with10-17rd-magazines-and-bag-black.jpg",
-      "size_name": "full_size_s",
+      "size": "full_size_s",
       "width": 0,
       "length": 0,
       "height": 0,
@@ -6395,7 +6483,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": null,
-      "cerakote_slide_coating": false,
+      "slide_coating": "none",
       "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -6409,7 +6497,7 @@ var data = {
       "price": 379.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655130874_41924_1_1_.jpg",
       "image_file_name": "psa-dagger-full-size-s-9mm-swr-rmr-pistol-with-gold-barrel-flat-dark-earth.jpg",
-      "size_name": "full_size_s",
+      "size": "full_size_s",
       "width": 1.28,
       "length": 7.65,
       "height": 5.38,
@@ -6419,7 +6507,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "flat_dark_earth",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "flat_dark_earth",
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -6433,7 +6521,7 @@ var data = {
       "price": 379.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/5/1/51655131120_1.jpg",
       "image_file_name": "psa-dagger-full-size-sx-pistol-with-rmr-extreme-carry-cut-long-slide-lower-1-3-day-sight-long-non-threaded-barrel-flat-dark-earth.jpg",
-      "size_name": "full_size_s",
+      "size": "full_size_s",
       "width": 1.28,
       "length": 7.15,
       "height": 5.38,
@@ -6443,7 +6531,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "flat_dark_earth",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "flat_dark_earth",
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -6457,7 +6545,7 @@ var data = {
       "price": 379.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/5/1/51655131121_1.jpg",
       "image_file_name": "psa-dagger-full-size-sx-pistol-with-rmr-extreme-carry-cut-long-slide-lower-1-3-day-sight-long-non-threaded-barrel-sniper-green.jpg",
-      "size_name": "full_size_s",
+      "size": "full_size_s",
       "width": 1.28,
       "length": 7.15,
       "height": 5.38,
@@ -6467,7 +6555,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "sniper_green",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "sniper_green",
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -6481,7 +6569,7 @@ var data = {
       "price": 479.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655180824.png",
       "image_file_name": "psa-dagger-micro-9mm-pistol-shield-cut-5-15rd-mags-bag-black.jpg",
-      "size_name": "micro",
+      "size": "micro",
       "width": 1.1,
       "length": 6.5,
       "height": 4.7,
@@ -6491,7 +6579,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
@@ -6505,7 +6593,7 @@ var data = {
       "price": 339.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655136024_1.jpg",
       "image_file_name": "psa-dagger-micro-9mm-pistol-shield-cut-black-dlc.jpg",
-      "size_name": "micro",
+      "size": "micro",
       "width": 1.1,
       "length": 6.5,
       "height": 4.7,
@@ -6515,7 +6603,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
@@ -6529,7 +6617,7 @@ var data = {
       "price": 339.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655146998_121123_1_1_.jpg",
       "image_file_name": "psa-dagger-micro-9mm-pistol-shield-cut-fde-slide-2-tone.jpg",
-      "size_name": "micro",
+      "size": "micro",
       "width": 1.1,
       "length": 6.5,
       "height": 4.7,
@@ -6539,7 +6627,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "flat_dark_earth",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
@@ -6553,7 +6641,7 @@ var data = {
       "price": 339.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655150888_3524_1_1_.jpg",
       "image_file_name": "psa-dagger-micro-9mm-pistol-shield-cut-flat-dark-earth.jpg",
-      "size_name": "micro",
+      "size": "micro",
       "width": 1.1,
       "length": 6.5,
       "height": 4.7,
@@ -6563,7 +6651,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "flat_dark_earth",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "flat_dark_earth",
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
@@ -6577,7 +6665,7 @@ var data = {
       "price": 339.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655146999_121123_1_1_.jpg",
       "image_file_name": "psa-dagger-micro-9mm-pistol-shield-cut-sniper-green-slide-2-tone.jpg",
-      "size_name": "micro",
+      "size": "micro",
       "width": 1.1,
       "length": 6.5,
       "height": 4.7,
@@ -6587,7 +6675,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "sniper_green",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
@@ -6601,7 +6689,7 @@ var data = {
       "price": 339.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655150909_3524_1_1_.jpg",
       "image_file_name": "psa-dagger-micro-9mm-pistol-shield-cut-sniper-green2.jpg",
-      "size_name": "micro",
+      "size": "micro",
       "width": 1.1,
       "length": 6.5,
       "height": 4.7,
@@ -6611,7 +6699,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "sniper_green",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "sniper_green",
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
@@ -6625,7 +6713,7 @@ var data = {
       "price": 539.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655136037_1.jpg",
       "image_file_name": "psa-dagger-micro-9mm-pistol-shield-cut-w-holosun-407k-black-dlc.jpg",
-      "size_name": "micro",
+      "size": "micro",
       "width": 1.1,
       "length": 6.5,
       "height": 4.7,
@@ -6635,7 +6723,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
@@ -6649,7 +6737,7 @@ var data = {
       "price": 539.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655147002_121123_1_1_.jpg",
       "image_file_name": "psa-dagger-micro-9mm-pistol-shield-cut-w-holosun-407k-fde-slide-2-tone.jpg",
-      "size_name": "micro",
+      "size": "micro",
       "width": 1.1,
       "length": 6.5,
       "height": 4.7,
@@ -6659,7 +6747,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "flat_dark_earth",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
@@ -6673,7 +6761,7 @@ var data = {
       "price": 539.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655147003_121123_1_1_.jpg",
       "image_file_name": "psa-dagger-micro-9mm-pistol-shield-cut-w-holosun-407k-sniper-green-slide-2-tone.jpg",
-      "size_name": "micro",
+      "size": "micro",
       "width": 1.1,
       "length": 6.5,
       "height": 4.7,
@@ -6683,7 +6771,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "sniper_green",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
@@ -6697,7 +6785,7 @@ var data = {
       "price": 359.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655188413_42525_1.jpg",
       "image_file_name": "psa-dagger-micro-9mm-pistol-shield-cut-with-night-sights-flat-dark-earth.jpg",
-      "size_name": "micro",
+      "size": "micro",
       "width": 1.1,
       "length": 6.5,
       "height": 4.7,
@@ -6707,7 +6795,7 @@ var data = {
       "night_sight": true,
       "compensated_slide": false,
       "slide_color": "flat_dark_earth",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
@@ -6721,7 +6809,7 @@ var data = {
       "price": 359.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655159766_103124_1_2_.jpg",
       "image_file_name": "psa-dagger-micro-9mm-pistol-with-threaded-barrel-shield-cut-black.jpg",
-      "size_name": "micro",
+      "size": "micro",
       "width": 1.1,
       "length": 0,
       "height": 4.7,
@@ -6731,7 +6819,31 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
+      "frame_color": null,
+      "optic_compatibility": "shield_rmsc",
+      "has_cover_plate": true,
+      "mag_bag_bonus": false,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Micro C-1 9mm Pistol - Shield Cut, Black",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-micro-c-1-9mm-pistol-shield-cut-black.html",
+      "price": 359.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655145577_12723_1_1_.jpg",
+      "image_file_name": "psa-dagger-micro-c-1-9mm-pistol-shield-cut-black.jpg",
+      "size": "micro",
+      "width": 1.1,
+      "length": 7.1,
+      "height": 4.7,
+      "barrel_length": 3.41,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": true,
+      "slide_color": "black",
+      "slide_coating": "none",
       "frame_color": null,
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
@@ -6745,7 +6857,7 @@ var data = {
       "price": 359.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655150889_3524_1_1_.jpg",
       "image_file_name": "psa-dagger-micro-c-1-9mm-pistol-shield-cut-flat-dark-earth.jpg",
-      "size_name": "micro",
+      "size": "micro",
       "width": 1.1,
       "length": 7.1,
       "height": 4.7,
@@ -6755,7 +6867,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": true,
       "slide_color": "flat_dark_earth",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "flat_dark_earth",
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
@@ -6769,7 +6881,7 @@ var data = {
       "price": 359.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655150910_3524_1_1_.jpg",
       "image_file_name": "psa-dagger-micro-c-1-9mm-pistol-shield-cut-sniper-green.jpg",
-      "size_name": "micro",
+      "size": "micro",
       "width": 1.1,
       "length": 7.1,
       "height": 4.7,
@@ -6779,11 +6891,35 @@ var data = {
       "night_sight": false,
       "compensated_slide": true,
       "slide_color": "sniper_green",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "sniper_green",
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": false,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Dagger Micro C-1 9mm Pistol - Shield Cut, W/Holosun 407k, Black",
+      "psa_url": "https://palmettostatearmory.com/psa-dagger-micro-c-1-9mm-pistol-shield-cut-w-holosun-407k-black.html",
+      "price": 559.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655145582_12723_1_1_.jpg",
+      "image_file_name": "psa-dagger-micro-c-1-9mm-pistol-shield-cut-w-holosun-407k-black.jpg",
+      "size": "micro",
+      "width": 1.1,
+      "length": 7.1,
+      "height": 4.7,
+      "barrel_length": 3.41,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": true,
+      "slide_color": "black",
+      "slide_coating": "none",
+      "frame_color": null,
+      "optic_compatibility": "shield_rmsc",
+      "has_cover_plate": true,
+      "mag_bag_bonus": true,
       "number_of_included_mags": 1,
       "mag_size": 15
     },
@@ -6793,7 +6929,7 @@ var data = {
       "price": 359.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655145572_101023_1_1_.jpg",
       "image_file_name": "psa-dagger-micro-c-1-complete-9mm-pistol-shield-cut-sniper-green-slide-2-tone.jpg",
-      "size_name": "micro",
+      "size": "micro",
       "width": 1.1,
       "length": 7.1,
       "height": 4.7,
@@ -6803,7 +6939,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": true,
       "slide_color": "sniper_green",
-      "cerakote_slide_coating": false,
+      "slide_coating": "none",
       "frame_color": null,
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
@@ -6817,7 +6953,7 @@ var data = {
       "price": 559.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655145580_101023_1_1_.jpg",
       "image_file_name": "psa-dagger-micro-c-1-complete-9mm-pistol-shield-cut-w-holosun-407k-fde-slide-2-tone.jpg",
-      "size_name": "micro",
+      "size": "micro",
       "width": 1.1,
       "length": 7.1,
       "height": 4.7,
@@ -6827,7 +6963,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": true,
       "slide_color": "flat_dark_earth",
-      "cerakote_slide_coating": false,
+      "slide_coating": "none",
       "frame_color": null,
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
@@ -6841,7 +6977,7 @@ var data = {
       "price": 559.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655145581_101023_1_1_.jpg",
       "image_file_name": "psa-dagger-micro-c-1-complete-9mm-pistol-shield-cut-w-holosun-407k-sniper-green-slide-2-tone.jpg",
-      "size_name": "micro",
+      "size": "micro",
       "width": 1.1,
       "length": 7.1,
       "height": 4.7,
@@ -6851,7 +6987,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": true,
       "slide_color": "sniper_green",
-      "cerakote_slide_coating": false,
+      "slide_coating": "none",
       "frame_color": null,
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
@@ -6865,7 +7001,7 @@ var data = {
       "price": 359.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655143765_91123_1_1_.jpg",
       "image_file_name": "psa-dagger-micro-complete-9mm-pistol-mc-1-fde-slide-2-tone.jpg",
-      "size_name": "micro",
+      "size": "micro",
       "width": 1.1,
       "length": 7.1,
       "height": 4.7,
@@ -6875,7 +7011,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": true,
       "slide_color": "flat_dark_earth",
-      "cerakote_slide_coating": false,
+      "slide_coating": "none",
       "frame_color": null,
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
@@ -6889,7 +7025,7 @@ var data = {
       "price": 359.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655148591_11024_1_1_.jpg",
       "image_file_name": "psa-dagger-micro-x-1-9mm-pistol-shield-cut-non-threaded-barrel-sniper-green-slide-2-tone.jpg",
-      "size_name": "micro",
+      "size": "micro",
       "width": 1.1,
       "length": 7.2,
       "height": 4.7,
@@ -6899,7 +7035,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "sniper_green",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
@@ -6913,7 +7049,7 @@ var data = {
       "price": 359.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655150911_3524_1_1_.jpg",
       "image_file_name": "psa-dagger-micro-x-1-9mm-pistol-shield-cut-non-threaded-barrel-sniper-green2.jpg",
-      "size_name": "micro",
+      "size": "micro",
       "width": 1.1,
       "length": 7.2,
       "height": 4.7,
@@ -6923,7 +7059,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "sniper_green",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "sniper_green",
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
@@ -6937,7 +7073,7 @@ var data = {
       "price": 359.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655145550_092923_1_1_.jpg",
       "image_file_name": "psa-dagger-micro-x-1-complete-9mm-pistol-non-threaded-barrel-fde-slide-2-tone.jpg",
-      "size_name": "micro",
+      "size": "micro",
       "width": 1.1,
       "length": 7.2,
       "height": 4.7,
@@ -6947,35 +7083,11 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "flat_dark_earth",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
       "mag_bag_bonus": false,
-      "number_of_included_mags": 1,
-      "mag_size": 15
-    },
-    {
-      "psa_product_name": "PSA Dagger Micro X-1 9mm Pistol -Shield Cut, Non-Threaded Barrel W/Holosun 407k, Black",
-      "psa_url": "https://palmettostatearmory.com/psa-dagger-micro-x-1-complete-9mm-pistol-shield-cut-non-threaded-barrel-w-holosun-407k-black-dlc.html",
-      "price": 559.99,
-      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655145557_092923_1_1_.jpg",
-      "image_file_name": "psa-dagger-micro-x-1-complete-9mm-pistol-shield-cut-non-threaded-barrel-w-holosun-407k-black-dlc.jpg",
-      "size_name": "micro",
-      "width": 1.1,
-      "length": 7.2,
-      "height": 4.7,
-      "barrel_length": 4.15,
-      "longer_barrel": true,
-      "threaded_barrel": false,
-      "night_sight": false,
-      "compensated_slide": false,
-      "slide_color": "black",
-      "cerakote_slide_coating": true,
-      "frame_color": null,
-      "optic_compatibility": "shield_rmsc",
-      "has_cover_plate": true,
-      "mag_bag_bonus": true,
       "number_of_included_mags": 1,
       "mag_size": 15
     },
@@ -6985,7 +7097,7 @@ var data = {
       "price": 559.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655145558_092923_1_1_.jpg",
       "image_file_name": "psa-dagger-micro-x-1-complete-9mm-pistol-shield-cut-non-threaded-barrel-w-holosun-407k-two-tone-fde-slide.jpg",
-      "size_name": "micro",
+      "size": "micro",
       "width": 1.1,
       "length": 7.2,
       "height": 4.7,
@@ -6995,7 +7107,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "flat_dark_earth",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "shield_rmsc",
       "has_cover_plate": true,
@@ -7009,7 +7121,7 @@ var data = {
       "price": 459.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg0251655136904_041323_1_1.jpg",
       "image_file_name": "psa-full-size-s-9mm-ecc-rmr-threaded-barrel-lower-1-3-day-sights-pistol-with-10-17rd-magazines-pistol-case-flat-dark-earth.jpg",
-      "size_name": "full_size_s",
+      "size": "full_size_s",
       "width": 0,
       "length": 0,
       "height": 0,
@@ -7019,7 +7131,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": null,
-      "cerakote_slide_coating": false,
+      "slide_coating": "none",
       "frame_color": null,
       "optic_compatibility": "rmr",
       "has_cover_plate": true,
@@ -7033,7 +7145,7 @@ var data = {
       "price": 629.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655152390_42224_1_1_.jpg",
       "image_file_name": "psa-sabre-dagger-full-size-s-9mm-pistol-fluted-barrel-w-mag-extensions-m81-woodland-camo.jpg",
-      "size_name": "full_size_s",
+      "size": "full_size_s",
       "width": 1.28,
       "length": 7.15,
       "height": 5.38,
@@ -7043,32 +7155,8 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "m81_woodland_camo",
-      "optic_compatibility": "none",
-      "has_cover_plate": false,
-      "mag_bag_bonus": true,
-      "number_of_included_mags": 2,
-      "mag_size": 17
-    },
-    {
-      "psa_product_name": "PSA Sabre Dagger Full Size - S 9mm Pistol, Ported Barrel, W/Mag Extensions, Black",
-      "psa_url": "https://palmettostatearmory.com/psa-sabre-dagger-full-size-s-9mm-pistol-ported-barrel-w-mag-extensions-black.html",
-      "price": 599.99,
-      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655191654_7325_6.jpg",
-      "image_file_name": "psa-sabre-dagger-full-size-s-9mm-pistol-ported-barrel-w-mag-extensions-black.jpg",
-      "size_name": "full_size_s",
-      "width": 1.28,
-      "length": 7.15,
-      "height": 5.38,
-      "barrel_length": 4,
-      "longer_barrel": false,
-      "threaded_barrel": false,
-      "night_sight": false,
-      "compensated_slide": false,
-      "slide_color": "black",
-      "cerakote_slide_coating": true,
-      "frame_color": "black",
       "optic_compatibility": "none",
       "has_cover_plate": false,
       "mag_bag_bonus": true,
@@ -7081,7 +7169,7 @@ var data = {
       "price": 629.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655191679_7325_6.jpg",
       "image_file_name": "psa-sabre-dagger-full-size-s-9mm-pistol-ported-barrel-w-mag-extensions-m81-woodland-camo.jpg",
-      "size_name": "full_size_s",
+      "size": "full_size_s",
       "width": 1.28,
       "length": 7.15,
       "height": 5.38,
@@ -7091,7 +7179,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "m81_woodland_camo",
       "optic_compatibility": "none",
       "has_cover_plate": false,
@@ -7105,7 +7193,7 @@ var data = {
       "price": 599.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655152373_42224_1_1_.jpg",
       "image_file_name": "psa-sabre-dagger-full-size-s-9mm-pistol-spiral-fluted-barrel-w-mag-extensions-black.jpg",
-      "size_name": "full_size_s",
+      "size": "full_size_s",
       "width": 1.28,
       "length": 7.15,
       "height": 5.38,
@@ -7115,7 +7203,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "black",
       "optic_compatibility": "none",
       "has_cover_plate": false,
@@ -7129,7 +7217,7 @@ var data = {
       "price": 599.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655152113_081224_1.jpg",
       "image_file_name": "psa-sabre-dagger-full-size-s-9mm-pistol-threaded-barrel-w-mag-extensions-black.jpg",
-      "size_name": "full_size_s",
+      "size": "full_size_s",
       "width": 1.28,
       "length": 7.65,
       "height": 5.38,
@@ -7139,7 +7227,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "black",
       "optic_compatibility": "none",
       "has_cover_plate": false,
@@ -7153,7 +7241,7 @@ var data = {
       "price": 629.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655152121_081224_1.jpg",
       "image_file_name": "psa-sabre-dagger-full-size-s-9mm-pistol-threaded-barrel-w-mag-extensions-m81-woodland-camo.jpg",
-      "size_name": "full_size_s",
+      "size": "full_size_s",
       "width": 1.28,
       "length": 7.65,
       "height": 5.38,
@@ -7163,7 +7251,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "m81_woodland_camo",
       "optic_compatibility": "none",
       "has_cover_plate": false,
@@ -7177,7 +7265,7 @@ var data = {
       "price": 599.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655152374_42224_1_1_.jpg",
       "image_file_name": "psa-sabre-dagger-full-size-s-9mm-pistol-tin-fluted-barrel-w-mag-extensions-black.jpg",
-      "size_name": "full_size_s",
+      "size": "full_size_s",
       "width": 1.28,
       "length": 7.15,
       "height": 5.38,
@@ -7187,7 +7275,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "black",
       "optic_compatibility": "none",
       "has_cover_plate": false,
@@ -7201,7 +7289,7 @@ var data = {
       "price": 629.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655152389_42224_1_1_.jpg",
       "image_file_name": "psa-sabre-dagger-full-size-s-9mm-pistol-tin-fluted-barrel-w-mag-extensions-m81-desert-camo.jpg",
-      "size_name": "full_size_s",
+      "size": "full_size_s",
       "width": 1.28,
       "length": 7.15,
       "height": 5.38,
@@ -7211,7 +7299,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "m81_desert_camo",
       "optic_compatibility": "none",
       "has_cover_plate": false,
@@ -7225,7 +7313,7 @@ var data = {
       "price": 599.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655191653_7325_6.jpg",
       "image_file_name": "psa-sabre-dagger-full-size-s-9mm-pistol-tin-ported-barrel-w-mag-extensions-black.jpg",
-      "size_name": "full_size_s",
+      "size": "full_size_s",
       "width": 1.28,
       "length": 7.15,
       "height": 5.38,
@@ -7235,7 +7323,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "black",
       "optic_compatibility": "none",
       "has_cover_plate": false,
@@ -7249,7 +7337,7 @@ var data = {
       "price": 629.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655191652_7325_6.jpg",
       "image_file_name": "psa-sabre-dagger-full-size-s-9mm-pistol-tin-ported-barrel-w-mag-extensions-m81-desert-camo.jpg",
-      "size_name": "full_size_s",
+      "size": "full_size_s",
       "width": 1.28,
       "length": 7.15,
       "height": 5.38,
@@ -7259,7 +7347,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "m81_desert_camo",
       "optic_compatibility": "none",
       "has_cover_plate": false,
@@ -7273,7 +7361,7 @@ var data = {
       "price": 599.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655152119_81224_1.jpg",
       "image_file_name": "psa-sabre-dagger-full-size-s-9mm-pistol-tin-threaded-barrel-w-mag-extensions-black.jpg",
-      "size_name": "full_size_s",
+      "size": "full_size_s",
       "width": 1.28,
       "length": 7.65,
       "height": 5.38,
@@ -7283,7 +7371,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "black",
       "optic_compatibility": "none",
       "has_cover_plate": false,
@@ -7297,7 +7385,7 @@ var data = {
       "price": 629.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655152120_81224_1.jpg",
       "image_file_name": "psa-sabre-dagger-full-size-s-9mm-pistol-tin-threaded-barrel-w-mag-extensions-m81-desert-camo.jpg",
-      "size_name": "full_size_s",
+      "size": "full_size_s",
       "width": 1.28,
       "length": 7.65,
       "height": 5.38,
@@ -7307,7 +7395,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "m81_desert_camo",
       "optic_compatibility": "none",
       "has_cover_plate": false,
@@ -7321,7 +7409,7 @@ var data = {
       "price": 599.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm02-51655197977_92625_1.jpg",
       "image_file_name": "psa-sabre-dagger-micro-9mm-pistol-tin-barrel-w-mag-extensions-black.jpg",
-      "size_name": "micro",
+      "size": "micro",
       "width": 1.1,
       "length": 6.5,
       "height": 4.9,
@@ -7331,7 +7419,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "none",
       "has_cover_plate": false,
@@ -7345,7 +7433,7 @@ var data = {
       "price": 629.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm02-51655197979_92625_1.jpg",
       "image_file_name": "psa-sabre-dagger-micro-9mm-pistol-tin-barrel-w-mag-extensions-m81-desert-camo.jpg",
-      "size_name": "micro",
+      "size": "micro",
       "width": 1.1,
       "length": 6.5,
       "height": 4.9,
@@ -7355,8 +7443,32 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "m81_desert",
+      "optic_compatibility": "none",
+      "has_cover_plate": false,
+      "mag_bag_bonus": false,
+      "number_of_included_mags": 1,
+      "mag_size": 15
+    },
+    {
+      "psa_product_name": "PSA Sabre Dagger Micro 9mm Pistol, TiN Barrel, w/ Mag Extensions, M81 Woodland Camo",
+      "psa_url": "https://palmettostatearmory.com/psa-sabre-dagger-micro-9mm-pistol-tin-barrel-w-mag-extensions-m81-woodland-camo.html",
+      "price": 629.99,
+      "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm02-51655197978_92625_1.jpg",
+      "image_file_name": "psa-sabre-dagger-micro-9mm-pistol-tin-barrel-w-mag-extensions-m81-woodland-camo.jpg",
+      "size": "micro",
+      "width": 1.1,
+      "length": 6.5,
+      "height": 4.9,
+      "barrel_length": 3.41,
+      "longer_barrel": false,
+      "threaded_barrel": false,
+      "night_sight": false,
+      "compensated_slide": false,
+      "slide_color": "black",
+      "slide_coating": "cerakote",
+      "frame_color": "m81_woodland",
       "optic_compatibility": "none",
       "has_cover_plate": false,
       "mag_bag_bonus": false,
@@ -7369,7 +7481,7 @@ var data = {
       "price": 599.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm02-51655197960_92625_1.jpg",
       "image_file_name": "psa-sabre-dagger-micro-9mm-pistol-w-mag-extensions-black.jpg",
-      "size_name": "micro",
+      "size": "micro",
       "width": 1.1,
       "length": 6.5,
       "height": 4.9,
@@ -7379,7 +7491,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": null,
       "optic_compatibility": "none",
       "has_cover_plate": false,
@@ -7393,7 +7505,7 @@ var data = {
       "price": 629.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm02-51655197976_92625_1.jpg",
       "image_file_name": "psa-sabre-dagger-micro-9mm-pistol-w-mag-extensions-m81-desert-camo.jpg",
-      "size_name": "micro",
+      "size": "micro",
       "width": 1.1,
       "length": 6.5,
       "height": 4.9,
@@ -7403,7 +7515,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "m81_desert",
       "optic_compatibility": "none",
       "has_cover_plate": false,
@@ -7417,7 +7529,7 @@ var data = {
       "price": 629.99,
       "original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm02-51655197975_92625_1.jpg",
       "image_file_name": "psa-sabre-dagger-micro-9mm-pistol-w-mag-extensions-m81-woodland-camo.jpg",
-      "size_name": "micro",
+      "size": "micro",
       "width": 1.1,
       "length": 6.5,
       "height": 4.9,
@@ -7427,7 +7539,7 @@ var data = {
       "night_sight": false,
       "compensated_slide": false,
       "slide_color": "black",
-      "cerakote_slide_coating": true,
+      "slide_coating": "cerakote",
       "frame_color": "m81_woodland",
       "optic_compatibility": "none",
       "has_cover_plate": false,
@@ -7438,8 +7550,9 @@ var data = {
   ],
   "slide_colors": {
     "sniper_green": "Sniper Green",
+    "black": "Black",
     "flat_dark_earth": "Flat Dark Earth",
-    "black": "Black"
+    "black_dlc_coating": "Black DLC Coating"
   },
   "frame_colors": {
     "black": "Black",
@@ -7453,50 +7566,201 @@ var data = {
 };
 var daggers_data_default = data;
 
+// client/querystring_options.ts
+var ANY = "any";
+var SIZES = ["micro", "compact", "full_size_s"];
+var default_values = {
+  size: "compact",
+  longer_barrel: ANY,
+  threaded_barrel: ANY,
+  night_sight: ANY,
+  optic_compatibility: ANY,
+  has_cover_plate: ANY
+};
+var FILTER_PARAM_KEYS = Object.keys(default_values);
+
+// lib/array.ts
+var for_each = (arr, fn) => {
+  let i = 0, len = arr.length;
+  for (; i < len; i++) {
+    fn(arr[i], i);
+  }
+};
+var filter = (arr, predicate) => {
+  const length = arr.length, res = [];
+  for (let i = 0; i < length; i++) {
+    if (predicate(arr[i])) {
+      res.push(arr[i]);
+    }
+  }
+  return res;
+};
+var map = (arr, mapper) => {
+  const length = arr.length, res = new Array(length);
+  for (let i = 0; i < length; ++i) {
+    res[i] = mapper(arr[i], i);
+  }
+  return res;
+};
+
 // client/filter-daggers.ts
 var boolean_to_string = (value) => {
   return value ? "true" : "false";
 };
 var matches_boolean_filter = (product_value, filter_value) => {
-  return filter_value === "any" || boolean_to_string(product_value) === filter_value;
+  return filter_value === ANY || boolean_to_string(product_value) === filter_value;
 };
-var filter_daggers = (daggers, filters) => {
-  return daggers.filter((product) => {
-    return product.size_name === filters.size && matches_boolean_filter(product.longer_barrel, filters.extra_long_barrel) && matches_boolean_filter(product.threaded_barrel, filters.threaded_barrel) && matches_boolean_filter(product.night_sight, filters.night_sight) && (filters.optic_compatibility === "any" || product.optic_compatibility === filters.optic_compatibility) && matches_boolean_filter(product.has_cover_plate, filters.has_cover_plate);
+var product_matches = (product, filters) => {
+  return product.size === filters.size && matches_boolean_filter(product.longer_barrel, filters.longer_barrel) && matches_boolean_filter(product.threaded_barrel, filters.threaded_barrel) && matches_boolean_filter(product.night_sight, filters.night_sight) && (filters.optic_compatibility === ANY || product.optic_compatibility === filters.optic_compatibility) && matches_boolean_filter(product.has_cover_plate, filters.has_cover_plate);
+};
+var filter_daggers = (daggers, filters) => filter(daggers, (product) => product_matches(product, filters));
+
+// client/count_possible_options.ts
+var calculate_possible_filter_param_values = (products, sizes, keys) => {
+  const size_to_filter_param_values = /* @__PURE__ */ new Map();
+  for_each(sizes, (size) => {
+    size_to_filter_param_values.set(size, /* @__PURE__ */ new Map());
   });
+  for_each(products, (product) => {
+    const key_map = size_to_filter_param_values.get(product.size);
+    assert_default(key_map);
+    for_each(keys, (key2) => {
+      if (product[key2] === null) {
+        return;
+      }
+      if (!key_map.has(key2)) {
+        key_map.set(key2, /* @__PURE__ */ new Set());
+      }
+      const filter_set = key_map.get(key2);
+      assert_default(filter_set);
+      filter_set.add(product[key2]);
+    });
+  });
+  return size_to_filter_param_values;
+};
+var calculate_displayed_filter_options_per_pistol_size = (products, sizes, keys) => {
+  const size_to_filter_param_values = calculate_possible_filter_param_values(products, sizes, keys);
+  const output = /* @__PURE__ */ new Map();
+  for_each(sizes, (size) => {
+    const key_map = size_to_filter_param_values.get(size);
+    assert_default(key_map);
+    const displayed_keys = /* @__PURE__ */ new Set();
+    for_each(keys, (key2) => {
+      const filter_set = key_map.get(key2);
+      assert_default(filter_set);
+      if (filter_set.size >= 2) {
+        displayed_keys.add(key2);
+      }
+    });
+    output.set(size, displayed_keys);
+  });
+  return (size) => {
+    const displayed_keys = output.get(size);
+    assert_default(displayed_keys);
+    return displayed_keys;
+  };
+};
+
+// lib/object.ts
+var object_keys2 = (obj) => Object.keys(obj);
+var object_entries = (obj) => Object.entries(obj);
+var object_from_entries = (entries) => (
+  // @ts-expect-error Object.entries is dumb and always returns string instead of the type of the key
+  Object.fromEntries(entries)
+);
+
+// client/determine_if_alternate_filter_options_are_safe_to_click.ts
+var possible_filter_option_values_excluding_any = {
+  longer_barrel: ["true", "false"],
+  threaded_barrel: ["true", "false"],
+  night_sight: ["true", "false"],
+  optic_compatibility: ["none", "rmr", "shield_rmsc"],
+  has_cover_plate: ["true", "false"]
+};
+var calculate_alternate_option_selections_we_need_to_consider = (displayed_filter_options, current_filter_params) => object_from_entries(map(
+  object_entries(possible_filter_option_values_excluding_any),
+  ([key2, values]) => [key2, filter(values, (value) => displayed_filter_options.has(key2) && value !== current_filter_params[key2])]
+));
+var calculate_are_all_these_alternative_options_safe_to_click = (products, alternate_selections, current_filter_params) => {
+  const pre_computed_possible_filter_params = object_from_entries(map(object_entries(alternate_selections), ([key2, values]) => {
+    assert_default(Array.isArray(values));
+    return [key2, map(values, (value) => {
+      return {
+        value,
+        filter_params: {
+          ...current_filter_params,
+          [key2]: value
+        }
+      };
+    })];
+  }));
+  const param_key_to_set_of_safe_value_selections = /* @__PURE__ */ new Map();
+  for_each(object_keys2(alternate_selections), (key2) => {
+    param_key_to_set_of_safe_value_selections.set(key2, /* @__PURE__ */ new Set());
+  });
+  for_each(products, (product) => {
+    for_each(object_keys2(alternate_selections), (key2) => {
+      for_each(pre_computed_possible_filter_params[key2], (possible_filter_params) => {
+        if (product_matches(product, possible_filter_params.filter_params)) {
+          param_key_to_set_of_safe_value_selections.get(key2)?.add(possible_filter_params.value);
+        }
+      });
+    });
+  });
+  return (key2, value) => param_key_to_set_of_safe_value_selections.get(key2)?.has(value) ?? false;
 };
 
 // client/index.svelte
 Client[FILENAME] = "client/index.svelte";
-var root_1 = add_locations(from_html(`<a target="_blank" rel="noopener" class="product-card svelte-15huzto"><h3 class="svelte-15huzto"> </h3> <img class="svelte-15huzto"/> <div class="price svelte-15huzto"> </div></a>`), Client[FILENAME], [[101, 4, [[102, 5], [103, 5], [104, 5]]]]);
-var root5 = add_locations(from_html(`<div class="container svelte-15huzto"><div class="intro svelte-15huzto"><h1 style="color: var(--light_color)">Buy a PSA Dagger</h1> <div class="card"><!></div></div> <div class="filters-and-results svelte-15huzto"><div class="filters card svelte-15huzto"><h2 style="color: var(--dark_color); border-bottom: 1px solid var(--dark_color); padding-bottom: 8px;" class="svelte-15huzto">Filters</h2> <!> <!> <!> <!> <!></div> <div class="products-grid card svelte-15huzto"></div></div></div>`), Client[FILENAME], [
+var root_62 = add_locations(from_html(`<div class="no-results svelte-15huzto">No results for these filter options</div>`), Client[FILENAME], [[152, 4]]);
+var root_7 = add_locations(from_html(`<a target="_blank" rel="noopener" class="product-card svelte-15huzto"><h3 class="svelte-15huzto"> </h3> <img class="svelte-15huzto"/> <div class="price svelte-15huzto"> </div></a>`), Client[FILENAME], [[155, 4, [[156, 5], [157, 5], [158, 5]]]]);
+var root5 = add_locations(from_html(`<div class="container svelte-15huzto"><div class="intro svelte-15huzto"><h1 style="color: var(--light_color)">Buy a PSA Dagger</h1> <div class="card"><!></div></div> <div class="filters-and-results svelte-15huzto"><div class="filters card svelte-15huzto"><h2 style="color: var(--dark_color); border-bottom: 1px solid var(--dark_color); padding-bottom: 8px;" class="svelte-15huzto">Filters</h2> <!> <!> <!> <!> <!></div> <div class="products-grid card svelte-15huzto"><!> <!></div></div></div>`), Client[FILENAME], [
   [
-    24,
+    65,
     0,
     [
-      [25, 1, [[26, 2], [27, 2]]],
-      [34, 1, [[35, 2, [[36, 3]]], [99, 2]]]
+      [66, 1, [[67, 2], [68, 2]]],
+      [75, 1, [[76, 2, [[77, 3]]], [150, 2]]]
     ]
   ]
 ]);
 function Client($$anchor, $$props) {
   check_target(new.target);
   push($$props, true, Client);
-  const querystring_instance = create_querystring_store({
-    size: "compact",
-    extra_long_barrel: "any",
-    threaded_barrel: "any",
-    night_sight: "any",
-    optic_compatibility: "any",
-    has_cover_plate: "any"
-  });
-  const filtered_daggers = tag(user_derived(() => filter_daggers(daggers_data_default.daggers, querystring_instance.params_with_defaults).sort((a, b) => a.price - b.price)), "filtered_daggers");
+  const querystring_instance = create_querystring_store(default_values);
+  const get_displayed_filter_options_for_size = calculate_displayed_filter_options_per_pistol_size(daggers_data_default.daggers, SIZES, FILTER_PARAM_KEYS);
+  const remove_has_cover_plate_if_optic_compatibility_is_none = (displayed_filter_options2, current_optic_compatibility) => {
+    const new_set = new Set(displayed_filter_options2);
+    if (strict_equals(current_optic_compatibility, "none")) {
+      new_set.delete("has_cover_plate");
+    }
+    return new_set;
+  };
+  const displayed_filter_options = tag(user_derived(() => remove_has_cover_plate_if_optic_compatibility_is_none(get_displayed_filter_options_for_size(querystring_instance.params_with_defaults.size), querystring_instance.params_with_defaults.optic_compatibility)), "displayed_filter_options");
+  const ignore_filter_options_that_are_not_displayed = (displayed_filter_options2, current_filter_params) => {
+    return {
+      ...default_values,
+      ...object_from_entries(filter(object_entries(current_filter_params), ([key2]) => strict_equals(key2, "size") || displayed_filter_options2.has(key2)))
+    };
+  };
+  const filtered_daggers = tag(user_derived(() => filter_daggers(daggers_data_default.daggers, ignore_filter_options_that_are_not_displayed(get(displayed_filter_options), querystring_instance.params_with_defaults)).sort((a, b) => a.price - b.price)), "filtered_daggers");
+  const add_disabled_to_unsafe_options = (key2, options) => {
+    return map(options, (option) => {
+      return {
+        ...option,
+        disabled: !should_this_option_be_enabled(key2, option.value)
+      };
+    });
+  };
+  const alternate_option_selections_we_need_to_consider = tag(user_derived(() => calculate_alternate_option_selections_we_need_to_consider(get(displayed_filter_options), querystring_instance.params_with_defaults)), "alternate_option_selections_we_need_to_consider");
+  const is_this_alternate_option_safe_to_click = tag(user_derived(() => calculate_are_all_these_alternative_options_safe_to_click(daggers_data_default.daggers, get(alternate_option_selections_we_need_to_consider), querystring_instance.params_with_defaults)), "is_this_alternate_option_safe_to_click");
+  const should_this_option_be_enabled = (key2, value) => strict_equals(value, ANY) || strict_equals(querystring_instance.params_with_defaults[key2], value) || get(is_this_alternate_option_safe_to_click)(key2, value);
   var $$exports = { ...legacy_api() };
   var div = root5();
   var div_1 = child(div);
   var div_2 = sibling(child(div_1), 2);
   var node = child(div_2);
-  validate_binding("bind:size={querystring_instance.params_with_defaults.size}", () => querystring_instance.params_with_defaults, () => "size", 29, 4);
+  validate_binding("bind:size={querystring_instance.params_with_defaults.size}", () => querystring_instance.params_with_defaults, () => "size", 70, 4);
   add_svelte_meta(
     () => PistolSizeSelector(node, {
       get get_altered_query_string() {
@@ -7511,7 +7775,7 @@ function Client($$anchor, $$props) {
     }),
     "component",
     Client,
-    28,
+    69,
     3,
     { componentTag: "PistolSizeSelector" }
   );
@@ -7520,158 +7784,265 @@ function Client($$anchor, $$props) {
   var div_3 = sibling(div_1, 2);
   var div_4 = child(div_3);
   var node_1 = sibling(child(div_4), 2);
-  validate_binding("bind:selected_value={querystring_instance.params_with_defaults.extra_long_barrel}", () => querystring_instance.params_with_defaults, () => "extra_long_barrel", 47, 4);
-  add_svelte_meta(
-    () => FilterSelection(node_1, {
-      title: "Longer Barrel",
-      description: "Adds about half an inch to the barrel. Makes it easier to hit what you're aiming at.",
-      group_name: "extra_long_barrel",
-      options: [
-        { label: "Either", value: "any" },
-        { label: "Yes", value: "true" },
-        { label: "No", value: "false" }
-      ],
-      get get_altered_query_string() {
-        return querystring_instance.get_altered_query_string;
-      },
-      get selected_value() {
-        return querystring_instance.params_with_defaults.extra_long_barrel;
-      },
-      set selected_value($$value) {
-        querystring_instance.params_with_defaults.extra_long_barrel = $$value;
+  {
+    var consequent = ($$anchor2) => {
+      validate_binding("bind:selected_value={querystring_instance.params_with_defaults.longer_barrel}", () => querystring_instance.params_with_defaults, () => "longer_barrel", 89, 5);
+      {
+        let $0 = user_derived(() => add_disabled_to_unsafe_options("longer_barrel", [
+          { label: "Either", value: "any" },
+          { label: "Yes", value: "true" },
+          { label: "No", value: "false" }
+        ]));
+        add_svelte_meta(
+          () => FilterSelection($$anchor2, {
+            title: "Longer Barrel",
+            description: "Adds about half an inch to the barrel. Makes it easier to hit what you're aiming at",
+            group_name: "longer_barrel",
+            get options() {
+              return get($0);
+            },
+            get get_altered_query_string() {
+              return querystring_instance.get_altered_query_string;
+            },
+            get selected_value() {
+              return querystring_instance.params_with_defaults.longer_barrel;
+            },
+            set selected_value($$value) {
+              querystring_instance.params_with_defaults.longer_barrel = $$value;
+            }
+          }),
+          "component",
+          Client,
+          79,
+          4,
+          { componentTag: "FilterSelection" }
+        );
       }
-    }),
-    "component",
-    Client,
-    37,
-    3,
-    { componentTag: "FilterSelection" }
-  );
+    };
+    add_svelte_meta(
+      () => if_block(node_1, ($$render) => {
+        if (get(displayed_filter_options).has("longer_barrel")) $$render(consequent);
+      }),
+      "if",
+      Client,
+      78,
+      3
+    );
+  }
   var node_2 = sibling(node_1, 2);
-  validate_binding("bind:selected_value={querystring_instance.params_with_defaults.threaded_barrel}", () => querystring_instance.params_with_defaults, () => "threaded_barrel", 59, 4);
-  add_svelte_meta(
-    () => FilterSelection(node_2, {
-      title: "Threaded Barrel",
-      description: "If you want to be able to stick a suppressor or flash hider or something on your gun",
-      group_name: "threaded_barrel",
-      options: [
-        { label: "Either", value: "any" },
-        { label: "Yes", value: "true" },
-        { label: "No", value: "false" }
-      ],
-      get get_altered_query_string() {
-        return querystring_instance.get_altered_query_string;
-      },
-      get selected_value() {
-        return querystring_instance.params_with_defaults.threaded_barrel;
-      },
-      set selected_value($$value) {
-        querystring_instance.params_with_defaults.threaded_barrel = $$value;
+  {
+    var consequent_1 = ($$anchor2) => {
+      validate_binding("bind:selected_value={querystring_instance.params_with_defaults.threaded_barrel}", () => querystring_instance.params_with_defaults, () => "threaded_barrel", 103, 5);
+      {
+        let $0 = user_derived(() => add_disabled_to_unsafe_options("threaded_barrel", [
+          { label: "Either", value: "any" },
+          { label: "Yes", value: "true" },
+          { label: "No", value: "false" }
+        ]));
+        add_svelte_meta(
+          () => FilterSelection($$anchor2, {
+            title: "Threaded Barrel",
+            description: "If you want to be able to stick a suppressor or flash hider or something on your gun",
+            group_name: "threaded_barrel",
+            get options() {
+              return get($0);
+            },
+            get get_altered_query_string() {
+              return querystring_instance.get_altered_query_string;
+            },
+            get selected_value() {
+              return querystring_instance.params_with_defaults.threaded_barrel;
+            },
+            set selected_value($$value) {
+              querystring_instance.params_with_defaults.threaded_barrel = $$value;
+            }
+          }),
+          "component",
+          Client,
+          93,
+          4,
+          { componentTag: "FilterSelection" }
+        );
       }
-    }),
-    "component",
-    Client,
-    49,
-    3,
-    { componentTag: "FilterSelection" }
-  );
+    };
+    add_svelte_meta(
+      () => if_block(node_2, ($$render) => {
+        if (get(displayed_filter_options).has("threaded_barrel")) $$render(consequent_1);
+      }),
+      "if",
+      Client,
+      92,
+      3
+    );
+  }
   var node_3 = sibling(node_2, 2);
-  validate_binding("bind:selected_value={querystring_instance.params_with_defaults.night_sight}", () => querystring_instance.params_with_defaults, () => "night_sight", 71, 4);
-  add_svelte_meta(
-    () => FilterSelection(node_3, {
-      title: "Night Sight",
-      description: "The sights glow in the dark",
-      group_name: "night_sight",
-      options: [
-        { label: "Either", value: "any" },
-        { label: "Yes", value: "true" },
-        { label: "No", value: "false" }
-      ],
-      get get_altered_query_string() {
-        return querystring_instance.get_altered_query_string;
-      },
-      get selected_value() {
-        return querystring_instance.params_with_defaults.night_sight;
-      },
-      set selected_value($$value) {
-        querystring_instance.params_with_defaults.night_sight = $$value;
+  {
+    var consequent_2 = ($$anchor2) => {
+      validate_binding("bind:selected_value={querystring_instance.params_with_defaults.night_sight}", () => querystring_instance.params_with_defaults, () => "night_sight", 117, 5);
+      {
+        let $0 = user_derived(() => add_disabled_to_unsafe_options("night_sight", [
+          { label: "Either", value: "any" },
+          { label: "Yes", value: "true" },
+          { label: "No", value: "false" }
+        ]));
+        add_svelte_meta(
+          () => FilterSelection($$anchor2, {
+            title: "Night Sight",
+            description: "The sights glow in the dark",
+            group_name: "night_sight",
+            get options() {
+              return get($0);
+            },
+            get get_altered_query_string() {
+              return querystring_instance.get_altered_query_string;
+            },
+            get selected_value() {
+              return querystring_instance.params_with_defaults.night_sight;
+            },
+            set selected_value($$value) {
+              querystring_instance.params_with_defaults.night_sight = $$value;
+            }
+          }),
+          "component",
+          Client,
+          107,
+          4,
+          { componentTag: "FilterSelection" }
+        );
       }
-    }),
-    "component",
-    Client,
-    61,
-    3,
-    { componentTag: "FilterSelection" }
-  );
+    };
+    add_svelte_meta(
+      () => if_block(node_3, ($$render) => {
+        if (get(displayed_filter_options).has("night_sight")) $$render(consequent_2);
+      }),
+      "if",
+      Client,
+      106,
+      3
+    );
+  }
   var node_4 = sibling(node_3, 2);
-  validate_binding("bind:selected_value={querystring_instance.params_with_defaults.optic_compatibility}", () => querystring_instance.params_with_defaults, () => "optic_compatibility", 84, 4);
-  add_svelte_meta(
-    () => FilterSelection(node_4, {
-      title: "Optic Compatibility",
-      description: "",
-      group_name: "optic_compatibility",
-      options: [
-        { label: "Any", value: "any" },
-        { label: "None", value: "none" },
-        { label: "RMR", value: "rmr" },
-        { label: "Shield RMSc", value: "shield_rmsc" }
-      ],
-      get get_altered_query_string() {
-        return querystring_instance.get_altered_query_string;
-      },
-      get selected_value() {
-        return querystring_instance.params_with_defaults.optic_compatibility;
-      },
-      set selected_value($$value) {
-        querystring_instance.params_with_defaults.optic_compatibility = $$value;
+  {
+    var consequent_3 = ($$anchor2) => {
+      validate_binding("bind:selected_value={querystring_instance.params_with_defaults.optic_compatibility}", () => querystring_instance.params_with_defaults, () => "optic_compatibility", 132, 5);
+      {
+        let $0 = user_derived(() => add_disabled_to_unsafe_options("optic_compatibility", [
+          { label: "Any", value: "any" },
+          { label: "None", value: "none" },
+          { label: "RMR", value: "rmr" },
+          { label: "Shield RMSc", value: "shield_rmsc" }
+        ]));
+        add_svelte_meta(
+          () => FilterSelection($$anchor2, {
+            title: "Optic Compatibility",
+            description: "",
+            group_name: "optic_compatibility",
+            get options() {
+              return get($0);
+            },
+            get get_altered_query_string() {
+              return querystring_instance.get_altered_query_string;
+            },
+            get selected_value() {
+              return querystring_instance.params_with_defaults.optic_compatibility;
+            },
+            set selected_value($$value) {
+              querystring_instance.params_with_defaults.optic_compatibility = $$value;
+            }
+          }),
+          "component",
+          Client,
+          121,
+          4,
+          { componentTag: "FilterSelection" }
+        );
       }
-    }),
-    "component",
-    Client,
-    73,
-    3,
-    { componentTag: "FilterSelection" }
-  );
+    };
+    add_svelte_meta(
+      () => if_block(node_4, ($$render) => {
+        if (get(displayed_filter_options).has("optic_compatibility")) $$render(consequent_3);
+      }),
+      "if",
+      Client,
+      120,
+      3
+    );
+  }
   var node_5 = sibling(node_4, 2);
-  validate_binding("bind:selected_value={querystring_instance.params_with_defaults.has_cover_plate}", () => querystring_instance.params_with_defaults, () => "has_cover_plate", 96, 4);
-  add_svelte_meta(
-    () => FilterSelection(node_5, {
-      title: "Has Cover Plate",
-      description: "If you're not going to put an optic on right away",
-      group_name: "has_cover_plate",
-      options: [
-        { label: "Either", value: "any" },
-        { label: "Yes", value: "true" },
-        { label: "No", value: "false" }
-      ],
-      get get_altered_query_string() {
-        return querystring_instance.get_altered_query_string;
-      },
-      get selected_value() {
-        return querystring_instance.params_with_defaults.has_cover_plate;
-      },
-      set selected_value($$value) {
-        querystring_instance.params_with_defaults.has_cover_plate = $$value;
+  {
+    var consequent_4 = ($$anchor2) => {
+      validate_binding("bind:selected_value={querystring_instance.params_with_defaults.has_cover_plate}", () => querystring_instance.params_with_defaults, () => "has_cover_plate", 146, 5);
+      {
+        let $0 = user_derived(() => add_disabled_to_unsafe_options("has_cover_plate", [
+          { label: "Either", value: "any" },
+          { label: "Yes", value: "true" },
+          { label: "No", value: "false" }
+        ]));
+        add_svelte_meta(
+          () => FilterSelection($$anchor2, {
+            title: "Has Cover Plate",
+            description: "If you're not going to put an optic on right away",
+            group_name: "has_cover_plate",
+            get options() {
+              return get($0);
+            },
+            get get_altered_query_string() {
+              return querystring_instance.get_altered_query_string;
+            },
+            get selected_value() {
+              return querystring_instance.params_with_defaults.has_cover_plate;
+            },
+            set selected_value($$value) {
+              querystring_instance.params_with_defaults.has_cover_plate = $$value;
+            }
+          }),
+          "component",
+          Client,
+          136,
+          4,
+          { componentTag: "FilterSelection" }
+        );
       }
-    }),
-    "component",
-    Client,
-    86,
-    3,
-    { componentTag: "FilterSelection" }
-  );
+    };
+    add_svelte_meta(
+      () => if_block(node_5, ($$render) => {
+        if (get(displayed_filter_options).has("has_cover_plate")) $$render(consequent_4);
+      }),
+      "if",
+      Client,
+      135,
+      3
+    );
+  }
   reset(div_4);
   var div_5 = sibling(div_4, 2);
+  var node_6 = child(div_5);
+  {
+    var consequent_5 = ($$anchor2) => {
+      var div_6 = root_62();
+      append($$anchor2, div_6);
+    };
+    add_svelte_meta(
+      () => if_block(node_6, ($$render) => {
+        if (strict_equals(get(filtered_daggers).length, 0)) $$render(consequent_5);
+      }),
+      "if",
+      Client,
+      151,
+      3
+    );
+  }
+  var node_7 = sibling(node_6, 2);
   add_svelte_meta(
-    () => each(div_5, 21, () => get(filtered_daggers), index, ($$anchor2, product) => {
-      var a_1 = root_1();
+    () => each(node_7, 17, () => get(filtered_daggers), index, ($$anchor2, product) => {
+      var a_1 = root_7();
       var h3 = child(a_1);
       var text2 = child(h3, true);
       reset(h3);
       var img = sibling(h3, 2);
-      var div_6 = sibling(img, 2);
-      var text_1 = child(div_6);
-      reset(div_6);
+      var div_7 = sibling(img, 2);
+      var text_1 = child(div_7);
+      reset(div_7);
       reset(a_1);
       template_effect(
         ($0, $1) => {
@@ -7690,7 +8061,7 @@ function Client($$anchor, $$props) {
     }),
     "each",
     Client,
-    100,
+    154,
     3
   );
   reset(div_5);
