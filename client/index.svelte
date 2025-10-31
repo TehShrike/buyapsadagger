@@ -1,5 +1,4 @@
 <script lang="ts">
-	import type { Product } from './product.d.ts'
 	import PistolSizeSelector from './PistolSizeSelector.svelte'
 	import FilterSelection from './FilterSelection.svelte'
 	import generate_title from './generate_title.ts'
@@ -8,9 +7,8 @@
 	import { filter_daggers, type FilterParams, type FilterParamKey, product_matches } from './filter-daggers.ts'
 	import { ANY, default_values, FILTER_PARAM_KEYS, SIZES } from './querystring_options.ts'
 	import { calculate_displayed_filter_options_per_pistol_size, calculate_enabled_filter_options } from './count_possible_options.ts'
-	import { filter, map, for_each } from '#lib/array.ts'
-	import assert from '#lib/assert.ts'
-
+	import { map } from '#lib/array.ts'
+	import { calculate_alternate_option_selections_we_need_to_consider, calculate_are_all_these_alternative_options_safe_to_click } from './determine_if_alternate_filter_options_are_safe_to_click.ts'
 
 	const querystring_instance = create_querystring_store<FilterParams>(default_values)
 
@@ -24,69 +22,6 @@
 		filter_daggers(daggers_data.daggers, querystring_instance.params_with_defaults).sort((a, b) => a.price - b.price)
 	)
 
-	const get_value_enabled_for_filter_option = $derived(
-		calculate_enabled_filter_options(filtered_daggers, Array.from(displayed_filter_options))
-	)
-
-	type AlternateOptionsToConsider = Record<Exclude<FilterParamKey, 'size'>, FilterParams[FilterParamKey][]>
-	const possible_filter_option_values_excluding_any: AlternateOptionsToConsider = {
-		longer_barrel: ['true', 'false'] as const,
-		threaded_barrel: ['true', 'false'] as const,
-		night_sight: ['true', 'false'] as const,
-		optic_compatibility: ['none', 'rmr', 'shield_rmsc'] as const,
-		has_cover_plate: ['true', 'false'] as const,
-	}
-
-	// if it's displayed, we need to consider all options that aren't currently selected (except "any")
-	const alternate_option_selections_we_need_to_consider = $derived(Object.fromEntries(map(
-		Object.entries(possible_filter_option_values_excluding_any),
-		([key, values]) => [key, filter(values, value => displayed_filter_options.has(key as FilterParamKey) && value !== querystring_instance.params_with_defaults[key])],
-	)))
-
-	const object_keys = <T extends object>(obj: T) => Object.keys(obj) as (keyof T)[]
-	const object_entries = <T extends Record<string, unknown>>(obj: T) => Object.entries(obj) as [keyof T, T[keyof T] extends unknown[] ? T[keyof T] : never][]
-	const object_from_entries = <KEY extends string, VALUE>(entries: [KEY, VALUE][]): { [s in KEY]: VALUE } =>
-		// @ts-expect-error Object.entries is dumb and always returns string instead of the type of the key
-		Object.fromEntries(entries)
-
-	// loop over all products.  For each product, for each alternate option, check "would this be displayed if the alternate option was chosen"
-	// map of option to set of safe selections
-	const are_all_these_alternative_options_safe_to_click = (products: Product[], alternate_selections: Partial<AlternateOptionsToConsider>, current_filter_params: FilterParams) => {
-		const pre_computed_possible_filter_params = object_from_entries(map(object_entries(alternate_selections), ([key, values]: [FilterParamKey, FilterParams[FilterParamKey][]]) => {
-			assert(Array.isArray(values))
-			assert(values !== undefined)
-			return [key, map(values, (value) => {
-				return {
-					value,
-					filter_params: { ...current_filter_params, [key]: value } as FilterParams
-				}
-			})]
-		}))
-
-
-		const param_key_to_set_of_safe_value_selections = new Map<FilterParamKey, Set<FilterParams[FilterParamKey]>>()
-		for_each(object_keys(alternate_selections), (key) => {
-			param_key_to_set_of_safe_value_selections.set(key, new Set())
-		})
-		for_each(products, (product) => {
-			for_each(object_keys(alternate_selections), (key) => {
-				for_each(pre_computed_possible_filter_params[key], (possible_filter_params) => {
-					if (product_matches(product, possible_filter_params.filter_params)) {
-						param_key_to_set_of_safe_value_selections.get(key)?.add(possible_filter_params.value)
-					}
-				})
-			})
-		})
-
-		return (key: FilterParamKey, value: FilterParams[FilterParamKey]): boolean => param_key_to_set_of_safe_value_selections.get(key)?.has(value) ?? false
-	}
-
-	const is_this_alternate_option_safe_to_click = $derived(are_all_these_alternative_options_safe_to_click(daggers_data.daggers, alternate_option_selections_we_need_to_consider, querystring_instance.params_with_defaults))
-
-	const should_this_option_be_enabled = (key: FilterParamKey, value: FilterParams[FilterParamKey]): boolean => value === ANY
-		|| querystring_instance.params_with_defaults[key] === value
-		|| is_this_alternate_option_safe_to_click(key, value)
-
 	const add_disabled_to_unsafe_options = (key: FilterParamKey, options: { label: string, value: FilterParams[FilterParamKey] }[]) => {
 		return map(options, (option) => {
 			return {
@@ -95,6 +30,16 @@
 			}
 		})
 	}
+
+	// if it's displayed, we need to consider all options that aren't currently selected (except "any")
+	const alternate_option_selections_we_need_to_consider = $derived(calculate_alternate_option_selections_we_need_to_consider(displayed_filter_options, querystring_instance.params_with_defaults))
+	const is_this_alternate_option_safe_to_click = $derived(calculate_are_all_these_alternative_options_safe_to_click(daggers_data.daggers, alternate_option_selections_we_need_to_consider, querystring_instance.params_with_defaults))
+
+	const should_this_option_be_enabled = (key: FilterParamKey, value: FilterParams[FilterParamKey]): boolean => value === ANY
+		|| querystring_instance.params_with_defaults[key] === value
+		|| is_this_alternate_option_safe_to_click(key, value)
+
+
 </script>
 
 <div class="container">
