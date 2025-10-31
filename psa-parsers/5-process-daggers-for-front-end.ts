@@ -44,14 +44,17 @@ const get_image_filename_from_url = (psa_url: string): string => {
 
 const determine_size_name = (
 	title: string,
-	width: number,
-	height: number
+	model: string,
 ): 'micro' | 'compact' | 'full_size_s' => {
 	const title_lower = title.toLowerCase()
-	if (title_lower.includes('micro')) return 'micro'
-	if (title_lower.includes('full size') || title_lower.includes('full-size'))
+	const model_lower = model.toLowerCase()
+	if (title_lower.includes('micro') || model_lower.includes('micro')) return 'micro'
+	if (title_lower.includes('full size') || title_lower.includes('full-size') || model_lower.includes('full size') || model_lower.includes('full-size'))
 		return 'full_size_s'
-	assert(title_lower.includes('compact'))
+	if (!title_lower.includes('compact') && !model_lower.includes('compact')) {
+		console.log('Assertion failing – cant find a size name in this title:', title, 'or this model:', model)
+	}
+	assert(title_lower.includes('compact') || model_lower.includes('compact'))
 	return 'compact'
 }
 
@@ -351,7 +354,7 @@ const process_product = (raw_product: RawProduct): Product => {
 		product_details.barrel_length || ''
 	)
 
-	const size = determine_size_name(title, width, height)
+	const size = determine_size_name(title, product_details.model || '')
 	const original_slide_finish = product_details.slide_finish || ''
 	const stripped_slide_finish = strip_cerakote_or_dlc_from_finish(
 		original_slide_finish
