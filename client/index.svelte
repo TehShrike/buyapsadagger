@@ -234,6 +234,15 @@
 	@media (max-width: 800px) {
 		.filters-and-results {
 			flex-direction: column;
+			align-items: center;
+		}
+
+		.products-grid {
+			align-self: stretch;
+		}
+
+		.intro {
+			align-items: center;
 		}
 	}
 
@@ -241,9 +250,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: var(--spacing);
-		flex-basis: 250px;
-		flex-grow: 0;
-		flex-shrink: 0;
+		flex-basis: max(300px, 20%)
 	}
 
 	.products-grid {
@@ -251,6 +258,10 @@
 		grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
 		gap: var(--spacing);
 		flex-grow: 1;
+
+		@media (max-width: 1100px) {
+			grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+		}
 	}
 
 	.no-results {
