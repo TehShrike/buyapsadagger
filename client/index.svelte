@@ -64,9 +64,14 @@
 
 <div class="container">
 	<div class="intro">
-		<h1 style="color: var(--light_color)">Buy a <abbr title="Palmetto State Armory">PSA</abbr> Dagger</h1>
+		<div>
+			<h1 style="color: var(--light_color)">Buy a <abbr title="Palmetto State Armory">PSA</abbr> Dagger</h1>
+			<small style="color: #959595">
+				The fastest way to browse the Palmetto State Armory Dagger catalog.
+			</small>
+		</div>
 		<details>
-			<summary>Why?</summary>
+			<summary>Why a Dagger?</summary>
 			<div>
 				<p>
 					The Palmetto State Armory Dagger is based on the Glock 19, and <a href="https://palmettostatearmory.com/psa-dagger.html" rel="noopener" target="_blank">is generally parts-compatible with the Glock 19 Gen 3</a>.

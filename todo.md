@@ -11,9 +11,11 @@
 - [x] generate custom title
 - [x] deploy to CF Pages
 - [x] look into why the images didn't get shrunk to 400px last time?
-- [ ] sign up for PSA affiliate program
+- [x] apply for PSA affiliate program
+- [ ] rebuild daily in CI somewhere
 - [ ] find out why the filters card is wider than 250px
-- [ ] add a "why?" link at the top after "buy a psa dagger".  Maybe a "details" element right below it
+- [x] add a "why?" link at the top after "buy a psa dagger".  Maybe a "details" element right below it
+- [ ] revisit design details?
 
 ## What about the filters?
 
