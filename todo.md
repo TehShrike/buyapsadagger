@@ -10,7 +10,7 @@
 - [x] sans serif fonts
 - [x] generate custom title
 - [ ] deploy to CF Pages
-- [ ] look into why the images didn't get shrunk to 400px last time?
+- [x] look into why the images didn't get shrunk to 400px last time?
 - [ ] sign up for PSA affiliate program
 - [ ] find out why the filters card is wider than 250px
 - [ ] add a "why?" link at the top after "buy a psa dagger".  Maybe a "details" element right below it
