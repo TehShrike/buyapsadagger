@@ -18,7 +18,7 @@
 	- link to the official site
  	- speed
   	- browsability for normal people
-- [ ] remove "Filters" heading
+- [ ] remove "Filters" heading - maybe change to "Options"?
 - [ ] ask Claude what filters should probably be added
 - [ ] add new filters, probably the ceramic/diamond coatings
 - [ ] remove night sights from filters, add to title?
