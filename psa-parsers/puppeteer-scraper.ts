@@ -8,12 +8,16 @@ type ScrapedListingData = {
 export const scrape_listing_pages = async (
 	initial_url: string
 ): Promise<ScrapedListingData> => {
-	const browser = await puppeteer.launch({
+	const launch_options = {
 		headless: true,
 		args: ['--no-sandbox', '--disable-setuid-sandbox'],
-		executablePath:
-			'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-	})
+		...(process.platform === 'darwin' && {
+			executablePath:
+				'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+		}),
+	}
+
+	const browser = await puppeteer.launch(launch_options)
 
 	const page = await browser.newPage()
 	const html_pages: string[] = []
