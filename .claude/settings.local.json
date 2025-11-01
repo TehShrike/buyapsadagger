@@ -23,7 +23,8 @@
       "Bash(pnpm run:*)",
       "WebFetch(domain:www.ijg.org)",
       "WebFetch(domain:www.libpng.org)",
-      "Bash(./vendor/graphicsmagick/bin/gm identify:*)"
+      "Bash(./vendor/graphicsmagick/bin/gm identify:*)",
+      "Bash(git check-ignore:*)"
     ],
     "deny": [],
     "ask": []
