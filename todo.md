@@ -13,34 +13,16 @@
 - [x] look into why the images didn't get shrunk to 400px last time?
 - [x] apply for PSA affiliate program
 - [ ] rebuild daily in CI somewhere
-- [ ] find out why the filters card is wider than 250px
 - [x] add a "why?" link at the top after "buy a psa dagger".  Maybe a "details" element right below it
+- [ ] add a "why this page rather than PSA.com?" details section
+	- link to the official site
+ 	- speed
+  	- browsability for normal people
+- [ ] remove "Filters" heading
+- [ ] ask Claude what filters should probably be added
+- [ ] add new filters, probably the ceramic/diamond coatings
+- [ ] remove night sights from filters, add to title?
 - [ ] revisit design details?
-
-## What about the filters?
-
-Rename "either" to "don't care"?
-
-If a pistol size only has one variant for a particular filter, that option should not show up in the sidebar.  The option *should* show up in the titles.
-
-If, because of other filter options, selecting a specific filter option would show zero results, that filter option should be disabled.  The option should *not* show up in the titles.
-
-The "any"/"either" option should always be enabled.
-
-How do you determine "the user made a selection" versus it being implicit because of no other options?
-
-When does a variant *not* show up in a title?
-1. when the user actually clicked on it
-2. when the option is displayed
-
-- once, for each size option
-	- For each filter option, make a map of selection to number of pistols of that size that have that selection
-	- Make a map of "displayed filter options", where an option is displayed if there are at least 2 selection choices with >=1 results
-- each time any selections are changed
-	- for each filter option, make a set of selections that exist among the currently displayed pistols
-	- Make a map of "enabled filter options", where an option is enabled if the previous set contains >=1 selections
-
-
 
 ## To generalize for other sites
 
