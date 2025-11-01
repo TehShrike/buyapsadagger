@@ -146,3 +146,7 @@ vendor/*
 .DS_Store
 
 public/build
+
+# Parser downloaded HTML files
+psa-parsers/listing-pages/*.html
+psa-parsers/products/*.html
