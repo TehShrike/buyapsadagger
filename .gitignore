@@ -144,3 +144,5 @@ vendor/*
 !vendor/*.tar.xz
 
 .DS_Store
+
+public/build
