@@ -63,11 +63,11 @@ const download_product_pages = async (): Promise<void> => {
 
 			try {
 				await page.goto(product.url, {
-					waitUntil: 'networkidle0',
-					timeout: 30000,
+					waitUntil: 'domcontentloaded',
+					timeout: 60000,
 				})
 
-				await new Promise((resolve) => setTimeout(resolve, 1000))
+				await new Promise((resolve) => setTimeout(resolve, 2000))
 
 				const html = await page.content()
 				fs.writeFileSync(file_path, html, 'utf-8')

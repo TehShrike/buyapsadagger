@@ -27,7 +27,11 @@ export const scrape_listing_pages = async (
 			'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
 		)
 
-		await page.goto(initial_url, { waitUntil: 'networkidle0' })
+		await page.goto(initial_url, {
+			waitUntil: 'domcontentloaded',
+			timeout: 60000
+		})
+		await new Promise((resolve) => setTimeout(resolve, 2000))
 
 		let page_number = 1
 
@@ -69,17 +73,16 @@ export const scrape_listing_pages = async (
 
 			try {
 				await page.goto(next_href, {
-					waitUntil: 'networkidle0',
-					timeout: 30000,
+					waitUntil: 'domcontentloaded',
+					timeout: 60000,
 				})
+				await new Promise((resolve) => setTimeout(resolve, 2000))
 			} catch (error) {
 				console.log('Failed to navigate to next page:', error instanceof Error ? error.message : String(error))
 				break
 			}
 
 			page_number++
-
-			await new Promise((resolve) => setTimeout(resolve, 1000))
 		}
 
 		console.log(`Successfully scraped ${html_pages.length} pages`)
