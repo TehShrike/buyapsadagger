@@ -65,7 +65,6 @@ const validate_products = async (): Promise<void> => {
 		'threaded_barrel',
 		'night_sight',
 		'compensated_slide',
-		'has_cover_plate',
 		'mag_bag_bonus',
 	]
 

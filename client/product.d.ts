@@ -17,7 +17,6 @@ export type Product = {
 	slide_coating: 'none' | 'dlc' | 'cerakote'
 	frame_color: string | null
 	optic_compatibility: 'none' | 'rmr' | 'shield_rmsc'
-	has_cover_plate: boolean
 	mag_bag_bonus: boolean
 	number_of_included_mags: number
 	mag_size: number | null

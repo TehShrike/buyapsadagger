@@ -386,7 +386,6 @@ const process_product = (raw_product: RawProduct): Product => {
 		slide_coating: determine_slide_coating(original_slide_finish),
 		frame_color,
 		optic_compatibility,
-		has_cover_plate: optic_compatibility !== 'none',
 		mag_bag_bonus: has_mag_bag_bonus(title, features, magazine_info),
 		number_of_included_mags: mag_info.count,
 		mag_size: mag_info.size,

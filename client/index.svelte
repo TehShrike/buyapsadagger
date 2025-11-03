@@ -15,19 +15,8 @@
 
 	const get_displayed_filter_options_for_size = calculate_displayed_filter_options_per_pistol_size(daggers_data.daggers, SIZES, FILTER_PARAM_KEYS)
 
-	const remove_has_cover_plate_if_optic_compatibility_is_none = (displayed_filter_options: Set<FilterParamKey>, current_optic_compatibility: OpticCompatibilityOrAny) => {
-		const new_set = new Set(displayed_filter_options)
-		if (current_optic_compatibility === 'none') {
-			new_set.delete('has_cover_plate')
-		}
-		return new_set
-	}
-
 	const displayed_filter_options = $derived(
-		remove_has_cover_plate_if_optic_compatibility_is_none(
-			get_displayed_filter_options_for_size(querystring_instance.params_with_defaults.size),
-			querystring_instance.params_with_defaults.optic_compatibility
-		)
+		get_displayed_filter_options_for_size(querystring_instance.params_with_defaults.size)
 	)
 
 	const ignore_filter_options_that_are_not_displayed = (displayed_filter_options: Set<FilterParamKey>, current_filter_params: FilterParams) => {
@@ -154,20 +143,6 @@
 					])}
 					get_altered_query_string={querystring_instance.get_altered_query_string}
 					bind:selected_value={querystring_instance.params_with_defaults.optic_compatibility}
-				/>
-			{/if}
-			{#if displayed_filter_options.has('has_cover_plate')}
-				<FilterSelection
-					title="Has Cover Plate"
-					description="If you're not going to put an optic on right away"
-					group_name="has_cover_plate"
-					options={add_disabled_to_unsafe_options('has_cover_plate', [
-						{ label: 'Either', value: 'any' },
-						{ label: 'Yes', value: 'true' },
-						{ label: 'No', value: 'false' },
-					])}
-					get_altered_query_string={querystring_instance.get_altered_query_string}
-					bind:selected_value={querystring_instance.params_with_defaults.has_cover_plate}
 				/>
 			{/if}
 		</div>

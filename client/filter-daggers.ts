@@ -12,7 +12,6 @@ export type FilterParams = {
 	threaded_barrel: TrueFalseOrAny
 	night_sight: TrueFalseOrAny
 	optic_compatibility: OpticCompatibilityOrAny
-	has_cover_plate: TrueFalseOrAny
 }
 
 export type FilterParamKey = keyof FilterParams
@@ -34,7 +33,6 @@ export const product_matches = (product: Product, filters: FilterParams): boolea
 		&& matches_boolean_filter(product.threaded_barrel, filters.threaded_barrel)
 		&& matches_boolean_filter(product.night_sight, filters.night_sight)
 		&& (filters.optic_compatibility === ANY || product.optic_compatibility === filters.optic_compatibility)
-		&& matches_boolean_filter(product.has_cover_plate, filters.has_cover_plate)
 }
 
 export const filter_daggers = (

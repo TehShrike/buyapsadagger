@@ -21,7 +21,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "black",
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 17
@@ -45,7 +44,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "black",
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -69,7 +67,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "black",
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -93,7 +90,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "black",
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -117,7 +113,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "black",
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -141,7 +136,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "black",
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -165,7 +159,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "shield_rmsc",
-			"has_cover_plate": true,
 			"mag_bag_bonus": false,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -189,7 +182,6 @@ const data: DaggersData = {
 			"slide_coating": "none",
 			"frame_color": "sniper_green",
 			"optic_compatibility": "none",
-			"has_cover_plate": false,
 			"mag_bag_bonus": false,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -213,7 +205,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -237,7 +228,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -261,7 +251,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -285,7 +274,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "none",
-			"has_cover_plate": false,
 			"mag_bag_bonus": false,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -309,7 +297,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "flat_dark_earth",
 			"optic_compatibility": "none",
-			"has_cover_plate": false,
 			"mag_bag_bonus": false,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -333,7 +320,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "none",
-			"has_cover_plate": false,
 			"mag_bag_bonus": false,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -357,7 +343,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -381,7 +366,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -405,7 +389,6 @@ const data: DaggersData = {
 			"slide_coating": "dlc",
 			"frame_color": null,
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -429,7 +412,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "sniper_green",
 			"optic_compatibility": "none",
-			"has_cover_plate": false,
 			"mag_bag_bonus": false,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -453,7 +435,6 @@ const data: DaggersData = {
 			"slide_coating": "none",
 			"frame_color": null,
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 10,
 			"mag_size": 15
@@ -477,7 +458,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -501,7 +481,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -525,7 +504,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -549,7 +527,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "flat_dark_earth",
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -573,7 +550,6 @@ const data: DaggersData = {
 			"slide_coating": "none",
 			"frame_color": null,
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -597,7 +573,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -621,7 +596,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -645,7 +619,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -669,7 +642,6 @@ const data: DaggersData = {
 			"slide_coating": "none",
 			"frame_color": null,
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -693,7 +665,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -717,7 +688,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -741,7 +711,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": false,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -765,7 +734,6 @@ const data: DaggersData = {
 			"slide_coating": "none",
 			"frame_color": null,
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": false,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -789,7 +757,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": false,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -813,7 +780,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": false,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -837,7 +803,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "sniper_green",
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -861,7 +826,6 @@ const data: DaggersData = {
 			"slide_coating": "dlc",
 			"frame_color": "black",
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -885,7 +849,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "black",
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -909,7 +872,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "flat_dark_earth",
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -933,7 +895,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "sniper_green",
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -957,7 +918,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -981,7 +941,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -1005,7 +964,6 @@ const data: DaggersData = {
 			"slide_coating": "none",
 			"frame_color": null,
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -1029,7 +987,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "flat_dark_earth",
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -1053,7 +1010,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -1077,7 +1033,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "flat_dark_earth",
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -1101,7 +1056,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "sniper_green",
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -1125,7 +1079,6 @@ const data: DaggersData = {
 			"slide_coating": "none",
 			"frame_color": null,
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 10,
 			"mag_size": 15
@@ -1149,7 +1102,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -1173,7 +1125,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 17
@@ -1197,7 +1148,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 17
@@ -1221,7 +1171,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 17
@@ -1245,7 +1194,6 @@ const data: DaggersData = {
 			"slide_coating": "none",
 			"frame_color": null,
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 10,
 			"mag_size": 17
@@ -1269,7 +1217,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "sniper_green",
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 17
@@ -1293,7 +1240,6 @@ const data: DaggersData = {
 			"slide_coating": "none",
 			"frame_color": null,
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 17
@@ -1317,7 +1263,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "sniper_green",
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 17
@@ -1341,7 +1286,6 @@ const data: DaggersData = {
 			"slide_coating": "dlc",
 			"frame_color": "black",
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 17
@@ -1365,7 +1309,6 @@ const data: DaggersData = {
 			"slide_coating": "dlc",
 			"frame_color": "black",
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 17
@@ -1389,7 +1332,6 @@ const data: DaggersData = {
 			"slide_coating": "none",
 			"frame_color": null,
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 10,
 			"mag_size": 17
@@ -1413,7 +1355,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "flat_dark_earth",
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 17
@@ -1437,7 +1378,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "flat_dark_earth",
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 17
@@ -1461,7 +1401,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "sniper_green",
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 17
@@ -1485,7 +1424,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "shield_rmsc",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 5,
 			"mag_size": 15
@@ -1509,7 +1447,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "shield_rmsc",
-			"has_cover_plate": true,
 			"mag_bag_bonus": false,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -1533,7 +1470,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "shield_rmsc",
-			"has_cover_plate": true,
 			"mag_bag_bonus": false,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -1557,7 +1493,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "flat_dark_earth",
 			"optic_compatibility": "shield_rmsc",
-			"has_cover_plate": true,
 			"mag_bag_bonus": false,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -1581,7 +1516,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "shield_rmsc",
-			"has_cover_plate": true,
 			"mag_bag_bonus": false,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -1605,7 +1539,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "sniper_green",
 			"optic_compatibility": "shield_rmsc",
-			"has_cover_plate": true,
 			"mag_bag_bonus": false,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -1629,7 +1562,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "shield_rmsc",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -1653,7 +1585,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "shield_rmsc",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -1677,7 +1608,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "shield_rmsc",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -1701,7 +1631,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "shield_rmsc",
-			"has_cover_plate": true,
 			"mag_bag_bonus": false,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -1725,7 +1654,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "shield_rmsc",
-			"has_cover_plate": true,
 			"mag_bag_bonus": false,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -1749,7 +1677,6 @@ const data: DaggersData = {
 			"slide_coating": "none",
 			"frame_color": null,
 			"optic_compatibility": "shield_rmsc",
-			"has_cover_plate": true,
 			"mag_bag_bonus": false,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -1773,7 +1700,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "flat_dark_earth",
 			"optic_compatibility": "shield_rmsc",
-			"has_cover_plate": true,
 			"mag_bag_bonus": false,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -1797,7 +1723,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "sniper_green",
 			"optic_compatibility": "shield_rmsc",
-			"has_cover_plate": true,
 			"mag_bag_bonus": false,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -1821,7 +1746,6 @@ const data: DaggersData = {
 			"slide_coating": "none",
 			"frame_color": null,
 			"optic_compatibility": "shield_rmsc",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -1845,7 +1769,6 @@ const data: DaggersData = {
 			"slide_coating": "none",
 			"frame_color": null,
 			"optic_compatibility": "shield_rmsc",
-			"has_cover_plate": true,
 			"mag_bag_bonus": false,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -1869,7 +1792,6 @@ const data: DaggersData = {
 			"slide_coating": "none",
 			"frame_color": null,
 			"optic_compatibility": "shield_rmsc",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -1893,7 +1815,6 @@ const data: DaggersData = {
 			"slide_coating": "none",
 			"frame_color": null,
 			"optic_compatibility": "shield_rmsc",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -1917,7 +1838,6 @@ const data: DaggersData = {
 			"slide_coating": "none",
 			"frame_color": null,
 			"optic_compatibility": "shield_rmsc",
-			"has_cover_plate": true,
 			"mag_bag_bonus": false,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -1941,7 +1861,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "shield_rmsc",
-			"has_cover_plate": true,
 			"mag_bag_bonus": false,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -1965,7 +1884,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "sniper_green",
 			"optic_compatibility": "shield_rmsc",
-			"has_cover_plate": true,
 			"mag_bag_bonus": false,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -1989,7 +1907,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "shield_rmsc",
-			"has_cover_plate": true,
 			"mag_bag_bonus": false,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -2013,7 +1930,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "shield_rmsc",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -2037,7 +1953,6 @@ const data: DaggersData = {
 			"slide_coating": "none",
 			"frame_color": null,
 			"optic_compatibility": "rmr",
-			"has_cover_plate": true,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 10,
 			"mag_size": 17
@@ -2061,7 +1976,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "m81_woodland_camo",
 			"optic_compatibility": "none",
-			"has_cover_plate": false,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 2,
 			"mag_size": 17
@@ -2085,7 +1999,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "m81_woodland_camo",
 			"optic_compatibility": "none",
-			"has_cover_plate": false,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 2,
 			"mag_size": 17
@@ -2109,7 +2022,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "black",
 			"optic_compatibility": "none",
-			"has_cover_plate": false,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 2,
 			"mag_size": 17
@@ -2133,7 +2045,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "black",
 			"optic_compatibility": "none",
-			"has_cover_plate": false,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 2,
 			"mag_size": 17
@@ -2157,7 +2068,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "m81_woodland_camo",
 			"optic_compatibility": "none",
-			"has_cover_plate": false,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 2,
 			"mag_size": 17
@@ -2181,7 +2091,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "black",
 			"optic_compatibility": "none",
-			"has_cover_plate": false,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 2,
 			"mag_size": 17
@@ -2205,7 +2114,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "m81_desert_camo",
 			"optic_compatibility": "none",
-			"has_cover_plate": false,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 2,
 			"mag_size": 17
@@ -2229,7 +2137,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "black",
 			"optic_compatibility": "none",
-			"has_cover_plate": false,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 2,
 			"mag_size": 17
@@ -2253,7 +2160,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "m81_desert_camo",
 			"optic_compatibility": "none",
-			"has_cover_plate": false,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 2,
 			"mag_size": 17
@@ -2277,7 +2183,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "black",
 			"optic_compatibility": "none",
-			"has_cover_plate": false,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 2,
 			"mag_size": 17
@@ -2301,7 +2206,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "m81_desert_camo",
 			"optic_compatibility": "none",
-			"has_cover_plate": false,
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 2,
 			"mag_size": 17
@@ -2325,7 +2229,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "none",
-			"has_cover_plate": false,
 			"mag_bag_bonus": false,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -2349,7 +2252,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "m81_desert",
 			"optic_compatibility": "none",
-			"has_cover_plate": false,
 			"mag_bag_bonus": false,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -2373,7 +2275,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "m81_woodland",
 			"optic_compatibility": "none",
-			"has_cover_plate": false,
 			"mag_bag_bonus": false,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -2397,7 +2298,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "none",
-			"has_cover_plate": false,
 			"mag_bag_bonus": false,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -2421,7 +2321,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "m81_desert",
 			"optic_compatibility": "none",
-			"has_cover_plate": false,
 			"mag_bag_bonus": false,
 			"number_of_included_mags": 1,
 			"mag_size": 15
@@ -2445,7 +2344,6 @@ const data: DaggersData = {
 			"slide_coating": "cerakote",
 			"frame_color": "m81_woodland",
 			"optic_compatibility": "none",
-			"has_cover_plate": false,
 			"mag_bag_bonus": false,
 			"number_of_included_mags": 1,
 			"mag_size": 15
