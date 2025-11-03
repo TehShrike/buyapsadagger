@@ -21,6 +21,7 @@
 		"validate_products": "node psa-parsers/validate-products.ts",
 		"update_daggers": "npm run 0_delete_downloaded_files && npm run 1_download_product_listings && npm run 2_scrape_product_listings && npm run 3_download_product_pages && npm run 4_parse_products && npm run 5_process_daggers_for_front_end && npm run 6_download_product_images && npm run 7_optimize_images",
 		"test_parsers": "npm run 2_scrape_product_listings && npm run 4_parse_products && npm run 5_process_daggers_for_front_end && npm run validate_products",
+		"scrape_and_commit": "./scripts/scrape-and-commit.sh",
 		"dev": "run-p dev:*",
 		"dev:serve": "live-server --no-css-inject public",
 		"dev:watch": "node esbuild.config.ts --watch",
