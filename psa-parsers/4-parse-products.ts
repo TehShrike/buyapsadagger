@@ -123,9 +123,13 @@ const extract_image_url = ($: cheerio.CheerioAPI): string => {
 	return $('.fotorama__stage__frame img').first().attr('src') || ''
 }
 
-const parse_product_file = async (
-	file_path: string
-): Promise<ParsedProduct | null> => {
+type ParseResult =
+	| { type: 'success'; data: ParsedProduct }
+	| { type: 'bundle' }
+	| { type: 'out_of_stock' }
+	| { type: 'failed' }
+
+const parse_product_file = async (file_path: string): Promise<ParseResult> => {
 	try {
 		const html = await fs.readFile(file_path, 'utf-8')
 		const $ = cheerio.load(html)
@@ -133,7 +137,13 @@ const parse_product_file = async (
 		// Check if this is a bundle product by counting detail-product-name elements
 		const product_name_count = $('h3.detail-product-name').length
 		if (product_name_count > 1) {
-			return null
+			return { type: 'bundle' }
+		}
+
+		// Check if product is out of stock
+		const stock_status = $('.stock.unavailable').text().trim()
+		if (/out of stock/i.test(stock_status)) {
+			return { type: 'out_of_stock' }
 		}
 
 		const url = extract_url($)
@@ -144,19 +154,22 @@ const parse_product_file = async (
 		const features = extract_features($)
 
 		return {
-			url,
-			title,
-			price,
-			original_product_image_url,
-			product_details,
-			features,
+			type: 'success',
+			data: {
+				url,
+				title,
+				price,
+				original_product_image_url,
+				product_details,
+				features,
+			},
 		}
 	} catch (error) {
 		console.error(
 			`Failed to parse ${file_path}:`,
 			error instanceof Error ? error.message : String(error)
 		)
-		return null
+		return { type: 'failed' }
 	}
 }
 
@@ -183,36 +196,26 @@ const parse_products = async (): Promise<void> => {
 	// Parse all files in parallel
 	const parse_promises = html_files.map(async (file_path) => {
 		const filename = path.basename(file_path)
-		const parsed = await parse_product_file(file_path)
+		const result = await parse_product_file(file_path)
 
-		if (parsed) {
-			console.log(`✓ ${filename} - ${parsed.title}`)
-			return { type: 'success' as const, data: parsed, filename }
+		if (result.type === 'success') {
+			console.log(`✓ ${filename} - ${result.data.title}`)
+		} else if (result.type === 'bundle') {
+			console.log(`⊘ ${filename} - Skipped bundle product`)
+		} else if (result.type === 'out_of_stock') {
+			console.log(`⊘ ${filename} - Skipped out of stock product`)
 		} else {
-			// Check if it was a bundle product
-			try {
-				const html = await fs.readFile(file_path, 'utf-8')
-				const $ = cheerio.load(html)
-				const product_name_count = $('h3.detail-product-name').length
-
-				if (product_name_count > 1) {
-					console.log(`⊘ ${filename} - Skipped bundle product`)
-					return { type: 'bundle' as const, filename }
-				} else {
-					console.log(`✗ ${filename} - Failed to parse`)
-					return { type: 'failed' as const, filename }
-				}
-			} catch {
-				console.log(`✗ ${filename} - Failed to parse`)
-				return { type: 'failed' as const, filename }
-			}
+			console.log(`✗ ${filename} - Failed to parse`)
 		}
+
+		return result
 	})
 
 	const results = await Promise.all(parse_promises)
 
 	const parsed_products: ParsedProduct[] = []
 	let skipped_bundles = 0
+	let skipped_out_of_stock = 0
 	let failed_count = 0
 
 	for (const result of results) {
@@ -220,7 +223,9 @@ const parse_products = async (): Promise<void> => {
 			parsed_products.push(result.data)
 		} else if (result.type === 'bundle') {
 			skipped_bundles++
-		} else {
+		} else if (result.type === 'out_of_stock') {
+			skipped_out_of_stock++
+		} else if (result.type === 'failed') {
 			failed_count++
 		}
 	}
@@ -241,6 +246,9 @@ const parse_products = async (): Promise<void> => {
 	)
 	if (skipped_bundles > 0) {
 		console.log(`Skipped ${skipped_bundles} bundle products`)
+	}
+	if (skipped_out_of_stock > 0) {
+		console.log(`Skipped ${skipped_out_of_stock} out of stock products`)
 	}
 	if (failed_count > 0) {
 		console.log(`Failed to parse ${failed_count} products`)
