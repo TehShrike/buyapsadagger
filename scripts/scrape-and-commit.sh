@@ -2,6 +2,11 @@
 
 set -e
 
+if ! git diff --staged --quiet; then
+	echo "Error: There are staged changes. Please commit or unstage them before running this script."
+	exit 1
+fi
+
 echo "Running product scrapers..."
 npm run update_daggers
 
