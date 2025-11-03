@@ -1,5 +1,13 @@
 <script lang="ts">
-	let { image, text } = $props()
+	import type { Snippet } from 'svelte'
+
+	let {
+		image,
+		text,
+	}: {
+		image: Snippet,
+		text: Snippet,
+	} = $props()
 </script>
 
 <div class="image-link-layout">

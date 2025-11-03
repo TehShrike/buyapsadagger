@@ -13,13 +13,13 @@
 - [x] look into why the images didn't get shrunk to 400px last time?
 - [x] apply for PSA affiliate program
 - [x] add a "why?" link at the top after "buy a psa dagger".  Maybe a "details" element right below it
-- [ ] rebuild daily in CI somewhere
+- [ ] rebuild daily on some local machine
 - [ ] add a "why this page rather than PSA.com?" details section
 	- link to the official site
  	- speed
   	- browsability for normal people
 	- link to blog post
-- [ ] remove the build folder from git
+- [x] remove the build folder from git
 - [ ] remove "Filters" heading - maybe change to "Options"?
 - [ ] ask Claude what filters should probably be added
 - [ ] add new filters, probably the ceramic/diamond coatings
