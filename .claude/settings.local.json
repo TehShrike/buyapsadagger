@@ -24,7 +24,8 @@
       "WebFetch(domain:www.ijg.org)",
       "WebFetch(domain:www.libpng.org)",
       "Bash(./vendor/graphicsmagick/bin/gm identify:*)",
-      "Bash(git check-ignore:*)"
+      "Bash(git check-ignore:*)",
+      "WebFetch(domain:developers.cloudflare.com)"
     ],
     "deny": [],
     "ask": []
