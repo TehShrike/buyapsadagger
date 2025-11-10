@@ -59,19 +59,32 @@
 				The fastest way to browse the Palmetto State Armory Dagger catalog.
 			</small>
 		</div>
-		<details>
-			<summary>Why a Dagger?</summary>
-			<div>
-				<p>
-					The Palmetto State Armory Dagger is based on the Glock 19, and <a href="https://palmettostatearmory.com/psa-dagger.html" rel="noopener" target="_blank">is generally parts-compatible with the Glock 19 Gen 3</a>.
-					Palmetto State Armory sells reliable gun parts at pretty amazing prices.
-				</p>
-				<p>
-					These pistols work with Glock 17 and 19 magazines, and might work in Glock holsters, though it's safer to use ones that are designed for the Dagger.
-					The Micro is about the size of a Glock 43x, the Compact is about the size of a Glock 19, and the Full Size is about the size of a Glock 45.
-				</p>
-			</div>
-		</details>
+		<div>
+			<details>
+				<summary>Why a Dagger?</summary>
+				<div>
+					<p>
+						The Palmetto State Armory Dagger is based on the Glock 19, and <a href="https://palmettostatearmory.com/psa-dagger.html" rel="noopener" target="_blank">is generally parts-compatible with the Glock 19 Gen 3</a>.
+						Palmetto State Armory sells reliable gun parts at pretty amazing prices.
+					</p>
+					<p>
+						These pistols work with Glock 17 and 19 magazines, and might work in Glock holsters, though it's safer to use ones that are designed for the Dagger.
+						The Micro is about the size of a Glock 43x, the Compact is about the size of a Glock 19, and the Full Size is about the size of a Glock 45.
+					</p>
+				</div>
+			</details>
+			<details>
+				<summary>Why this site?</summary>
+				<div>
+					<p>
+						I like the Dagger and wanted it to have a product listing page that was fast to browse and is legible to folks like me who aren't gun nerds.
+					</p>
+					<p>
+						I wrote a bit more about making a good product listing page in <a href="https://joshduff.com/2025-11-10-making-a-product-listing-page-that-doesnt-suck.html">this blog post</a>.
+					</p>
+				</div>
+			</details>
+		</div>
 		<div class="card intro-pistol-size-selector">
 			<PistolSizeSelector
 				bind:size={querystring_instance.params_with_defaults.size}
@@ -187,11 +200,12 @@
 		&, & > div {
 			display: flex;
 			flex-direction: column;
-			gap: var(--spacing);
+			gap: calc(var(--spacing) / 2);
 		}
 
 		& > div {
 			font-size: 16px;
+			padding-bottom: var(--spacing);
 		}
 
 		summary {
