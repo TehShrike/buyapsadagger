@@ -56,10 +56,6 @@
     "title": "PSA Sabre Dagger Micro 9mm Pistol, w/ Mag Extensions, Black"
   },
   {
-    "url": "https://palmettostatearmory.com/psa-sabre-dagger-full-size-s-9mm-pistol-tin-ported-barrel-w-mag-extensions-black.html",
-    "title": "PSA Sabre Dagger Full Size - S 9mm Pistol, TiN Ported Barrel, W/Mag Extensions, Black"
-  },
-  {
     "url": "https://palmettostatearmory.com/psa-sabre-dagger-full-size-s-9mm-pistol-tin-ported-barrel-w-mag-extensions-m81-desert-camo.html",
     "title": "PSA Sabre Dagger Full Size - S 9mm Pistol, TiN Ported Barrel, W/Mag Extensions, M81 Desert Camo"
   },
@@ -118,6 +114,10 @@
   {
     "url": "https://palmettostatearmory.com/psa-dagger-micro-9mm-pistol-shield-cut-5-15rd-mags-bag-black.html",
     "title": "PSA Dagger Micro 9mm Pistol - Shield Cut With 5 15rd Mags & Bag, Black"
+  },
+  {
+    "url": "https://palmettostatearmory.com/psa-dagger-micro-9mm-pistol-with-threaded-barrel-shield-cut-black.html",
+    "title": "PSA Dagger Micro 9mm Pistol With Threaded Barrel - Shield Cut, Black"
   },
   {
     "url": "https://palmettostatearmory.com/psa-dagger-complete-sw3-rmr-slide-assembly-w-copper-spiral-fluted-non-threaded-barrel-flat-dark-earth.html",
@@ -208,10 +208,6 @@
     "title": "PSA Dagger Micro C-1 9mm Pistol - Shield Cut, W/Holosun 407k, Black"
   },
   {
-    "url": "https://palmettostatearmory.com/psa-dagger-micro-c-1-9mm-pistol-shield-cut-black.html",
-    "title": "PSA Dagger Micro C-1 9mm Pistol - Shield Cut, Black"
-  },
-  {
     "url": "https://palmettostatearmory.com/psa-dagger-micro-c-1-complete-9mm-pistol-shield-cut-w-holosun-407k-sniper-green-slide-2-tone.html",
     "title": "PSA Dagger Micro C-1 9mm Pistol - Shield Cut, W/Holosun 407k, Sniper Green Slide, 2-Tone"
   },
@@ -246,10 +242,6 @@
   {
     "url": "https://palmettostatearmory.com/psa-dagger-full-size-s-9mm-pistol-with-swr-rmr-slide-w-gold-barrel-sniper-green-with-10-17rd-pmags-psa-pistol-bag.html",
     "title": "PSA Dagger Full Size - S 9mm Pistol With SWR RMR Slide W/Gold Barrel, Sniper Green With 10-17rd PMAGS & PSA Pistol Bag"
-  },
-  {
-    "url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-swr-rmr-slide-green-copper-threaded-barrel.html",
-    "title": "PSA Dagger Compact 9mm Pistol With SWRV2 RMR Slide W/ Copper Threaded Barrel, Sniper Green"
   },
   {
     "url": "https://palmettostatearmory.com/psa-dagger-complete-sw1-rmr-pistol-w-gold-barrel-10-15rd-mags-black-dlc.html",
@@ -294,10 +286,6 @@
   {
     "url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-rmr-pistol-w-10-pmag-27rd-15rd-magazines-psa-pistol-bag2.html",
     "title": "PSA Dagger Compact 9mm RMR Pistol w/ 10 PMAG 27rd/15rd Magazines & PSA Pistol Bag"
-  },
-  {
-    "url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-rmr-pistol-with-threaded-barrel-black-dlc.html",
-    "title": "PSA Dagger Compact 9mm RMR Pistol with Threaded Barrel, Black"
   },
   {
     "url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-rmr-pistol-with-threaded-barrel-sniper-green.html",
@@ -426,9 +414,5 @@
   {
     "url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-night-sights-black-dlc-2.html",
     "title": "PSA Dagger Compact 9mm Pistol with Extreme Carry Cuts & Night Sights, Black DLC"
-  },
-  {
-    "url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-black-dlc.html",
-    "title": "PSA Dagger Compact 9mm Pistol with Extreme Carry Cuts,  Black"
   }
 ]
