@@ -25,7 +25,7 @@
 			{#snippet text()}
 				<div class="text_snippet">
 					<strong>Micro</strong>
-					<small>It's pretty small</small>
+					<small>It's pretty small.  Magazine holds 15 rounds</small>
 				</div>
 			{/snippet}
 		</ImageLinkLayout>
