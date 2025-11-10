@@ -4,6 +4,7 @@ set -e
 
 export PATH="/opt/homebrew/bin:$PATH"
 source /Users/joshduff/.nvm/nvm.sh
+nvm use
 
 if ! git diff --staged --quiet; then
 	echo "Error: There are staged changes. Please commit or unstage them before running this script."
