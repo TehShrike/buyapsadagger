@@ -242,6 +242,11 @@
 			align-items: center;
 		}
 
+		.intro > * {
+			width: 100%;
+			max-width: 550px;
+		}
+
 		.intro-pistol-size-selector {
 			display: none;
 		}
