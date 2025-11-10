@@ -77,10 +77,10 @@
 				<summary>Why this site?</summary>
 				<div>
 					<p>
-						I like the Dagger and wanted it to have a product listing page that was fast to browse and is legible to folks like me who aren't gun nerds.
+						I like the Dagger and wanted it to have a product listing page that was fast to browse and legible to non-gun-nerds like me.
 					</p>
 					<p>
-						I wrote a bit more about making a good product listing page in <a href="https://joshduff.com/2025-11-10-making-a-product-listing-page-that-doesnt-suck.html">this blog post</a>.
+						I wrote a bit more about making a good product listing page in <a href="https://joshduff.com/2025-11-10-making-a-product-listing-page-that-doesnt-suck.html" rel="opener" target="_blank">this blog post</a>.
 					</p>
 				</div>
 			</details>
