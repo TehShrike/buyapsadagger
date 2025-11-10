@@ -1,5 +1,6 @@
 <script lang="ts" generics="PossibleValue extends string">
 	import type { Snippet } from 'svelte'
+	import should_intercept_for_navigation from '#lib/click-should-be-intercepted-for-navigation.ts'
 
 	let {
 		group_name,
@@ -31,8 +32,10 @@
 	}
 
 	const onclick = (event: MouseEvent) => {
-		event.preventDefault()
-		on_express_desire_to_navigate()
+		if (should_intercept_for_navigation(event)) {
+			event.preventDefault()
+			on_express_desire_to_navigate()
+		}
 	}
 
 	const onkeydown = (event: KeyboardEvent) => {
