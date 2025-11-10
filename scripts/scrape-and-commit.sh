@@ -2,9 +2,15 @@
 
 set -e
 
-export PATH="/opt/homebrew/bin:$PATH"
+echo "Setting the path"
+export PATH="/opt/homebrew/bin:/Users/joshduff/.nvm/versions/node/v24.10.0/:$PATH"
+
+echo "Sourcing nvm"
 source /Users/joshduff/.nvm/nvm.sh
+
 pushd /Users/joshduff/git/buyapsadagger
+
+echo "Running nvm use"
 nvm use
 
 if ! git diff --staged --quiet; then
