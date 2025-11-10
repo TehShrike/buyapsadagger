@@ -321,8 +321,4 @@
 		font-weight: bold;
 		margin-top: auto;
 	}
-
-	h2 {
-		font-size: 20px;
-	}
 </style>
