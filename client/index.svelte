@@ -94,7 +94,6 @@
 	</div>
 	<div class="filters-and-results">
 		<div class="filters card">
-			<h2 style="color: var(--dark_color); border-bottom: 1px solid var(--dark_color); padding-bottom: 8px;">Filters</h2>
 			<div class="filters-pistol-size-selector">
 				<PistolSizeSelector
 					bind:size={querystring_instance.params_with_defaults.size}
