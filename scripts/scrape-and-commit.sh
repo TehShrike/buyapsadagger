@@ -4,6 +4,7 @@ set -e
 
 export PATH="/opt/homebrew/bin:$PATH"
 source /Users/joshduff/.nvm/nvm.sh
+pushd /Users/joshduff/git/buyapsadagger
 nvm use
 
 if ! git diff --staged --quiet; then
@@ -35,3 +36,5 @@ git push
 
 echo ""
 echo "Done! Changes committed and pushed."
+
+popd
