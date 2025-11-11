@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+exec >> /tmp/scraper.log 2>> /tmp/scraper.err
+
 set -e
 
 echo "Setting the path"
