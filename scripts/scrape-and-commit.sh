@@ -1,19 +1,6 @@
 #!/usr/bin/env bash
 
-exec >> /tmp/scraper.log 2>> /tmp/scraper.err
-
 set -e
-
-echo "Setting the path"
-export PATH="/opt/homebrew/bin:/Users/joshduff/.nvm/versions/node/v24.10.0/:$PATH"
-
-echo "Sourcing nvm"
-source /Users/joshduff/.nvm/nvm.sh
-
-pushd /Users/joshduff/git/buyapsadagger
-
-echo "Running nvm use"
-nvm use
 
 if ! git diff --staged --quiet; then
 	echo "Error: There are staged changes. Please commit or unstage them before running this script."
