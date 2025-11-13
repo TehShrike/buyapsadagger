@@ -2,6 +2,12 @@
 
 set -e
 
+echo "Sourcing nvm"
+source /Users/joshduff/.nvm/nvm.sh
+
+echo "Running nvm use"
+nvm use
+
 if ! git diff --staged --quiet; then
 	echo "Error: There are staged changes. Please commit or unstage them before running this script."
 	exit 1
