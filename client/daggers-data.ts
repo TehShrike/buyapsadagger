@@ -3,11 +3,11 @@ import type { DaggersData } from './product.d.ts'
 const data: DaggersData = {
 	"daggers": [
 		{
-			"psa_product_name": "Blem PSA Dagger Compact 9mm SW3 RMR Pistol W/ Copper Threaded Barrel, Flat Dark Earth",
-			"psa_url": "https://palmettostatearmory.com/blem-psa-dagger-compact-9mm-sw3-rmr-pistol-w-copper-threaded-barrel-flat-dark-earth.html",
+			"psa_product_name": "Blem PSA Dagger Complete SW4 RMR 9mm Pistol W/ Gold Barrel, FDE",
+			"psa_url": "https://palmettostatearmory.com/blem-psa-dagger-complete-sw4-rmr-9mm-pistol-w-gold-barrel-fde.html",
 			"price": 379.99,
-			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg0151655139885b_052623_1.jpg",
-			"image_file_name": "blem-psa-dagger-compact-9mm-sw3-rmr-pistol-w-copper-threaded-barrel-flat-dark-earth.jpg",
+			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655139357b_051123_1.jpg",
+			"image_file_name": "blem-psa-dagger-complete-sw4-rmr-9mm-pistol-w-gold-barrel-fde.jpg",
 			"size": "compact",
 			"width": 1.28,
 			"length": 7.65,
@@ -437,6 +437,29 @@ const data: DaggersData = {
 			"optic_compatibility": "rmr",
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 10,
+			"mag_size": 15
+		},
+		{
+			"psa_product_name": "PSA Dagger Compact 9mm Pistol With Extreme Carry Cuts, Sniper Green",
+			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-sniper-green.html",
+			"price": 299.99,
+			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/5/1/51655129773_1.jpg",
+			"image_file_name": "psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-sniper-green.jpg",
+			"size": "compact",
+			"width": 1.28,
+			"length": 7.15,
+			"height": 4.78,
+			"barrel_length": 3.9,
+			"longer_barrel": false,
+			"threaded_barrel": false,
+			"night_sight": false,
+			"compensated_slide": false,
+			"slide_color": "sniper_green",
+			"slide_coating": "cerakote",
+			"frame_color": "sniper_green",
+			"optic_compatibility": "none",
+			"mag_bag_bonus": false,
+			"number_of_included_mags": 1,
 			"mag_size": 15
 		},
 		{
@@ -1130,6 +1153,29 @@ const data: DaggersData = {
 			"mag_size": 17
 		},
 		{
+			"psa_product_name": "PSA Dagger Full Size - S 9mm Pistol With Extreme Carry Cut & Non-Threaded Barrel, Two-Tone Flat Sniper Green",
+			"psa_url": "https://palmettostatearmory.com/psa-dagger-full-size-s-9mm-pistol-with-extreme-carry-cut-non-threaded-barrel-two-tone-flat-sniper-green-v2.html",
+			"price": 309.99,
+			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/5/1/51655130372_1.jpg",
+			"image_file_name": "psa-dagger-full-size-s-9mm-pistol-with-extreme-carry-cut-non-threaded-barrel-two-tone-flat-sniper-green-v2.jpg",
+			"size": "full_size_s",
+			"width": 1.28,
+			"length": 7.15,
+			"height": 5.38,
+			"barrel_length": 3.9,
+			"longer_barrel": false,
+			"threaded_barrel": false,
+			"night_sight": false,
+			"compensated_slide": false,
+			"slide_color": "black_dlc_coating",
+			"slide_coating": "dlc",
+			"frame_color": "sniper_green",
+			"optic_compatibility": "none",
+			"mag_bag_bonus": true,
+			"number_of_included_mags": 1,
+			"mag_size": 17
+		},
+		{
 			"psa_product_name": "PSA Dagger Full Size - S 9mm Pistol With Extreme Carry Cut RMR Slide & Threaded Barrel, Two-Tone Sniper Green",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-full-size-s-9mm-pistol-with-extreme-carry-cut-rmr-slide-threaded-barrel-two-tone-sniper-green.html",
 			"price": 369.99,
@@ -1150,29 +1196,6 @@ const data: DaggersData = {
 			"optic_compatibility": "rmr",
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 1,
-			"mag_size": 17
-		},
-		{
-			"psa_product_name": "PSA Dagger Full Size - S 9mm Pistol with SW1 RMR with Threaded Barrel & 10 17rd Mags & Bag, FDE (Rear Sight Rear)",
-			"psa_url": "https://palmettostatearmory.com/psa-dagger-full-size-s-9mm-pistol-with-sw1-rmr-with-threaded-barrel-ameriglo-lower-1-3-co-witness-10-17rd-mags-bag-fde-rear-sight-rear.html",
-			"price": 479.99,
-			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/5/1/51655132791_1_1.jpg",
-			"image_file_name": "psa-dagger-full-size-s-9mm-pistol-with-sw1-rmr-with-threaded-barrel-ameriglo-lower-1-3-co-witness-10-17rd-mags-bag-fde-rear-sight-rear.jpg",
-			"size": "full_size_s",
-			"width": 0,
-			"length": 0,
-			"height": 0,
-			"barrel_length": 4.5,
-			"longer_barrel": false,
-			"threaded_barrel": true,
-			"night_sight": false,
-			"compensated_slide": false,
-			"slide_color": null,
-			"slide_coating": "none",
-			"frame_color": null,
-			"optic_compatibility": "rmr",
-			"mag_bag_bonus": true,
-			"number_of_included_mags": 10,
 			"mag_size": 17
 		},
 		{
@@ -1403,29 +1426,6 @@ const data: DaggersData = {
 			"optic_compatibility": "shield_rmsc",
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 5,
-			"mag_size": 15
-		},
-		{
-			"psa_product_name": "PSA Dagger Micro 9mm Pistol - Shield Cut, Black",
-			"psa_url": "https://palmettostatearmory.com/psa-dagger-micro-9mm-pistol-shield-cut-black-dlc.html",
-			"price": 339.99,
-			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655136024_1.jpg",
-			"image_file_name": "psa-dagger-micro-9mm-pistol-shield-cut-black-dlc.jpg",
-			"size": "micro",
-			"width": 1.1,
-			"length": 6.5,
-			"height": 4.7,
-			"barrel_length": 3.41,
-			"longer_barrel": false,
-			"threaded_barrel": false,
-			"night_sight": false,
-			"compensated_slide": false,
-			"slide_color": "black",
-			"slide_coating": "cerakote",
-			"frame_color": null,
-			"optic_compatibility": "shield_rmsc",
-			"mag_bag_bonus": false,
-			"number_of_included_mags": 1,
 			"mag_size": 15
 		},
 		{
@@ -2237,7 +2237,8 @@ const data: DaggersData = {
 	"slide_colors": {
 		"flat_dark_earth": "Flat Dark Earth",
 		"sniper_green": "Sniper Green",
-		"black": "Black"
+		"black": "Black",
+		"black_dlc_coating": "Black DLC Coating"
 	},
 	"frame_colors": {
 		"flat_dark_earth": "Flat Dark Earth",
