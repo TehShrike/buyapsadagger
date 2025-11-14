@@ -110,7 +110,15 @@ const extract_features = ($: cheerio.CheerioAPI): string => {
 }
 
 const extract_price = ($: cheerio.CheerioAPI): number => {
-	const price_text = $('.product-info-price .price').text().trim()
+	// Try to find the special/final price first
+	let price_element = $('.product-info-price span.price-wrapper.final-price span.price').first()
+	
+	// If no special price, look for regular price
+	if (!price_element.length) {
+		price_element = $('.product-info-price span.price').first()
+	}
+	
+	const price_text = price_element.text().trim()
 	const price_match = price_text.match(/[\d,]+\.?\d*/)
 	if (!price_match) {
 		return 0
