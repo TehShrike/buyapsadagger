@@ -37,5 +37,3 @@ git push
 
 echo ""
 echo "Done! Changes committed and pushed."
-
-popd
