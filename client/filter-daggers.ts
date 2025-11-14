@@ -5,6 +5,7 @@ import { filter } from '#lib/array.ts'
 
 type TrueFalseOrAny = 'true' | 'false' | Any
 export type OpticCompatibilityOrAny = OpticCompatibility | Any
+export type SlideCoatingOrAny = 'none' | 'dlc' | 'cerakote' | Any
 
 export type FilterParams = {
 	size: Size
@@ -12,6 +13,7 @@ export type FilterParams = {
 	threaded_barrel: TrueFalseOrAny
 	night_sight: TrueFalseOrAny
 	optic_compatibility: OpticCompatibilityOrAny
+	slide_coating: SlideCoatingOrAny
 }
 
 export type FilterParamKey = keyof FilterParams
@@ -33,6 +35,7 @@ export const product_matches = (product: Product, filters: FilterParams): boolea
 		&& matches_boolean_filter(product.threaded_barrel, filters.threaded_barrel)
 		&& matches_boolean_filter(product.night_sight, filters.night_sight)
 		&& (filters.optic_compatibility === ANY || product.optic_compatibility === filters.optic_compatibility)
+		&& (filters.slide_coating === ANY || product.slide_coating === filters.slide_coating)
 }
 
 export const filter_daggers = (

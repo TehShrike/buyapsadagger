@@ -11,6 +11,7 @@ const possible_filter_option_values_excluding_any: AlternateOptionsToConsider = 
 	threaded_barrel: ['true', 'false'] as const,
 	night_sight: ['true', 'false'] as const,
 	optic_compatibility: ['none', 'rmr', 'shield_rmsc'] as const,
+	slide_coating: ['none', 'dlc', 'cerakote'] as const,
 }
 
 export const calculate_alternate_option_selections_we_need_to_consider = (displayed_filter_options: Set<FilterParamKey>, current_filter_params: FilterParams) => object_from_entries(map(

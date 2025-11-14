@@ -12,6 +12,7 @@ export const default_values = {
 	threaded_barrel: ANY,
 	night_sight: ANY,
 	optic_compatibility: ANY,
+	slide_coating: ANY,
 } as const satisfies FilterParams
 
 export const FILTER_PARAM_KEYS: FilterParamKey[] = Object.keys(default_values) as unknown as FilterParamKey[]

@@ -26,7 +26,8 @@
       "Bash(./vendor/graphicsmagick/bin/gm identify:*)",
       "Bash(git check-ignore:*)",
       "WebFetch(domain:developers.cloudflare.com)",
-      "Bash(jq:*)"
+      "Bash(jq:*)",
+      "Read(//Users/joshduff/code/**)"
     ],
     "deny": [],
     "ask": []
