@@ -204,7 +204,7 @@
 					group_name="slide_coating"
 					options={add_disabled_to_unsafe_options('slide_coating', [
 						{ label: 'Any', value: 'any' },
-						{ label: 'Cerakote', value: 'cerakote' },
+						{ label: 'Ceramic', value: 'cerakote' },
 						{ label: 'Diamond-like', value: 'dlc' },
 					])}
 					get_altered_query_string={querystring_instance.get_altered_query_string}
