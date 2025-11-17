@@ -189,7 +189,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Compact 9mm Pistol With C-1 RMR Compensated Slide, Black",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-c-1-rmr-compensated-slide-black.html",
-			"price": 339.99,
+			"price": 379.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655185370_3725_1.jpg",
 			"image_file_name": "psa-dagger-compact-9mm-pistol-with-c-1-rmr-compensated-slide-black.jpg",
 			"size": "compact",
@@ -212,7 +212,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Compact 9mm Pistol With C-1 RMR Compensated Slide, Sniper Green",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-c-1-rmr-compensated-slide-sniper-green.html",
-			"price": 339.99,
+			"price": 379.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655185372_3725_1_1_.jpg",
 			"image_file_name": "psa-dagger-compact-9mm-pistol-with-c-1-rmr-compensated-slide-sniper-green.jpg",
 			"size": "compact",
@@ -281,7 +281,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Compact 9mm RMR Pistol with Extreme Carry Cuts - 2-Tone Flat Dark Earth",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-rmr-slide-ameriglo-lower-1-3-co-witness-sights-2-tone-flat-dark-earth-with-psa-soft-case.html",
-			"price": 359.99,
+			"price": 319.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655116726_1_1.jpg",
 			"image_file_name": "psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-rmr-slide-ameriglo-lower-1-3-co-witness-sights-2-tone-flat-dark-earth-with-psa-soft-case.jpg",
 			"size": "compact",
@@ -294,29 +294,6 @@ const data: DaggersData = {
 			"night_sight": false,
 			"compensated_slide": false,
 			"slide_color": "flat_dark_earth",
-			"slide_coating": "cerakote",
-			"frame_color": null,
-			"optic_compatibility": "rmr",
-			"mag_bag_bonus": true,
-			"number_of_included_mags": 1,
-			"mag_size": 15
-		},
-		{
-			"psa_product_name": "PSA Dagger Compact 9mm Pistol With Extreme Carry Cuts RMR Slide, Threaded Barrel - 2-Tone Sniper Green With PSA Soft Case",
-			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-rmr-slide-ameriglo-lower-1-3-co-witness-sights-threaded-barrel-2-tone-sniper-green-with-psa-soft-case.html",
-			"price": 319.99,
-			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655116727_1_1.jpg",
-			"image_file_name": "psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-rmr-slide-ameriglo-lower-1-3-co-witness-sights-threaded-barrel-2-tone-sniper-green-with-psa-soft-case.jpg",
-			"size": "compact",
-			"width": 1.28,
-			"length": 7.65,
-			"height": 4.78,
-			"barrel_length": 4.5,
-			"longer_barrel": false,
-			"threaded_barrel": true,
-			"night_sight": false,
-			"compensated_slide": false,
-			"slide_color": "sniper_green",
 			"slide_coating": "cerakote",
 			"frame_color": null,
 			"optic_compatibility": "rmr",
@@ -350,7 +327,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Compact 9mm RMR Pistol W/Threaded Barrel, 10 - 15rd Magazines, & Pistol Case, Flat Dark Earth",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-rmr-threaded-barrel-with-10-15rd-magazines-pistol-case-flat-dark-earth.html",
-			"price": 459.99,
+			"price": 439.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/s/c/screenshot_2023-03-08_at_9.24.34_am_1.png",
 			"image_file_name": "psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-rmr-threaded-barrel-with-10-15rd-magazines-pistol-case-flat-dark-earth.jpg",
 			"size": "compact",
@@ -396,7 +373,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Compact 9mm Pistol With SW1 Extreme Carry Cut RMR Slide & Non-Threaded Barrel, 2-Tone Flat Dark Earth",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-sw1-extreme-carry-cut-rmr-slide-non-threaded-barrel-2-tone-flat-dark-earth.html",
-			"price": 319.99,
+			"price": 369.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655125591_1.jpg",
 			"image_file_name": "psa-dagger-compact-9mm-pistol-with-sw1-extreme-carry-cut-rmr-slide-non-threaded-barrel-2-tone-flat-dark-earth.jpg",
 			"size": "compact",
@@ -442,7 +419,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Compact 9mm Pistol With SW1 Extreme Carry Cut RMR Slide & Non-Threaded Barrel, Black",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-sw1-extreme-carry-cut-rmr-slide-non-threaded-barrel-black-dlc.html",
-			"price": 319.99,
+			"price": 369.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655125590_1.jpg",
 			"image_file_name": "psa-dagger-compact-9mm-pistol-with-sw1-extreme-carry-cut-rmr-slide-non-threaded-barrel-black-dlc.jpg",
 			"size": "compact",
@@ -488,7 +465,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Compact 9mm Pistol With SW1 Extreme Carry Cut RMR Slide & Threaded Barrel, 2-Tone Sniper Green",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-sw1-extreme-carry-cut-rmr-slide-threaded-barrel-2-tone-sniper-green.html",
-			"price": 379.99,
+			"price": 299.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/7/a/7a4a7801_1_.jpg",
 			"image_file_name": "psa-dagger-compact-9mm-pistol-with-sw1-extreme-carry-cut-rmr-slide-threaded-barrel-2-tone-sniper-green.jpg",
 			"size": "compact",
@@ -511,7 +488,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Compact 9mm Pistol With SW1 Extreme Carry Cut RMR Slide & Threaded Barrel, Black",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-sw1-extreme-carry-cut-rmr-slide-threaded-barrel-black-dlc.html",
-			"price": 379.99,
+			"price": 329.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655124750_1.jpg",
 			"image_file_name": "psa-dagger-compact-9mm-pistol-with-sw1-extreme-carry-cut-rmr-slide-threaded-barrel-black-dlc.jpg",
 			"size": "compact",
@@ -534,7 +511,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Compact 9mm Pistol With SW1 RMR Slide & Stainless Threaded Barrel, Black",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-sw1-rmr-slide-stainless-threaded-barrel-black.html",
-			"price": 389.99,
+			"price": 339.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655135871_32224_1_1_.jpg",
 			"image_file_name": "psa-dagger-compact-9mm-pistol-with-sw1-rmr-slide-stainless-threaded-barrel-black.jpg",
 			"size": "compact",
@@ -555,32 +532,9 @@ const data: DaggersData = {
 			"mag_size": 15
 		},
 		{
-			"psa_product_name": "PSA Dagger Compact 9mm Pistol With SW2 Extreme Carry Cut RMR Slide & Threaded Barrel, 2-Tone Flat Dark Earth",
-			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-sw2-extreme-carry-cut-rmr-slide-threaded-barrel-2-tone-flat-dark-earth.html",
-			"price": 319.99,
-			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655123178_1.jpg",
-			"image_file_name": "psa-dagger-compact-9mm-pistol-with-sw2-extreme-carry-cut-rmr-slide-threaded-barrel-2-tone-flat-dark-earth.jpg",
-			"size": "compact",
-			"width": 1.28,
-			"length": 7.65,
-			"height": 4.78,
-			"barrel_length": 4.5,
-			"longer_barrel": false,
-			"threaded_barrel": true,
-			"night_sight": false,
-			"compensated_slide": false,
-			"slide_color": "flat_dark_earth",
-			"slide_coating": "cerakote",
-			"frame_color": null,
-			"optic_compatibility": "rmr",
-			"mag_bag_bonus": true,
-			"number_of_included_mags": 1,
-			"mag_size": 15
-		},
-		{
 			"psa_product_name": "PSA Dagger Compact 9mm Pistol With SW2 Extreme Carry Cut RMR Slide & Threaded Barrel, 2-Tone Sniper Green",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-sw2-extreme-carry-cut-rmr-slide-threaded-barrel-2-tone-sniper-green.html",
-			"price": 319.99,
+			"price": 279.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/7/a/7a4a7832.jpg",
 			"image_file_name": "psa-dagger-compact-9mm-pistol-with-sw2-extreme-carry-cut-rmr-slide-threaded-barrel-2-tone-sniper-green.jpg",
 			"size": "compact",
@@ -603,7 +557,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Compact 9mm Pistol With SW2 Extreme Carry Cut RMR Slide & Threaded Barrel, Black",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-sw2-extreme-carry-cut-rmr-slide-threaded-barrel-black-dlc.html",
-			"price": 319.99,
+			"price": 379.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/7/a/7a4a7005.jpg",
 			"image_file_name": "psa-dagger-compact-9mm-pistol-with-sw2-extreme-carry-cut-rmr-slide-threaded-barrel-black-dlc.jpg",
 			"size": "compact",
@@ -626,7 +580,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Compact 9mm Pistol With SW2 Extreme Carry Cut RMR Slide & Threaded Barrel, Flat Dark Earth",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-sw2-extreme-carry-cut-rmr-slide-threaded-barrel-flat-dark-earth.html",
-			"price": 379.99,
+			"price": 319.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655128774_4.jpg",
 			"image_file_name": "psa-dagger-compact-9mm-pistol-with-sw2-extreme-carry-cut-rmr-slide-threaded-barrel-flat-dark-earth.jpg",
 			"size": "compact",
@@ -718,7 +672,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Compact 9mm Pistol With SW6 RMR Slide & Threaded Barrel, Black",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-sw6-rmr-slide-threaded-barrel-dlc-black.html",
-			"price": 339.99,
+			"price": 389.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg0151655142748_82223_1_1_.jpg",
 			"image_file_name": "psa-dagger-compact-9mm-pistol-with-sw6-rmr-slide-threaded-barrel-dlc-black.jpg",
 			"size": "compact",
@@ -787,7 +741,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Compact 9mm Pistol With SWRV2 RMR Slide & TiN Non-Threaded Barrel, Flat Dark Earth",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-swr-rmr-slide-tin-non-threaded-barrel-flat-dark-earth.html",
-			"price": 339.99,
+			"price": 319.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655130872_32824_1_1_.jpg",
 			"image_file_name": "psa-dagger-compact-9mm-pistol-with-swr-rmr-slide-tin-non-threaded-barrel-flat-dark-earth.jpg",
 			"size": "compact",
@@ -810,7 +764,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Compact 9mm Pistol With SWRV2 RMR Slide & TiN Non-Threaded Barrel, Sniper Green (Rear Sight Rear)",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-swr-rmr-slide-tin-non-threaded-barrel-sniper-green-rear-sight-rear.html",
-			"price": 379.99,
+			"price": 339.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655130873_32924_1_1_.jpg",
 			"image_file_name": "psa-dagger-compact-9mm-pistol-with-swr-rmr-slide-tin-non-threaded-barrel-sniper-green-rear-sight-rear.jpg",
 			"size": "compact",
@@ -833,7 +787,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Compact 9mm Pistol With  X-1 RMR Long Slide, Black",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-x-1-rmr-long-slide-black.html",
-			"price": 379.99,
+			"price": 319.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655187397_4225_1_1.jpg",
 			"image_file_name": "psa-dagger-compact-9mm-pistol-with-x-1-rmr-long-slide-black.jpg",
 			"size": "compact",
@@ -856,7 +810,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Compact 9mm Pistol With X-1 RMR Long Slide, Flat Dark Earth",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-x-1-rmr-long-slide-flat-dark-earth.html",
-			"price": 339.99,
+			"price": 379.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655187398_4225_1_1.jpg",
 			"image_file_name": "psa-dagger-compact-9mm-pistol-with-x-1-rmr-long-slide-flat-dark-earth.jpg",
 			"size": "compact",
@@ -925,7 +879,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Compact 9mm RMR Pistol With Threaded Barrel, Flat Dark Earth",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-rmr-pistol-with-threaded-barrel-flat-dark-earth.html",
-			"price": 359.99,
+			"price": 319.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655128743_3.jpg",
 			"image_file_name": "psa-dagger-compact-9mm-rmr-pistol-with-threaded-barrel-flat-dark-earth.jpg",
 			"size": "compact",
@@ -948,7 +902,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Compact 9mm RMR Pistol With Threaded Barrel, Sniper Green",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-rmr-pistol-with-threaded-barrel-sniper-green.html",
-			"price": 319.99,
+			"price": 379.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg0151655129980_032423_1_1.jpg",
 			"image_file_name": "psa-dagger-compact-9mm-rmr-pistol-with-threaded-barrel-sniper-green.jpg",
 			"size": "compact",
@@ -1017,7 +971,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Full Size S 9mm Pistol With C-1 RMR Compensated Slide, Black",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-full-size-s-9mm-pistol-with-c-1-rmr-compensated-slide-black.html",
-			"price": 339.99,
+			"price": 379.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655185368_3625_1_1_.jpg",
 			"image_file_name": "psa-dagger-full-size-s-9mm-pistol-with-c-1-rmr-compensated-slide-black.jpg",
 			"size": "full_size_s",
@@ -1063,7 +1017,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Full Size - S 9mm Pistol With Extreme Carry Cut RMR Slide & Threaded Barrel, Two-Tone Sniper Green",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-full-size-s-9mm-pistol-with-extreme-carry-cut-rmr-slide-threaded-barrel-two-tone-sniper-green.html",
-			"price": 319.99,
+			"price": 289.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/5/1/51655130273_1.jpg",
 			"image_file_name": "psa-dagger-full-size-s-9mm-pistol-with-extreme-carry-cut-rmr-slide-threaded-barrel-two-tone-sniper-green.jpg",
 			"size": "full_size_s",
@@ -1132,7 +1086,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Full Size - S 9mm SW1 RMR Pistol With Threaded Barrel, Sniper Green",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-full-size-s-9mm-sw1-rmr-pistol-with-threaded-barrel-1-3-lower-sights.html",
-			"price": 369.99,
+			"price": 339.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/5/1/51655130985_1.jpg",
 			"image_file_name": "psa-dagger-full-size-s-9mm-sw1-rmr-pistol-with-threaded-barrel-1-3-lower-sights.jpg",
 			"size": "full_size_s",
@@ -1155,7 +1109,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Full Size - S 9mm SW2 RMR Pistol, Black",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-full-size-s-9mm-sw2-rmr-pistol-black.html",
-			"price": 319.99,
+			"price": 369.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg0251655139253_8423_1.jpg",
 			"image_file_name": "psa-dagger-full-size-s-9mm-sw2-rmr-pistol-black.jpg",
 			"size": "full_size_s",
@@ -1201,7 +1155,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Full Size - S 9mm Pistol With SWRV2 RMR & Gold Barrel, Flat Dark Earth",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-full-size-s-9mm-swr-rmr-pistol-with-gold-barrel-flat-dark-earth.html",
-			"price": 379.99,
+			"price": 339.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655130874_41924_1_1_.jpg",
 			"image_file_name": "psa-dagger-full-size-s-9mm-swr-rmr-pistol-with-gold-barrel-flat-dark-earth.jpg",
 			"size": "full_size_s",
@@ -1224,7 +1178,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Full Size S 9mm Pistol With Compact X-1 RMR Long Slide, Flat Dark Earth",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-full-size-sx-pistol-with-rmr-extreme-carry-cut-long-slide-lower-1-3-day-sight-long-non-threaded-barrel-flat-dark-earth.html",
-			"price": 379.99,
+			"price": 339.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/5/1/51655131120_1.jpg",
 			"image_file_name": "psa-dagger-full-size-sx-pistol-with-rmr-extreme-carry-cut-long-slide-lower-1-3-day-sight-long-non-threaded-barrel-flat-dark-earth.jpg",
 			"size": "full_size_s",
@@ -1247,7 +1201,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Full Size S 9mm Pistol With Compact X-1 RMR Long Slide, Sniper Green",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-full-size-sx-pistol-with-rmr-extreme-carry-cut-long-slide-lower-1-3-day-sight-long-non-threaded-barrel-sniper-green.html",
-			"price": 379.99,
+			"price": 309.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/5/1/51655131121_1.jpg",
 			"image_file_name": "psa-dagger-full-size-sx-pistol-with-rmr-extreme-carry-cut-long-slide-lower-1-3-day-sight-long-non-threaded-barrel-sniper-green.jpg",
 			"size": "full_size_s",
