@@ -5,7 +5,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "Blem PSA Dagger Complete SW4 RMR 9mm Pistol W/ Gold Barrel, FDE",
 			"psa_url": "https://palmettostatearmory.com/blem-psa-dagger-complete-sw4-rmr-9mm-pistol-w-gold-barrel-fde.html",
-			"price": 279.99,
+			"price": 379.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655139357b_051123_1.jpg",
 			"image_file_name": "blem-psa-dagger-complete-sw4-rmr-9mm-pistol-w-gold-barrel-fde.jpg",
 			"size": "compact",
