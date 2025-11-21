@@ -900,6 +900,29 @@ const data: DaggersData = {
 			"mag_size": 17
 		},
 		{
+			"psa_product_name": "PSA Dagger Micro Complete 9mm Pistol, Shield Cut Black, w/ Viridian RFX11 Green Dot Sight",
+			"psa_url": "https://palmettostatearmory.com/psa-dagger-micro-complete-9mm-pistol-shield-cut-black-non-threaded-barrel-w-viridian-optic.html",
+			"price": 449.99,
+			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655201349_111225_1.jpg",
+			"image_file_name": "psa-dagger-micro-complete-9mm-pistol-shield-cut-black-non-threaded-barrel-w-viridian-optic.jpg",
+			"size": "micro",
+			"width": 1.1,
+			"length": 6.5,
+			"height": 4.7,
+			"barrel_length": 3.41,
+			"longer_barrel": true,
+			"threaded_barrel": false,
+			"night_sight": false,
+			"compensated_slide": false,
+			"slide_color": "black",
+			"slide_coating": "cerakote",
+			"frame_color": null,
+			"optic_compatibility": "shield_rmsc",
+			"mag_bag_bonus": true,
+			"number_of_included_mags": 1,
+			"mag_size": 15
+		},
+		{
 			"psa_product_name": "PSA Dagger Micro Complete 9mm Pistol, Shield Cut Black, w/ Viridian RFX11 and 5 Slick 15rd Mags",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-micro-complete-9mm-pistol-shield-cut-black-w-viridian-optic-and-5-slick-15rd-mags.html",
 			"price": 539.99,
@@ -920,6 +943,29 @@ const data: DaggersData = {
 			"optic_compatibility": "shield_rmsc",
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 5,
+			"mag_size": 15
+		},
+		{
+			"psa_product_name": "PSA Dagger Micro Complete 9mm Pistol, Shield Cut FDE, w/ Viridian RFX11 Green Dot Sight",
+			"psa_url": "https://palmettostatearmory.com/psa-dagger-micro-complete-9mm-pistol-shield-cut-fde-non-threaded-barrel-w-viridian-optic.html",
+			"price": 449.99,
+			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655201350_111225_1.jpg",
+			"image_file_name": "psa-dagger-micro-complete-9mm-pistol-shield-cut-fde-non-threaded-barrel-w-viridian-optic.jpg",
+			"size": "micro",
+			"width": 1.1,
+			"length": 6.5,
+			"height": 4.7,
+			"barrel_length": 3.41,
+			"longer_barrel": true,
+			"threaded_barrel": false,
+			"night_sight": false,
+			"compensated_slide": false,
+			"slide_color": "flat_dark_earth",
+			"slide_coating": "cerakote",
+			"frame_color": null,
+			"optic_compatibility": "shield_rmsc",
+			"mag_bag_bonus": true,
+			"number_of_included_mags": 1,
 			"mag_size": 15
 		},
 		{
@@ -967,6 +1013,29 @@ const data: DaggersData = {
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 2,
 			"mag_size": 17
+		},
+		{
+			"psa_product_name": "PSA Sabre Dagger Micro 9mm Pistol, TiN Barrel, w/ Mag Extensions, M81 Desert Camo",
+			"psa_url": "https://palmettostatearmory.com/psa-sabre-dagger-micro-9mm-pistol-tin-barrel-w-mag-extensions-m81-desert-camo.html",
+			"price": 629.99,
+			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm02-51655197979_92625_1.jpg",
+			"image_file_name": "psa-sabre-dagger-micro-9mm-pistol-tin-barrel-w-mag-extensions-m81-desert-camo.jpg",
+			"size": "micro",
+			"width": 1.1,
+			"length": 6.5,
+			"height": 4.9,
+			"barrel_length": 3.41,
+			"longer_barrel": false,
+			"threaded_barrel": false,
+			"night_sight": false,
+			"compensated_slide": false,
+			"slide_color": "black",
+			"slide_coating": "cerakote",
+			"frame_color": "m81_desert",
+			"optic_compatibility": "none",
+			"mag_bag_bonus": false,
+			"number_of_included_mags": 1,
+			"mag_size": 15
 		}
 	],
 	"slide_colors": {
@@ -978,7 +1047,8 @@ const data: DaggersData = {
 		"black": "Black",
 		"sniper_green": "Sniper Green",
 		"flat_dark_earth": "Flat Dark Earth",
-		"m81_woodland_camo": "M81 Woodland Camo"
+		"m81_woodland_camo": "M81 Woodland Camo",
+		"m81_desert": "M81 Desert"
 	}
 } as const
 
