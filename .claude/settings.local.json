@@ -27,7 +27,11 @@
       "Bash(git check-ignore:*)",
       "WebFetch(domain:developers.cloudflare.com)",
       "Bash(jq:*)",
-      "Read(//Users/joshduff/code/**)"
+      "Read(//Users/joshduff/code/**)",
+      "Bash(env)",
+      "Read(//Users/joshduff/**)",
+      "Bash(npm config:*)",
+      "Bash(echo:*)"
     ],
     "deny": [],
     "ask": []
