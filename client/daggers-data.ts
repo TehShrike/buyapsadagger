@@ -1431,7 +1431,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Micro 9mm Pistol - Shield Cut W/ Holosun 407K, Sniper Green Slide, 2-Tone",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-micro-9mm-pistol-shield-cut-w-holosun-407k-sniper-green-slide-2-tone.html",
-			"price": 399.99,
+			"price": 539.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655147003_121123_1_1_.jpg",
 			"image_file_name": "psa-dagger-micro-9mm-pistol-shield-cut-w-holosun-407k-sniper-green-slide-2-tone.jpg",
 			"size": "micro",
