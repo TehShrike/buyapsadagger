@@ -1038,29 +1038,6 @@ const data: DaggersData = {
 			"mag_size": 17
 		},
 		{
-			"psa_product_name": "PSA Dagger Full Size - S 9mm Pistol With Extreme Carry Cut & Non-Threaded Barrel, Two-Tone Flat Sniper Green",
-			"psa_url": "https://palmettostatearmory.com/psa-dagger-full-size-s-9mm-pistol-with-extreme-carry-cut-non-threaded-barrel-two-tone-flat-sniper-green-v2.html",
-			"price": 309.99,
-			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/5/1/51655130372_1.jpg",
-			"image_file_name": "psa-dagger-full-size-s-9mm-pistol-with-extreme-carry-cut-non-threaded-barrel-two-tone-flat-sniper-green-v2.jpg",
-			"size": "full_size_s",
-			"width": 1.28,
-			"length": 7.15,
-			"height": 5.38,
-			"barrel_length": 3.9,
-			"longer_barrel": false,
-			"threaded_barrel": false,
-			"night_sight": false,
-			"compensated_slide": false,
-			"slide_color": "black_dlc_coating",
-			"slide_coating": "dlc",
-			"frame_color": "sniper_green",
-			"optic_compatibility": "none",
-			"mag_bag_bonus": true,
-			"number_of_included_mags": 1,
-			"mag_size": 17
-		},
-		{
 			"psa_product_name": "PSA Dagger Full Size - S 9mm Pistol With SWRV2 RMR Slide & TiN Non-Threaded Barrel, Sniper Green",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-full-size-s-9mm-pistol-with-swr-rmr-slide-tin-non-threaded-barrel-sniper-green.html",
 			"price": 339.99,
@@ -2053,8 +2030,7 @@ const data: DaggersData = {
 	"slide_colors": {
 		"sniper_green": "Sniper Green",
 		"black": "Black",
-		"flat_dark_earth": "Flat Dark Earth",
-		"black_dlc_coating": "Black DLC Coating"
+		"flat_dark_earth": "Flat Dark Earth"
 	},
 	"frame_colors": {
 		"black": "Black",
