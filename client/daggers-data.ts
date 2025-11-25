@@ -3,29 +3,6 @@ import type { DaggersData } from './product.d.ts'
 const data: DaggersData = {
 	"daggers": [
 		{
-			"psa_product_name": "PSA Dagger Full Size - S 9mm, Pistol with SW1 RMR RearSight Slide, Sniper Green, Threaded Barrel, with Black Frame",
-			"psa_url": "https://palmettostatearmory.com/dg02-51655130972.html",
-			"price": 329.99,
-			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/5/1/51655130972_1.jpg",
-			"image_file_name": "dg02-51655130972.jpg",
-			"size": "full_size_s",
-			"width": 1.28,
-			"length": 7.65,
-			"height": 5.38,
-			"barrel_length": 4.5,
-			"longer_barrel": false,
-			"threaded_barrel": true,
-			"night_sight": false,
-			"compensated_slide": false,
-			"slide_color": "sniper_green",
-			"slide_coating": "cerakote",
-			"frame_color": "black",
-			"optic_compatibility": "rmr",
-			"mag_bag_bonus": true,
-			"number_of_included_mags": 1,
-			"mag_size": 17
-		},
-		{
 			"psa_product_name": "PSA Custom Compact Dagger RMR Pistol With Chameleon Fluted Barrel, Black",
 			"psa_url": "https://palmettostatearmory.com/psa-custom-compact-dagger-rmr-pistol-with-chameleon-spiral-fluted-barrel-black.html",
 			"price": 449.99,
@@ -235,7 +212,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Compact 9mm Pistol With C-1 RMR Compensated Slide, Flat Dark Earth",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-c-1-rmr-compensated-slide-flat-dark-earth.html",
-			"price": 339.99,
+			"price": 279.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655185371_3725_1.jpg",
 			"image_file_name": "psa-dagger-compact-9mm-pistol-with-c-1-rmr-compensated-slide-flat-dark-earth.jpg",
 			"size": "compact",
@@ -2051,8 +2028,8 @@ const data: DaggersData = {
 		}
 	],
 	"slide_colors": {
-		"sniper_green": "Sniper Green",
 		"black": "Black",
+		"sniper_green": "Sniper Green",
 		"flat_dark_earth": "Flat Dark Earth"
 	},
 	"frame_colors": {
