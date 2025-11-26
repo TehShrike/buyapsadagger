@@ -3,6 +3,29 @@ import type { DaggersData } from './product.d.ts'
 const data: DaggersData = {
 	"daggers": [
 		{
+			"psa_product_name": "Blem PSA Dagger Complete SW4 RMR 9mm Pistol W/ Gold Barrel, FDE",
+			"psa_url": "https://palmettostatearmory.com/blem-psa-dagger-complete-sw4-rmr-9mm-pistol-w-gold-barrel-fde.html",
+			"price": 379.99,
+			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655139357b_051123_1.jpg",
+			"image_file_name": "blem-psa-dagger-complete-sw4-rmr-9mm-pistol-w-gold-barrel-fde.jpg",
+			"size": "compact",
+			"width": 1.28,
+			"length": 7.65,
+			"height": 4.78,
+			"barrel_length": 4.5,
+			"longer_barrel": false,
+			"threaded_barrel": true,
+			"night_sight": false,
+			"compensated_slide": false,
+			"slide_color": "flat_dark_earth",
+			"slide_coating": "cerakote",
+			"frame_color": "flat_dark_earth",
+			"optic_compatibility": "rmr",
+			"mag_bag_bonus": true,
+			"number_of_included_mags": 1,
+			"mag_size": 15
+		},
+		{
 			"psa_product_name": "PSA Custom Compact Dagger RMR Pistol With Chameleon Fluted Barrel, Black",
 			"psa_url": "https://palmettostatearmory.com/psa-custom-compact-dagger-rmr-pistol-with-chameleon-spiral-fluted-barrel-black.html",
 			"price": 449.99,
@@ -54,29 +77,6 @@ const data: DaggersData = {
 			"price": 299.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655189566_51225_1.jpg",
 			"image_file_name": "psa-custom-compact-dagger-rmr-pistol-with-threaded-dlc-barrel-black.jpg",
-			"size": "compact",
-			"width": 1.28,
-			"length": 7.65,
-			"height": 4.78,
-			"barrel_length": 4.5,
-			"longer_barrel": false,
-			"threaded_barrel": true,
-			"night_sight": false,
-			"compensated_slide": false,
-			"slide_color": "black",
-			"slide_coating": "cerakote",
-			"frame_color": "black",
-			"optic_compatibility": "rmr",
-			"mag_bag_bonus": true,
-			"number_of_included_mags": 1,
-			"mag_size": 15
-		},
-		{
-			"psa_product_name": "PSA Custom Compact Dagger RMR Pistol With Threaded Rose Gold Barrel, Black",
-			"psa_url": "https://palmettostatearmory.com/psa-custom-compact-dagger-rmr-pistol-with-threaded-rose-gold-barrel-black.html",
-			"price": 449.99,
-			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655189568_51225_1.jpg",
-			"image_file_name": "psa-custom-compact-dagger-rmr-pistol-with-threaded-rose-gold-barrel-black.jpg",
 			"size": "compact",
 			"width": 1.28,
 			"length": 7.65,
@@ -2120,14 +2120,14 @@ const data: DaggersData = {
 		}
 	],
 	"slide_colors": {
+		"flat_dark_earth": "Flat Dark Earth",
 		"black": "Black",
-		"sniper_green": "Sniper Green",
-		"flat_dark_earth": "Flat Dark Earth"
+		"sniper_green": "Sniper Green"
 	},
 	"frame_colors": {
+		"flat_dark_earth": "Flat Dark Earth",
 		"black": "Black",
 		"sniper_green": "Sniper Green",
-		"flat_dark_earth": "Flat Dark Earth",
 		"m81_woodland_camo": "M81 Woodland Camo",
 		"m81_desert_camo": "M81 Desert Camo",
 		"m81_desert": "M81 Desert",
