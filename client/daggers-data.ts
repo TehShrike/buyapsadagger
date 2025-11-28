@@ -396,7 +396,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Compact 9mm RMR Pistol W/Threaded Barrel, 10 - 15rd Magazines, & Pistol Case, Flat Dark Earth",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-rmr-threaded-barrel-with-10-15rd-magazines-pistol-case-flat-dark-earth.html",
-			"price": 439.99,
+			"price": 349.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/s/c/screenshot_2023-03-08_at_9.24.34_am_1.png",
 			"image_file_name": "psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-rmr-threaded-barrel-with-10-15rd-magazines-pistol-case-flat-dark-earth.jpg",
 			"size": "compact",
@@ -1201,7 +1201,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Micro 9mm Pistol - Shield Cut, Flat Dark Earth",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-micro-9mm-pistol-shield-cut-flat-dark-earth.html",
-			"price": 339.99,
+			"price": 299.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655150888_3524_1_1_.jpg",
 			"image_file_name": "psa-dagger-micro-9mm-pistol-shield-cut-flat-dark-earth.jpg",
 			"size": "micro",
