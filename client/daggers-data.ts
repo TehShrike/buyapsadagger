@@ -5,7 +5,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Custom Compact Dagger RMR Pistol With Chameleon Fluted Barrel, Black",
 			"psa_url": "https://palmettostatearmory.com/psa-custom-compact-dagger-rmr-pistol-with-chameleon-spiral-fluted-barrel-black.html",
-			"price": 299.99,
+			"price": 449.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655189569_52125_1.jpg",
 			"image_file_name": "psa-custom-compact-dagger-rmr-pistol-with-chameleon-spiral-fluted-barrel-black.jpg",
 			"size": "compact",
@@ -345,6 +345,29 @@ const data: DaggersData = {
 			"optic_compatibility": "rmr",
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 10,
+			"mag_size": 15
+		},
+		{
+			"psa_product_name": "PSA Dagger Compact 9mm Pistol With Extreme Carry Cuts, Sniper Green",
+			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-sniper-green.html",
+			"price": 299.99,
+			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/5/1/51655129773_1.jpg",
+			"image_file_name": "psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-sniper-green.jpg",
+			"size": "compact",
+			"width": 1.28,
+			"length": 7.15,
+			"height": 4.78,
+			"barrel_length": 3.9,
+			"longer_barrel": false,
+			"threaded_barrel": false,
+			"night_sight": false,
+			"compensated_slide": false,
+			"slide_color": "sniper_green",
+			"slide_coating": "cerakote",
+			"frame_color": "sniper_green",
+			"optic_compatibility": "none",
+			"mag_bag_bonus": false,
+			"number_of_included_mags": 1,
 			"mag_size": 15
 		},
 		{
