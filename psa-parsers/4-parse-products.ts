@@ -135,6 +135,7 @@ type ParseResult =
 	| { type: 'success'; data: ParsedProduct }
 	| { type: 'bundle' }
 	| { type: 'out_of_stock' }
+	| { type: 'not_a_pistol' }
 	| { type: 'failed' }
 
 const parse_product_file = async (file_path: string): Promise<ParseResult> => {
@@ -156,6 +157,11 @@ const parse_product_file = async (file_path: string): Promise<ParseResult> => {
 
 		const url = extract_url($)
 		const title = extract_title($)
+
+		if (/slide assembly/i.test(title)) {
+			return { type: 'not_a_pistol' }
+		}
+
 		const price = extract_price($)
 		const original_product_image_url = extract_image_url($)
 		const product_details = extract_product_details($)
@@ -212,6 +218,8 @@ const parse_products = async (): Promise<void> => {
 			console.log(`⊘ ${filename} - Skipped bundle product`)
 		} else if (result.type === 'out_of_stock') {
 			console.log(`⊘ ${filename} - Skipped out of stock product`)
+		} else if (result.type === 'not_a_pistol') {
+			console.log(`⊘ ${filename} - Skipped non-pistol product`)
 		} else {
 			console.log(`✗ ${filename} - Failed to parse`)
 		}
@@ -224,6 +232,7 @@ const parse_products = async (): Promise<void> => {
 	const parsed_products: ParsedProduct[] = []
 	let skipped_bundles = 0
 	let skipped_out_of_stock = 0
+	let skipped_not_a_pistol = 0
 	let failed_count = 0
 
 	for (const result of results) {
@@ -233,6 +242,8 @@ const parse_products = async (): Promise<void> => {
 			skipped_bundles++
 		} else if (result.type === 'out_of_stock') {
 			skipped_out_of_stock++
+		} else if (result.type === 'not_a_pistol') {
+			skipped_not_a_pistol++
 		} else if (result.type === 'failed') {
 			failed_count++
 		}
@@ -257,6 +268,9 @@ const parse_products = async (): Promise<void> => {
 	}
 	if (skipped_out_of_stock > 0) {
 		console.log(`Skipped ${skipped_out_of_stock} out of stock products`)
+	}
+	if (skipped_not_a_pistol > 0) {
+		console.log(`Skipped ${skipped_not_a_pistol} non-pistol products`)
 	}
 	if (failed_count > 0) {
 		console.log(`Failed to parse ${failed_count} products`)
