@@ -463,29 +463,6 @@ const data: DaggersData = {
 			"mag_size": 15
 		},
 		{
-			"psa_product_name": "PSA Dagger Compact 9mm Pistol With SW1 RMR Slide & Honeycomb Non Threaded Barrel, Flat Dark Earth",
-			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-sw1-rmr-slide-honeycomb-non-threaded-barrel-flat-dark-earth.html",
-			"price": 299.99,
-			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655201749_111825_1.jpg",
-			"image_file_name": "psa-dagger-compact-9mm-pistol-with-sw1-rmr-slide-honeycomb-non-threaded-barrel-flat-dark-earth.jpg",
-			"size": "compact",
-			"width": 1.28,
-			"length": 7.15,
-			"height": 4.78,
-			"barrel_length": 3.9,
-			"longer_barrel": false,
-			"threaded_barrel": false,
-			"night_sight": false,
-			"compensated_slide": false,
-			"slide_color": "flat_dark_earth",
-			"slide_coating": "cerakote",
-			"frame_color": "flat_dark_earth",
-			"optic_compatibility": "rmr",
-			"mag_bag_bonus": true,
-			"number_of_included_mags": 1,
-			"mag_size": 15
-		},
-		{
 			"psa_product_name": "PSA Dagger Compact 9mm Pistol With SW1 RMR Slide & Stainless Threaded Barrel, Black",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-sw1-rmr-slide-stainless-threaded-barrel-black.html",
 			"price": 339.99,
@@ -810,7 +787,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Complete SW3 RMR Pistol Stainless Fluted Non-Threaded Barrel, Black",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-complete-sw3-rmr-pistol-stainless-fluted-non-threaded-barrel-black.html",
-			"price": 429.99,
+			"price": 279.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655201750_111825_1.jpg",
 			"image_file_name": "psa-dagger-complete-sw3-rmr-pistol-stainless-fluted-non-threaded-barrel-black.jpg",
 			"size": "compact",
