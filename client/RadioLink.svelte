@@ -17,7 +17,7 @@
 		children: Snippet
 		large?: boolean
 		disabled?: boolean
-		get_altered_query_string: (param: string, value: string | boolean) => string
+		get_altered_query_string: (param: string, value: string) => string
 	} = $props()
 
 	let active = $derived(group_value === name)

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import PistolSizeSelector from './PistolSizeSelector.svelte'
 	import Filters from './Filters.svelte'
-	import generate_title from './generate_title.ts'
+	import { generate_product_title, make_page_title } from './generate_title.ts'
 	import { create_querystring_store } from './querystring_store.svelte.ts'
 	import daggers_data from './daggers-data.ts'
 	import {
@@ -68,7 +68,16 @@
 		value === ANY ||
 		querystring_instance.params_with_defaults[key] === value ||
 		is_this_alternate_option_safe_to_click(key, value)
+
+	const options_in_title = $derived({
+		...querystring_instance.params_readable,
+		size: querystring_instance.params_with_defaults.size,
+	})
 </script>
+
+<svelte:head>
+	<title>Buy a PSA Dagger | {make_page_title(options_in_title)}</title>
+</svelte:head>
 
 <div class="container">
 	<div class="intro">
@@ -134,7 +143,7 @@
 			{#each filtered_daggers as product (product.psa_url)}
 				<a href={product.psa_url} target="_blank" rel="noopener" class="product-card">
 					<h3>
-						{generate_title(product, daggers_data, querystring_instance.params_with_defaults)}
+						{generate_product_title(product, daggers_data, querystring_instance.params_with_defaults)}
 					</h3>
 					<img src="/images/{product.image_file_name}" alt={product.psa_product_name} />
 					<div class="price">${product.price.toFixed(2)}</div>

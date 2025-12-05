@@ -85,12 +85,12 @@ export const create_querystring_store = <
 
 	return {
 		// params aren't mirrored back to params_with_defaults yet
-		// params,
+		params_readable: params,
 
 		params_with_defaults,
 		get_altered_query_string: (
 			param: string,
-			value: string | boolean
+			value: string
 		): string => {
 			const { [param]: _, ...rest } = params
 			const altered_value_is_the_same_as_the_default = value === defaults[param]

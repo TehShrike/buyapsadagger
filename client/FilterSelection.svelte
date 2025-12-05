@@ -18,7 +18,7 @@
 			disabled?: boolean,
 		}[]
 		selected_value: Value,
-		get_altered_query_string: (param: string, value: string | boolean) => string,
+		get_altered_query_string: (param: string, value: string) => string,
 	} = $props()
 </script>
 

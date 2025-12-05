@@ -12,7 +12,7 @@
 	}: {
 		displayed_filter_options: Set<FilterParamKey>
 		params_with_defaults: FilterParams
-		get_altered_query_string: (altered_values: Partial<FilterParams>) => string
+		get_altered_query_string: (param: string, value: string) => string
 		should_this_option_be_enabled: (key: FilterParamKey, value: FilterParams[FilterParamKey]) => boolean
 	} = $props()
 

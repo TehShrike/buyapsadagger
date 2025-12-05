@@ -126,7 +126,7 @@ const get_slide_coating = (product: Product): string | null => {
 // night sights (if ambiguous filter)
 // finish
 // longer barrel (if ambiguous filter)
-const generate_title = (
+export const generate_product_title = (
 	product: Product,
 	metadata: DaggersMetadata,
 	current_filters: FilterParams
@@ -154,4 +154,46 @@ const generate_title = (
 	])
 }
 
-export default generate_title
+const size_label = (size: FilterParams['size']): string | null => {
+	if (size === 'micro') return 'Micro'
+	if (size === 'compact') return 'Compact'
+	if (size === 'full_size_s') return 'Full Size'
+	return null
+}
+
+const bool_filter_label = (
+	value: 'any' | 'true' | 'false' | undefined,
+	true_label: string,
+	false_label: string,
+): string | null => {
+	if (value === 'true') return true_label
+	if (value === 'false') return false_label
+	return null
+}
+
+const optic_label = (optic: FilterParams['optic_compatibility']): string | null => {
+	if (optic === 'rmr') return 'RMR-compatible'
+	if (optic === 'shield_rmsc') return 'Shield RMSc-compatible'
+
+	return null
+}
+
+const coating_label = (coating: FilterParams['slide_coating']): string | null => {
+	if (coating === 'cerakote') return 'Cerakote'
+	if (coating === 'dlc') return 'diamond-like coating'
+
+	return null
+}
+
+export const make_page_title = (filters: Partial<FilterParams>): string => {
+	const parts = [
+		filters.size ? size_label(filters.size) : null,
+		bool_filter_label(filters.threaded_barrel, 'Threaded', 'Non-Threaded'),
+		bool_filter_label(filters.night_sight, 'Night sights', 'No night sights'),
+		bool_filter_label(filters.longer_barrel, 'Longer barrel', 'Standard barrel length'),
+		filters.optic_compatibility ? optic_label(filters.optic_compatibility) : null,
+		filters.slide_coating ? coating_label(filters.slide_coating) : null,
+	].filter(Boolean)
+
+	return parts.join(', ')
+}

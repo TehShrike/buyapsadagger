@@ -8,7 +8,7 @@
 		get_altered_query_string,
 	}: {
 		size: Size
-		get_altered_query_string: (param: string, value: string | boolean) => string,
+		get_altered_query_string: (param: string, value: string) => string,
 	} = $props()
 </script>
 
