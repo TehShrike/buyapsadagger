@@ -1,6 +1,6 @@
 <script lang="ts">
 	import PistolSizeSelector from './PistolSizeSelector.svelte'
-	import FilterSelection from './FilterSelection.svelte'
+	import Filters from './Filters.svelte'
 	import generate_title from './generate_title.ts'
 	import { create_querystring_store } from './querystring_store.svelte.ts'
 	import daggers_data from './daggers-data.ts'
@@ -8,11 +8,10 @@
 		filter_daggers,
 		type FilterParams,
 		type FilterParamKey,
-		type OpticCompatibilityOrAny,
 	} from './filter-daggers.ts'
 	import { ANY, default_values, FILTER_PARAM_KEYS, SIZES } from './querystring_options.ts'
 	import { calculate_displayed_filter_options_per_pistol_size } from './count_possible_options.ts'
-	import { map, filter } from '#lib/array.ts'
+	import { filter } from '#lib/array.ts'
 	import {
 		calculate_alternate_option_selections_we_need_to_consider,
 		calculate_are_all_these_alternative_options_safe_to_click,
@@ -49,18 +48,6 @@
 			ignore_filter_options_that_are_not_displayed(displayed_filter_options, querystring_instance.params_with_defaults),
 		).sort((a, b) => a.price - b.price),
 	)
-
-	const add_disabled_to_unsafe_options = (
-		key: FilterParamKey,
-		options: { label: string; value: FilterParams[FilterParamKey] }[],
-	) => {
-		return map(options, (option) => {
-			return {
-				...option,
-				disabled: !should_this_option_be_enabled(key, option.value),
-			}
-		})
-	}
 
 	// if it's displayed, we need to consider all options that aren't currently selected (except "any")
 	const alternate_option_selections_we_need_to_consider = $derived(
@@ -134,84 +121,12 @@
 		</div>
 	</div>
 	<div class="filters-and-results">
-		<div class="filters card">
-			<div class="filters-pistol-size-selector">
-				<PistolSizeSelector
-					bind:size={querystring_instance.params_with_defaults.size}
-					get_altered_query_string={querystring_instance.get_altered_query_string}
-				/>
-			</div>
-			{#if displayed_filter_options.has('longer_barrel')}
-				<FilterSelection
-					title="Longer Barrel"
-					description="Adds about half an inch to the barrel.  Makes it easier to hit what you're aiming at"
-					group_name="longer_barrel"
-					options={add_disabled_to_unsafe_options('longer_barrel', [
-						{ label: 'Either', value: 'any' },
-						{ label: 'Yes', value: 'true' },
-						{ label: 'No', value: 'false' },
-					])}
-					get_altered_query_string={querystring_instance.get_altered_query_string}
-					bind:selected_value={querystring_instance.params_with_defaults.longer_barrel}
-				/>
-			{/if}
-			{#if displayed_filter_options.has('threaded_barrel')}
-				<FilterSelection
-					title="Threaded Barrel"
-					description="If you want to be able to stick a suppressor or flash hider or something on your gun"
-					group_name="threaded_barrel"
-					options={add_disabled_to_unsafe_options('threaded_barrel', [
-						{ label: 'Either', value: 'any' },
-						{ label: 'Yes', value: 'true' },
-						{ label: 'No', value: 'false' },
-					])}
-					get_altered_query_string={querystring_instance.get_altered_query_string}
-					bind:selected_value={querystring_instance.params_with_defaults.threaded_barrel}
-				/>
-			{/if}
-			{#if displayed_filter_options.has('night_sight')}
-				<FilterSelection
-					title="Night Sight"
-					description="The sights glow in the dark"
-					group_name="night_sight"
-					options={add_disabled_to_unsafe_options('night_sight', [
-						{ label: 'Either', value: 'any' },
-						{ label: 'Yes', value: 'true' },
-						{ label: 'No', value: 'false' },
-					])}
-					get_altered_query_string={querystring_instance.get_altered_query_string}
-					bind:selected_value={querystring_instance.params_with_defaults.night_sight}
-				/>
-			{/if}
-			{#if displayed_filter_options.has('optic_compatibility')}
-				<FilterSelection
-					title="Optic Compatibility"
-					description=""
-					group_name="optic_compatibility"
-					options={add_disabled_to_unsafe_options('optic_compatibility', [
-						{ label: 'Any', value: 'any' },
-						{ label: 'RMR', value: 'rmr' },
-						{ label: 'Shield RMSc', value: 'shield_rmsc' },
-					])}
-					get_altered_query_string={querystring_instance.get_altered_query_string}
-					bind:selected_value={querystring_instance.params_with_defaults.optic_compatibility}
-				/>
-			{/if}
-			{#if displayed_filter_options.has('slide_coating')}
-				<FilterSelection
-					title="Slide Coating"
-					description="Keep the metal safe from humidity or your corrosive sweat"
-					group_name="slide_coating"
-					options={add_disabled_to_unsafe_options('slide_coating', [
-						{ label: 'Any', value: 'any' },
-						{ label: 'Ceramic', value: 'cerakote' },
-						{ label: 'Diamond-like', value: 'dlc' },
-					])}
-					get_altered_query_string={querystring_instance.get_altered_query_string}
-					bind:selected_value={querystring_instance.params_with_defaults.slide_coating}
-				/>
-			{/if}
-		</div>
+		<Filters
+			{displayed_filter_options}
+			bind:params_with_defaults={querystring_instance.params_with_defaults}
+			get_altered_query_string={querystring_instance.get_altered_query_string}
+			{should_this_option_be_enabled}
+		/>
 		<div class="products-grid card">
 			{#if filtered_daggers.length === 0}
 				<div class="no-results">No results for these filter options</div>
@@ -281,10 +196,6 @@
 		color: var(--light_color);
 	}
 
-	.filters-pistol-size-selector {
-		display: none;
-	}
-
 	@media (max-width: 800px) {
 		.filters-and-results {
 			flex-direction: column;
@@ -307,17 +218,6 @@
 		.intro-pistol-size-selector {
 			display: none;
 		}
-
-		.filters-pistol-size-selector {
-			display: block;
-		}
-	}
-
-	.filters {
-		display: flex;
-		flex-direction: column;
-		gap: var(--spacing);
-		flex-basis: max(300px, 20%);
 	}
 
 	.products-grid {
