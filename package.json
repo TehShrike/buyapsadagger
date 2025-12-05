@@ -9,6 +9,7 @@
 	"scripts": {
 		"test": "run-p test:*",
 		"test:types": "tsc --noEmit",
+		"test:svelte": "svelte-check --workspace client",
 		"build_graphicsmagick": "[ -n \"$CF_PAGES\" ] && echo 'Skipping graphicsmagick build on CF Pages' || bash scripts/build-graphicsmagick.sh",
 		"0_delete_downloaded_files": "rm -f psa-parsers/listing-pages/*.html psa-parsers/products/*.html && rm -f public/images/*.jpg",
 		"1_download_product_listings": "node psa-parsers/1-download-listings.ts",
@@ -48,6 +49,7 @@
 		"@types/node": "^24.3.0",
 		"esbuild": "^0.25.9",
 		"esbuild-svelte": "^0.9.3",
+		"svelte-check": "^4.3.4",
 		"typescript": "^5.9.2"
 	},
 	"dependencies": {
