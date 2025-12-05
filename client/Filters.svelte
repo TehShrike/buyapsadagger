@@ -6,7 +6,7 @@
 
 	let {
 		displayed_filter_options,
-		params_with_defaults = $bindable(),
+		params_with_defaults,
 		get_altered_query_string,
 		should_this_option_be_enabled,
 	}: {

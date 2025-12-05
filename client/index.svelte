@@ -18,7 +18,8 @@
 	} from './determine_if_alternate_filter_options_are_safe_to_click.ts'
 	import { object_entries, object_from_entries } from '#lib/object.ts'
 
-	const querystring_instance = create_querystring_store<FilterParams>(default_values)
+	const { params_with_defaults, get_altered_query_string, params_readable } =
+		create_querystring_store<FilterParams>(default_values)
 
 	const get_displayed_filter_options_for_size = calculate_displayed_filter_options_per_pistol_size(
 		daggers_data.daggers,
@@ -27,7 +28,7 @@
 	)
 
 	const displayed_filter_options = $derived(
-		get_displayed_filter_options_for_size(querystring_instance.params_with_defaults.size),
+		get_displayed_filter_options_for_size(params_with_defaults.size),
 	)
 
 	const ignore_filter_options_that_are_not_displayed = (
@@ -45,7 +46,7 @@
 	const filtered_daggers = $derived(
 		filter_daggers(
 			daggers_data.daggers,
-			ignore_filter_options_that_are_not_displayed(displayed_filter_options, querystring_instance.params_with_defaults),
+			ignore_filter_options_that_are_not_displayed(displayed_filter_options, params_with_defaults),
 		).sort((a, b) => a.price - b.price),
 	)
 
@@ -53,25 +54,25 @@
 	const alternate_option_selections_we_need_to_consider = $derived(
 		calculate_alternate_option_selections_we_need_to_consider(
 			displayed_filter_options,
-			querystring_instance.params_with_defaults,
+			params_with_defaults,
 		),
 	)
 	const is_this_alternate_option_safe_to_click = $derived(
 		calculate_are_all_these_alternative_options_safe_to_click(
 			daggers_data.daggers,
 			alternate_option_selections_we_need_to_consider,
-			querystring_instance.params_with_defaults,
+			params_with_defaults,
 		),
 	)
 
 	const should_this_option_be_enabled = (key: FilterParamKey, value: FilterParams[FilterParamKey]): boolean =>
 		value === ANY ||
-		querystring_instance.params_with_defaults[key] === value ||
+		params_with_defaults[key] === value ||
 		is_this_alternate_option_safe_to_click(key, value)
 
 	const options_in_title = $derived({
-		...querystring_instance.params_readable,
-		size: querystring_instance.params_with_defaults.size,
+		...params_readable,
+		size: params_with_defaults.size,
 	})
 </script>
 
@@ -124,16 +125,16 @@
 		</div>
 		<div class="card intro-pistol-size-selector">
 			<PistolSizeSelector
-				bind:size={querystring_instance.params_with_defaults.size}
-				get_altered_query_string={querystring_instance.get_altered_query_string}
+				bind:size={params_with_defaults.size}
+				get_altered_query_string={get_altered_query_string}
 			/>
 		</div>
 	</div>
 	<div class="filters-and-results">
 		<Filters
 			{displayed_filter_options}
-			bind:params_with_defaults={querystring_instance.params_with_defaults}
-			get_altered_query_string={querystring_instance.get_altered_query_string}
+			{params_with_defaults}
+			{get_altered_query_string}
 			{should_this_option_be_enabled}
 		/>
 		<div class="products-grid card">
@@ -143,7 +144,7 @@
 			{#each filtered_daggers as product (product.psa_url)}
 				<a href={product.psa_url} target="_blank" rel="noopener" class="product-card">
 					<h3>
-						{generate_product_title(product, daggers_data, querystring_instance.params_with_defaults)}
+						{generate_product_title(product, daggers_data, params_with_defaults)}
 					</h3>
 					<img src="/images/{product.image_file_name}" alt={product.psa_product_name} />
 					<div class="price">${product.price.toFixed(2)}</div>

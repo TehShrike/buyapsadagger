@@ -31,7 +31,8 @@
       "Bash(env)",
       "Read(//Users/joshduff/**)",
       "Bash(npm config:*)",
-      "Bash(echo:*)"
+      "Bash(echo:*)",
+      "Bash(pnpm exec svelte-check:*)"
     ],
     "deny": [],
     "ask": []
