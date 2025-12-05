@@ -10,7 +10,11 @@ export const scrape_listing_pages = async (
 ): Promise<ScrapedListingData> => {
 	const launch_options = {
 		headless: true,
-		args: ['--no-sandbox', '--disable-setuid-sandbox'],
+		args: [
+			'--no-sandbox',
+			'--disable-setuid-sandbox',
+			'--ignore-certificate-errors',
+		],
 		...(process.platform === 'darwin' && {
 			executablePath:
 				'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
