@@ -2,6 +2,13 @@
 
 set -e
 
+# Wake the Mac and prevent sleep during scraping
+# -u simulates user activity (can wake the display)
+# -i prevents idle sleep, -s prevents system sleep
+# -w $$ keeps it running until this script exits
+caffeinate -uis -w $$ &
+sleep 2  # Give network time to come up after wake
+
 echo "Sourcing nvm"
 source /Users/joshduff/.nvm/nvm.sh
 
