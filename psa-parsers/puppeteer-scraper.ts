@@ -15,10 +15,8 @@ export const scrape_listing_pages = async (
 			'--disable-setuid-sandbox',
 			'--ignore-certificate-errors',
 		],
-		...(process.platform === 'darwin' && {
-			executablePath:
-				'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-		}),
+		// Use Puppeteer's bundled Chromium instead of system Chrome
+		// System Chrome has permission issues when launched from cron
 	}
 
 	const browser = await puppeteer.launch(launch_options)
