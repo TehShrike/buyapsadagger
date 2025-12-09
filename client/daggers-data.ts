@@ -97,7 +97,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Micro 9mm Pistol - Shield Cut With Night Sights, Black",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-9mm-pistol-shield-cut-with-night-sights-black.html",
-			"price": 359.99,
+			"price": 319.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/u/n/untitled_3.jpg",
 			"image_file_name": "psa-dagger-9mm-pistol-shield-cut-with-night-sights-black.jpg",
 			"size": "micro",
