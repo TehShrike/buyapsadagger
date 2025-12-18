@@ -1270,7 +1270,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Micro 9mm Pistol - Shield Cut With Night Sights, Flat Dark Earth",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-micro-9mm-pistol-shield-cut-with-night-sights-flat-dark-earth.html",
-			"price": 319.99,
+			"price": 359.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/m/i/micro_night_sights2.jpg",
 			"image_file_name": "psa-dagger-micro-9mm-pistol-shield-cut-with-night-sights-flat-dark-earth.jpg",
 			"size": "micro",
