@@ -49,29 +49,6 @@ const data: DaggersData = {
 			"mag_size": 15
 		},
 		{
-			"psa_product_name": "PSA Dagger Compact 9mm Pistol with Extreme Carry Cuts,  Black",
-			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-black-dlc.html",
-			"price": 259.99,
-			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/9/1/910115111_51024_1.jpg",
-			"image_file_name": "psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-black-dlc.jpg",
-			"size": "compact",
-			"width": 1.28,
-			"length": 7.15,
-			"height": 4.78,
-			"barrel_length": 3.9,
-			"longer_barrel": false,
-			"threaded_barrel": false,
-			"night_sight": false,
-			"compensated_slide": false,
-			"slide_color": "black",
-			"slide_coating": "cerakote",
-			"frame_color": null,
-			"optic_compatibility": "none",
-			"mag_bag_bonus": false,
-			"number_of_included_mags": 1,
-			"mag_size": 15
-		},
-		{
 			"psa_product_name": "PSA Dagger Compact 9mm Pistol With Extreme Carry Cuts, Flat Dark Earth",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-flat-dark-earth.html",
 			"price": 259.99,
@@ -1383,29 +1360,6 @@ const data: DaggersData = {
 			"mag_size": 15
 		},
 		{
-			"psa_product_name": "PSA Dagger Full Size - S 9mm ECC RMR Threaded Barrel Pistol With 10 17rd Magazines & Pistol Case, Flat Dark Earth",
-			"psa_url": "https://palmettostatearmory.com/psa-full-size-s-9mm-ecc-rmr-threaded-barrel-lower-1-3-day-sights-pistol-with-10-17rd-magazines-pistol-case-flat-dark-earth.html",
-			"price": 439.99,
-			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg0251655136904_041323_1_1.jpg",
-			"image_file_name": "psa-full-size-s-9mm-ecc-rmr-threaded-barrel-lower-1-3-day-sights-pistol-with-10-17rd-magazines-pistol-case-flat-dark-earth.jpg",
-			"size": "full_size_s",
-			"width": 0,
-			"length": 0,
-			"height": 0,
-			"barrel_length": 0,
-			"longer_barrel": false,
-			"threaded_barrel": true,
-			"night_sight": false,
-			"compensated_slide": false,
-			"slide_color": null,
-			"slide_coating": "none",
-			"frame_color": null,
-			"optic_compatibility": "rmr",
-			"mag_bag_bonus": true,
-			"number_of_included_mags": 10,
-			"mag_size": 17
-		},
-		{
 			"psa_product_name": "PSA Sabre Dagger Full Size - S 9mm Pistol, Spiral Fluted Barrel, W/Mag Extensions, M81 Woodland Camo",
 			"psa_url": "https://palmettostatearmory.com/psa-sabre-dagger-full-size-s-9mm-pistol-fluted-barrel-w-mag-extensions-m81-woodland-camo.html",
 			"price": 629.99,
@@ -1544,29 +1498,6 @@ const data: DaggersData = {
 			"mag_size": 17
 		},
 		{
-			"psa_product_name": "PSA Sabre Dagger Full Size - S 9mm Pistol, Tin-Threaded Barrel, W/Mag Extensions, M81 Desert Camo",
-			"psa_url": "https://palmettostatearmory.com/psa-sabre-dagger-full-size-s-9mm-pistol-tin-threaded-barrel-w-mag-extensions-m81-desert-camo.html",
-			"price": 629.99,
-			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655152120_81224_1.jpg",
-			"image_file_name": "psa-sabre-dagger-full-size-s-9mm-pistol-tin-threaded-barrel-w-mag-extensions-m81-desert-camo.jpg",
-			"size": "full_size_s",
-			"width": 1.28,
-			"length": 7.65,
-			"height": 5.38,
-			"barrel_length": 4.5,
-			"longer_barrel": false,
-			"threaded_barrel": true,
-			"night_sight": false,
-			"compensated_slide": false,
-			"slide_color": "black",
-			"slide_coating": "cerakote",
-			"frame_color": "m81_desert_camo",
-			"optic_compatibility": "none",
-			"mag_bag_bonus": true,
-			"number_of_included_mags": 2,
-			"mag_size": 17
-		},
-		{
 			"psa_product_name": "PSA Sabre Dagger Micro 9mm Pistol, TiN Barrel w/ Mag Extensions, Black",
 			"psa_url": "https://palmettostatearmory.com/psa-sabre-dagger-micro-9mm-pistol-tin-barrel-w-mag-extensions-black.html",
 			"price": 599.99,
@@ -1661,8 +1592,8 @@ const data: DaggersData = {
 	],
 	"slide_colors": {
 		"sniper_green": "Sniper Green",
-		"black": "Black",
-		"flat_dark_earth": "Flat Dark Earth"
+		"flat_dark_earth": "Flat Dark Earth",
+		"black": "Black"
 	},
 	"frame_colors": {
 		"black": "Black",
