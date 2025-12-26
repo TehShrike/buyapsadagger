@@ -902,7 +902,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Full Size - S 9mm Pistol with SW1 RMR with Threaded Barrel & 10 17rd Mags & Bag, FDE (Rear Sight Rear)",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-full-size-s-9mm-pistol-with-sw1-rmr-with-threaded-barrel-ameriglo-lower-1-3-co-witness-10-17rd-mags-bag-fde-rear-sight-rear.html",
-			"price": 469.99,
+			"price": 429.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/5/1/51655132791_1_1.jpg",
 			"image_file_name": "psa-dagger-full-size-s-9mm-pistol-with-sw1-rmr-with-threaded-barrel-ameriglo-lower-1-3-co-witness-10-17rd-mags-bag-fde-rear-sight-rear.jpg",
 			"size": "full_size_s",
