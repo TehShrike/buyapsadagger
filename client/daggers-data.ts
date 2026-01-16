@@ -3,29 +3,6 @@ import type { DaggersData } from './product.d.ts'
 const data: DaggersData = {
 	"daggers": [
 		{
-			"psa_product_name": "Blem PSA Dagger Compact 9mm SW3 RMR Pistol W/ Copper Threaded Barrel, Flat Dark Earth",
-			"psa_url": "https://palmettostatearmory.com/blem-psa-dagger-compact-9mm-sw3-rmr-pistol-w-copper-threaded-barrel-flat-dark-earth.html",
-			"price": 339.99,
-			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg0151655139885b_052623_1.jpg",
-			"image_file_name": "blem-psa-dagger-compact-9mm-sw3-rmr-pistol-w-copper-threaded-barrel-flat-dark-earth.jpg",
-			"size": "compact",
-			"width": 1.28,
-			"length": 7.65,
-			"height": 4.78,
-			"barrel_length": 4.5,
-			"longer_barrel": false,
-			"threaded_barrel": true,
-			"night_sight": false,
-			"compensated_slide": false,
-			"slide_color": "flat_dark_earth",
-			"slide_coating": "cerakote",
-			"frame_color": "flat_dark_earth",
-			"optic_compatibility": "rmr",
-			"mag_bag_bonus": true,
-			"number_of_included_mags": 1,
-			"mag_size": 15
-		},
-		{
 			"psa_product_name": "Blem PSA Dagger Complete SW4 RMR 9mm Pistol W/ Gold Barrel, FDE",
 			"psa_url": "https://palmettostatearmory.com/blem-psa-dagger-complete-sw4-rmr-9mm-pistol-w-gold-barrel-fde.html",
 			"price": 379.99,
