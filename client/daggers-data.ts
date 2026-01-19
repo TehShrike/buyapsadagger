@@ -557,7 +557,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Compact 9mm Pistol With SW1 RMR Slide & TiN Spiral Fluted Threaded Barrel, Black",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-sw1-rmr-slide-tin-spiral-fluted-threaded-barrel-black.html",
-			"price": 399.99,
+			"price": 359.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655201480_112425_1.jpg",
 			"image_file_name": "psa-dagger-compact-9mm-pistol-with-sw1-rmr-slide-tin-spiral-fluted-threaded-barrel-black.jpg",
 			"size": "compact",
@@ -1592,7 +1592,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Compact SW3 RMR Pistol W/Copper Spiral Fluted Threaded Barrel, Flat Dark Earth",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-sw3-rmr-pistol-w-copper-spiral-fluted-threaded-barrel-flat-dark-earth.html",
-			"price": 349.99,
+			"price": 359.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655201577_122225_1.jpg",
 			"image_file_name": "psa-dagger-compact-sw3-rmr-pistol-w-copper-spiral-fluted-threaded-barrel-flat-dark-earth.jpg",
 			"size": "compact",
@@ -1960,7 +1960,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Complete SW3 RMR Pistol W/Copper Spiral Fluted Non-Threaded Barrel, Flat Dark Earth",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-complete-sw3-rmr-slide-assembly-w-copper-spiral-fluted-non-threaded-barrel-flat-dark-earth.html",
-			"price": 389.99,
+			"price": 359.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655175124_10724_1.jpg",
 			"image_file_name": "psa-dagger-complete-sw3-rmr-slide-assembly-w-copper-spiral-fluted-non-threaded-barrel-flat-dark-earth.jpg",
 			"size": "compact",
