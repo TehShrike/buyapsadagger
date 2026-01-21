@@ -992,29 +992,6 @@ const data: DaggersData = {
 			"mag_size": 15
 		},
 		{
-			"psa_product_name": "PSA Dagger Compact 9mm Pistol With SW3 ECC RMR Slide & Threaded Barrel, Sniper Green",
-			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-sw3-ecc-rmr-slide-threaded-barrel-sniper-green.html",
-			"price": 329.99,
-			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655201754_121025_1.jpg",
-			"image_file_name": "psa-dagger-compact-9mm-pistol-with-sw3-ecc-rmr-slide-threaded-barrel-sniper-green.jpg",
-			"size": "compact",
-			"width": 1.28,
-			"length": 7.65,
-			"height": 4.78,
-			"barrel_length": 4.5,
-			"longer_barrel": false,
-			"threaded_barrel": true,
-			"night_sight": false,
-			"compensated_slide": false,
-			"slide_color": "sniper_green",
-			"slide_coating": "cerakote",
-			"frame_color": "sniper_green",
-			"optic_compatibility": "rmr",
-			"mag_bag_bonus": true,
-			"number_of_included_mags": 1,
-			"mag_size": 15
-		},
-		{
 			"psa_product_name": "PSA Dagger Compact 9mm Pistol With SW4 ECC RMR Slide & Copper Threaded Barrel, Sniper Green",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-sw4-ecc-rmr-slide-copper-threaded-barrel-sniper-green.html",
 			"price": 329.99,
@@ -2627,7 +2604,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Micro X-1 9mm Pistol - Shield Cut, Non-Threaded Barrel, FDE Slide, 2-Tone",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-micro-x-1-complete-9mm-pistol-non-threaded-barrel-fde-slide-2-tone.html",
-			"price": 359.99,
+			"price": 299.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655145550_092923_1_1_.jpg",
 			"image_file_name": "psa-dagger-micro-x-1-complete-9mm-pistol-non-threaded-barrel-fde-slide-2-tone.jpg",
 			"size": "micro",
