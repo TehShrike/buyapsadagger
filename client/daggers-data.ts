@@ -2052,7 +2052,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Full Size - S 9mm Pistol with SW1 RMR with Threaded Barrel & 10 17rd Mags & Bag, FDE (Rear Sight Rear)",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-full-size-s-9mm-pistol-with-sw1-rmr-with-threaded-barrel-ameriglo-lower-1-3-co-witness-10-17rd-mags-bag-fde-rear-sight-rear.html",
-			"price": 399.99,
+			"price": 469.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/5/1/51655132791_1_1.jpg",
 			"image_file_name": "psa-dagger-full-size-s-9mm-pistol-with-sw1-rmr-with-threaded-barrel-ameriglo-lower-1-3-co-witness-10-17rd-mags-bag-fde-rear-sight-rear.jpg",
 			"size": "full_size_s",
@@ -2208,29 +2208,6 @@ const data: DaggersData = {
 			"optic_compatibility": "rmr",
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 10,
-			"mag_size": 17
-		},
-		{
-			"psa_product_name": "PSA Dagger Full Size - S 9mm Pistol With SWRV2 RMR & Gold Barrel, Flat Dark Earth",
-			"psa_url": "https://palmettostatearmory.com/psa-dagger-full-size-s-9mm-swr-rmr-pistol-with-gold-barrel-flat-dark-earth.html",
-			"price": 339.99,
-			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655130874_41924_1_1_.jpg",
-			"image_file_name": "psa-dagger-full-size-s-9mm-swr-rmr-pistol-with-gold-barrel-flat-dark-earth.jpg",
-			"size": "full_size_s",
-			"width": 1.28,
-			"length": 7.65,
-			"height": 5.38,
-			"barrel_length": 3.9,
-			"longer_barrel": false,
-			"threaded_barrel": false,
-			"night_sight": false,
-			"compensated_slide": false,
-			"slide_color": "flat_dark_earth",
-			"slide_coating": "cerakote",
-			"frame_color": "flat_dark_earth",
-			"optic_compatibility": "rmr",
-			"mag_bag_bonus": true,
-			"number_of_included_mags": 1,
 			"mag_size": 17
 		},
 		{
