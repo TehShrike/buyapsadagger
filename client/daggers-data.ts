@@ -1521,29 +1521,6 @@ const data: DaggersData = {
 			"mag_size": 15
 		},
 		{
-			"psa_product_name": "PSA Dagger Compact 9mm RMR Pistol With Threaded Barrel, Flat Dark Earth",
-			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-rmr-pistol-with-threaded-barrel-flat-dark-earth.html",
-			"price": 319.99,
-			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655128743_3.jpg",
-			"image_file_name": "psa-dagger-compact-9mm-rmr-pistol-with-threaded-barrel-flat-dark-earth.jpg",
-			"size": "compact",
-			"width": 1.28,
-			"length": 7.65,
-			"height": 4.78,
-			"barrel_length": 4.5,
-			"longer_barrel": false,
-			"threaded_barrel": true,
-			"night_sight": false,
-			"compensated_slide": false,
-			"slide_color": "flat_dark_earth",
-			"slide_coating": "cerakote",
-			"frame_color": "flat_dark_earth",
-			"optic_compatibility": "rmr",
-			"mag_bag_bonus": true,
-			"number_of_included_mags": 1,
-			"mag_size": 15
-		},
-		{
 			"psa_product_name": "PSA Dagger Compact 9mm RMR Pistol With Threaded Barrel, Sniper Green",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-rmr-pistol-with-threaded-barrel-sniper-green.html",
 			"price": 319.99,
@@ -2878,29 +2855,6 @@ const data: DaggersData = {
 			"mag_size": 17
 		},
 		{
-			"psa_product_name": "PSA Sabre Dagger Full Size - S 9mm Pistol, Ported Barrel, W/Mag Extensions, M81 Woodland Camo",
-			"psa_url": "https://palmettostatearmory.com/psa-sabre-dagger-full-size-s-9mm-pistol-ported-barrel-w-mag-extensions-m81-woodland-camo.html",
-			"price": 629.99,
-			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655191679_7325_6.jpg",
-			"image_file_name": "psa-sabre-dagger-full-size-s-9mm-pistol-ported-barrel-w-mag-extensions-m81-woodland-camo.jpg",
-			"size": "full_size_s",
-			"width": 1.28,
-			"length": 7.15,
-			"height": 5.38,
-			"barrel_length": 3.9,
-			"longer_barrel": false,
-			"threaded_barrel": false,
-			"night_sight": false,
-			"compensated_slide": false,
-			"slide_color": "black",
-			"slide_coating": "cerakote",
-			"frame_color": "m81_woodland_camo",
-			"optic_compatibility": "none",
-			"mag_bag_bonus": true,
-			"number_of_included_mags": 2,
-			"mag_size": 17
-		},
-		{
 			"psa_product_name": "PSA Sabre Dagger Full Size - S 9mm Pistol, Spiral Fluted Barrel, W/Mag Extensions, Black",
 			"psa_url": "https://palmettostatearmory.com/psa-sabre-dagger-full-size-s-9mm-pistol-spiral-fluted-barrel-w-mag-extensions-black.html",
 			"price": 599.99,
@@ -2933,8 +2887,7 @@ const data: DaggersData = {
 	"frame_colors": {
 		"black": "Black",
 		"sniper_green": "Sniper Green",
-		"flat_dark_earth": "Flat Dark Earth",
-		"m81_woodland_camo": "M81 Woodland Camo"
+		"flat_dark_earth": "Flat Dark Earth"
 	}
 } as const
 
