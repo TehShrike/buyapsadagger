@@ -1776,7 +1776,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Compact SW3 RMR Pistol With Threaded Barrel, w/10-15rd Mags, FDE",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-sw3-rmr-pistol-with-threaded-barrel-w-10-15rd-mags-fde.html",
-			"price": 439.99,
+			"price": 399.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655201574_12525_2.jpg",
 			"image_file_name": "psa-dagger-compact-sw3-rmr-pistol-with-threaded-barrel-w-10-15rd-mags-fde.jpg",
 			"size": "compact",
