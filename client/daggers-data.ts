@@ -1776,7 +1776,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Compact SW3 RMR Pistol With Threaded Barrel, w/10-15rd Mags, FDE",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-sw3-rmr-pistol-with-threaded-barrel-w-10-15rd-mags-fde.html",
-			"price": 399.99,
+			"price": 439.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655201574_12525_2.jpg",
 			"image_file_name": "psa-dagger-compact-sw3-rmr-pistol-with-threaded-barrel-w-10-15rd-mags-fde.jpg",
 			"size": "compact",
@@ -2349,29 +2349,6 @@ const data: DaggersData = {
 			"mag_size": 15
 		},
 		{
-			"psa_product_name": "PSA Dagger Micro 9mm Pistol - Shield Cut, Black",
-			"psa_url": "https://palmettostatearmory.com/psa-dagger-micro-9mm-pistol-shield-cut-black-dlc.html",
-			"price": 339.99,
-			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655136024_1.jpg",
-			"image_file_name": "psa-dagger-micro-9mm-pistol-shield-cut-black-dlc.jpg",
-			"size": "micro",
-			"width": 1.1,
-			"length": 6.5,
-			"height": 4.7,
-			"barrel_length": 3.41,
-			"longer_barrel": false,
-			"threaded_barrel": false,
-			"night_sight": false,
-			"compensated_slide": false,
-			"slide_color": "black",
-			"slide_coating": "cerakote",
-			"frame_color": null,
-			"optic_compatibility": "shield_rmsc",
-			"mag_bag_bonus": false,
-			"number_of_included_mags": 1,
-			"mag_size": 15
-		},
-		{
 			"psa_product_name": "PSA Dagger Micro 9mm Pistol - Shield Cut, FDE Slide, 2-Tone",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-micro-9mm-pistol-shield-cut-fde-slide-2-tone.html",
 			"price": 339.99,
@@ -2579,11 +2556,11 @@ const data: DaggersData = {
 			"mag_size": 15
 		},
 		{
-			"psa_product_name": "PSA Dagger Micro C-1 9mm Pistol - Shield Cut, Black",
-			"psa_url": "https://palmettostatearmory.com/psa-dagger-micro-c-1-9mm-pistol-shield-cut-black.html",
+			"psa_product_name": "PSA Dagger Micro C-1 9mm Pistol - Shield Cut, Flat Dark Earth",
+			"psa_url": "https://palmettostatearmory.com/psa-dagger-micro-c-1-9mm-pistol-shield-cut-flat-dark-earth.html",
 			"price": 359.99,
-			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655145577_12723_1_1_.jpg",
-			"image_file_name": "psa-dagger-micro-c-1-9mm-pistol-shield-cut-black.jpg",
+			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655150889_3524_1_1_.jpg",
+			"image_file_name": "psa-dagger-micro-c-1-9mm-pistol-shield-cut-flat-dark-earth.jpg",
 			"size": "micro",
 			"width": 1.1,
 			"length": 7.1,
@@ -2593,9 +2570,9 @@ const data: DaggersData = {
 			"threaded_barrel": false,
 			"night_sight": false,
 			"compensated_slide": true,
-			"slide_color": "black",
-			"slide_coating": "none",
-			"frame_color": null,
+			"slide_color": "flat_dark_earth",
+			"slide_coating": "cerakote",
+			"frame_color": "flat_dark_earth",
 			"optic_compatibility": "shield_rmsc",
 			"mag_bag_bonus": false,
 			"number_of_included_mags": 1,
@@ -2878,29 +2855,6 @@ const data: DaggersData = {
 			"mag_size": 17
 		},
 		{
-			"psa_product_name": "PSA Sabre Dagger Full Size - S 9mm Pistol, Ported Barrel, W/Mag Extensions, M81 Woodland Camo",
-			"psa_url": "https://palmettostatearmory.com/psa-sabre-dagger-full-size-s-9mm-pistol-ported-barrel-w-mag-extensions-m81-woodland-camo.html",
-			"price": 629.99,
-			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655191679_7325_6.jpg",
-			"image_file_name": "psa-sabre-dagger-full-size-s-9mm-pistol-ported-barrel-w-mag-extensions-m81-woodland-camo.jpg",
-			"size": "full_size_s",
-			"width": 1.28,
-			"length": 7.15,
-			"height": 5.38,
-			"barrel_length": 3.9,
-			"longer_barrel": false,
-			"threaded_barrel": false,
-			"night_sight": false,
-			"compensated_slide": false,
-			"slide_color": "black",
-			"slide_coating": "cerakote",
-			"frame_color": "m81_woodland_camo",
-			"optic_compatibility": "none",
-			"mag_bag_bonus": true,
-			"number_of_included_mags": 2,
-			"mag_size": 17
-		},
-		{
 			"psa_product_name": "PSA Sabre Dagger Full Size - S 9mm Pistol, Spiral Fluted Barrel, W/Mag Extensions, Black",
 			"psa_url": "https://palmettostatearmory.com/psa-sabre-dagger-full-size-s-9mm-pistol-spiral-fluted-barrel-w-mag-extensions-black.html",
 			"price": 599.99,
@@ -2933,8 +2887,7 @@ const data: DaggersData = {
 	"frame_colors": {
 		"black": "Black",
 		"sniper_green": "Sniper Green",
-		"flat_dark_earth": "Flat Dark Earth",
-		"m81_woodland_camo": "M81 Woodland Camo"
+		"flat_dark_earth": "Flat Dark Earth"
 	}
 } as const
 
