@@ -281,7 +281,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Compact 9mm Pistol With Extreme Carry Cuts, Sniper Green",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-sniper-green.html",
-			"price": 259.99,
+			"price": 299.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/5/1/51655129773_1.jpg",
 			"image_file_name": "psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-sniper-green.jpg",
 			"size": "compact",
@@ -2257,6 +2257,29 @@ const data: DaggersData = {
 			"mag_size": 15
 		},
 		{
+			"psa_product_name": "PSA Dagger Micro 9mm Pistol - Shield Cut, Black",
+			"psa_url": "https://palmettostatearmory.com/psa-dagger-micro-9mm-pistol-shield-cut-black-dlc.html",
+			"price": 339.99,
+			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655136024_1.jpg",
+			"image_file_name": "psa-dagger-micro-9mm-pistol-shield-cut-black-dlc.jpg",
+			"size": "micro",
+			"width": 1.1,
+			"length": 6.5,
+			"height": 4.7,
+			"barrel_length": 3.41,
+			"longer_barrel": false,
+			"threaded_barrel": false,
+			"night_sight": false,
+			"compensated_slide": false,
+			"slide_color": "black",
+			"slide_coating": "cerakote",
+			"frame_color": null,
+			"optic_compatibility": "shield_rmsc",
+			"mag_bag_bonus": false,
+			"number_of_included_mags": 1,
+			"mag_size": 15
+		},
+		{
 			"psa_product_name": "PSA Dagger Micro 9mm Pistol - Shield Cut, FDE Slide, 2-Tone",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-micro-9mm-pistol-shield-cut-fde-slide-2-tone.html",
 			"price": 339.99,
@@ -2761,6 +2784,29 @@ const data: DaggersData = {
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 10,
 			"mag_size": 17
+		},
+		{
+			"psa_product_name": "PSA Sabre Dagger Full Size - S 9mm Pistol, TiN Spiral Fluted Barrel, W/Mag Extensions, M81 Desert Camo",
+			"psa_url": "https://palmettostatearmory.com/psa-sabre-dagger-full-size-s-9mm-pistol-tin-fluted-barrel-w-mag-extensions-m81-desert-camo.html",
+			"price": 629.99,
+			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655152389_42224_1_1_.jpg",
+			"image_file_name": "psa-sabre-dagger-full-size-s-9mm-pistol-tin-fluted-barrel-w-mag-extensions-m81-desert-camo.jpg",
+			"size": "full_size_s",
+			"width": 1.28,
+			"length": 7.15,
+			"height": 5.38,
+			"barrel_length": 3.9,
+			"longer_barrel": false,
+			"threaded_barrel": false,
+			"night_sight": false,
+			"compensated_slide": false,
+			"slide_color": "black",
+			"slide_coating": "cerakote",
+			"frame_color": "m81_desert_camo",
+			"optic_compatibility": "none",
+			"mag_bag_bonus": true,
+			"number_of_included_mags": 2,
+			"mag_size": 17
 		}
 	],
 	"slide_colors": {
@@ -2772,7 +2818,8 @@ const data: DaggersData = {
 	"frame_colors": {
 		"black": "Black",
 		"sniper_green": "Sniper Green",
-		"flat_dark_earth": "Flat Dark Earth"
+		"flat_dark_earth": "Flat Dark Earth",
+		"m81_desert_camo": "M81 Desert Camo"
 	}
 } as const
 
