@@ -3,29 +3,6 @@ import type { DaggersData } from './product.d.ts'
 const data: DaggersData = {
 	"daggers": [
 		{
-			"psa_product_name": "Blem PSA Dagger Micro X-1 9mm Pistol - Shield Cut, Non-Threaded Barrel, Flat Dark Earth",
-			"psa_url": "https://palmettostatearmory.com/blem-psa-dagger-micro-x-1-9mm-pistol-shield-cut-non-threaded-barrel-flat-dark-earth.html",
-			"price": 269.99,
-			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655150890_3524_1_1__5.jpg",
-			"image_file_name": "blem-psa-dagger-micro-x-1-9mm-pistol-shield-cut-non-threaded-barrel-flat-dark-earth.jpg",
-			"size": "micro",
-			"width": 1.1,
-			"length": 7.2,
-			"height": 4.7,
-			"barrel_length": 4.15,
-			"longer_barrel": true,
-			"threaded_barrel": false,
-			"night_sight": false,
-			"compensated_slide": false,
-			"slide_color": "flat_dark_earth",
-			"slide_coating": "cerakote",
-			"frame_color": "flat_dark_earth",
-			"optic_compatibility": "shield_rmsc",
-			"mag_bag_bonus": false,
-			"number_of_included_mags": 1,
-			"mag_size": 15
-		},
-		{
 			"psa_product_name": "PSA Dagger Full Size - S 9mm, Pistol with SW1 RMR RearSight Slide, Sniper Green, Threaded Barrel, with Black Frame",
 			"psa_url": "https://palmettostatearmory.com/dg02-51655130972.html",
 			"price": 329.99,
@@ -3198,41 +3175,18 @@ const data: DaggersData = {
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 2,
 			"mag_size": 17
-		},
-		{
-			"psa_product_name": "PSA Sabre Dagger Full Size - S 9mm Pistol, Tin-Threaded Barrel, W/Mag Extensions, M81 Desert Camo",
-			"psa_url": "https://palmettostatearmory.com/psa-sabre-dagger-full-size-s-9mm-pistol-tin-threaded-barrel-w-mag-extensions-m81-desert-camo.html",
-			"price": 629.99,
-			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655152120_81224_1.jpg",
-			"image_file_name": "psa-sabre-dagger-full-size-s-9mm-pistol-tin-threaded-barrel-w-mag-extensions-m81-desert-camo.jpg",
-			"size": "full_size_s",
-			"width": 1.28,
-			"length": 7.65,
-			"height": 5.38,
-			"barrel_length": 4.5,
-			"longer_barrel": false,
-			"threaded_barrel": true,
-			"night_sight": false,
-			"compensated_slide": false,
-			"slide_color": "black",
-			"slide_coating": "cerakote",
-			"frame_color": "m81_desert_camo",
-			"optic_compatibility": "none",
-			"mag_bag_bonus": true,
-			"number_of_included_mags": 2,
-			"mag_size": 17
 		}
 	],
 	"slide_colors": {
-		"flat_dark_earth": "Flat Dark Earth",
 		"sniper_green": "Sniper Green",
 		"black": "Black",
+		"flat_dark_earth": "Flat Dark Earth",
 		"sniper_greencerakote": "Sniper GreenCerakote"
 	},
 	"frame_colors": {
-		"flat_dark_earth": "Flat Dark Earth",
 		"black": "Black",
 		"sniper_green": "Sniper Green",
+		"flat_dark_earth": "Flat Dark Earth",
 		"m81_woodland_camo": "M81 Woodland Camo",
 		"m81_desert_camo": "M81 Desert Camo"
 	}
