@@ -72,6 +72,29 @@ const data: DaggersData = {
 			"mag_size": 17
 		},
 		{
+			"psa_product_name": "Blem PSA Dagger Micro X-1 9mm Pistol - Shield Cut, Non-Threaded Barrel, Flat Dark Earth",
+			"psa_url": "https://palmettostatearmory.com/blem-psa-dagger-micro-x-1-9mm-pistol-shield-cut-non-threaded-barrel-flat-dark-earth.html",
+			"price": 359.99,
+			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655150890_3524_1_1__5.jpg",
+			"image_file_name": "blem-psa-dagger-micro-x-1-9mm-pistol-shield-cut-non-threaded-barrel-flat-dark-earth.jpg",
+			"size": "micro",
+			"width": 1.1,
+			"length": 7.2,
+			"height": 4.7,
+			"barrel_length": 4.15,
+			"longer_barrel": true,
+			"threaded_barrel": false,
+			"night_sight": false,
+			"compensated_slide": false,
+			"slide_color": "flat_dark_earth",
+			"slide_coating": "cerakote",
+			"frame_color": "flat_dark_earth",
+			"optic_compatibility": "shield_rmsc",
+			"mag_bag_bonus": false,
+			"number_of_included_mags": 1,
+			"mag_size": 15
+		},
+		{
 			"psa_product_name": "PSA Dagger Full Size - S 9mm, Pistol with SW1 RMR RearSight Slide, Sniper Green, Threaded Barrel, with Black Frame",
 			"psa_url": "https://palmettostatearmory.com/dg02-51655130972.html",
 			"price": 329.99,
@@ -2317,8 +2340,8 @@ const data: DaggersData = {
 			"threaded_barrel": true,
 			"night_sight": false,
 			"compensated_slide": false,
-			"slide_color": "black",
-			"slide_coating": "dlc",
+			"slide_color": "black_cerkote",
+			"slide_coating": "none",
 			"frame_color": "black",
 			"optic_compatibility": "rmr",
 			"mag_bag_bonus": true,
@@ -3204,7 +3227,8 @@ const data: DaggersData = {
 		"black": "Black",
 		"flat_dark_earth": "Flat Dark Earth",
 		"sniper_green": "Sniper Green",
-		"sniper_greencerakote": "Sniper GreenCerakote"
+		"sniper_greencerakote": "Sniper GreenCerakote",
+		"black_cerkote": "Black Cerkote"
 	},
 	"frame_colors": {
 		"flat_dark_earth": "Flat Dark Earth",
