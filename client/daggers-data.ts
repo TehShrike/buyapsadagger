@@ -3,29 +3,6 @@ import type { DaggersData } from './product.d.ts'
 const data: DaggersData = {
 	"daggers": [
 		{
-			"psa_product_name": "BLEM PSA Dagger Compact 9mm RMR Pistol with Threaded Barrel, Black",
-			"psa_url": "https://palmettostatearmory.com/blem-psa-dagger-compact-9mm-rmr-pistol-with-threaded-barrel-black-dlc.html",
-			"price": 299.99,
-			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655129121b_2.jpg",
-			"image_file_name": "blem-psa-dagger-compact-9mm-rmr-pistol-with-threaded-barrel-black-dlc.jpg",
-			"size": "compact",
-			"width": 1.28,
-			"length": 7.15,
-			"height": 4.78,
-			"barrel_length": 3.9,
-			"longer_barrel": false,
-			"threaded_barrel": true,
-			"night_sight": false,
-			"compensated_slide": false,
-			"slide_color": "black",
-			"slide_coating": "cerakote",
-			"frame_color": null,
-			"optic_compatibility": "rmr",
-			"mag_bag_bonus": true,
-			"number_of_included_mags": 1,
-			"mag_size": 15
-		},
-		{
 			"psa_product_name": "Blem PSA Dagger Compact 9mm SW3 RMR Pistol W/ Copper Threaded Barrel, Flat Dark Earth",
 			"psa_url": "https://palmettostatearmory.com/blem-psa-dagger-compact-9mm-sw3-rmr-pistol-w-copper-threaded-barrel-flat-dark-earth.html",
 			"price": 339.99,
@@ -2947,29 +2924,6 @@ const data: DaggersData = {
 			"mag_size": 15
 		},
 		{
-			"psa_product_name": "PSA Dagger Micro X-1 9mm Pistol - Shield Cut, Non-Threaded Barrel, Black",
-			"psa_url": "https://palmettostatearmory.com/psa-dagger-micro-x-1-complete-9mm-pistol-non-threaded-barrel-black-dlc.html",
-			"price": 359.99,
-			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm01-51655145555_092923_1_1_.jpg",
-			"image_file_name": "psa-dagger-micro-x-1-complete-9mm-pistol-non-threaded-barrel-black-dlc.jpg",
-			"size": "micro",
-			"width": 1.1,
-			"length": 7.2,
-			"height": 4.7,
-			"barrel_length": 4.15,
-			"longer_barrel": true,
-			"threaded_barrel": false,
-			"night_sight": false,
-			"compensated_slide": false,
-			"slide_color": "black",
-			"slide_coating": "cerakote",
-			"frame_color": null,
-			"optic_compatibility": "shield_rmsc",
-			"mag_bag_bonus": false,
-			"number_of_included_mags": 1,
-			"mag_size": 15
-		},
-		{
 			"psa_product_name": "PSA Dagger Micro X-1 9mm Pistol - Shield Cut, Non-Threaded Barrel, FDE Slide, 2-Tone",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-micro-x-1-complete-9mm-pistol-non-threaded-barrel-fde-slide-2-tone.html",
 			"price": 359.99,
@@ -3201,9 +3155,9 @@ const data: DaggersData = {
 		}
 	],
 	"slide_colors": {
-		"black": "Black",
 		"flat_dark_earth": "Flat Dark Earth",
 		"sniper_green": "Sniper Green",
+		"black": "Black",
 		"sniper_greencerakote": "Sniper GreenCerakote",
 		"black_cerkote": "Black Cerkote"
 	},
