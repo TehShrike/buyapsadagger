@@ -189,7 +189,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Compact 9mm Pistol With Extreme Carry Cuts, Flat Dark Earth",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-flat-dark-earth.html",
-			"price": 299.99,
+			"price": 259.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655128741_51024_1.jpg",
 			"image_file_name": "psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-flat-dark-earth.jpg",
 			"size": "compact",
