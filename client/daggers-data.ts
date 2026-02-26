@@ -49,29 +49,6 @@ const data: DaggersData = {
 			"mag_size": 15
 		},
 		{
-			"psa_product_name": "PSA Dagger Full Size - S 9mm, Pistol with SW1 RMR RearSight Slide, Sniper Green, Threaded Barrel, with Black Frame",
-			"psa_url": "https://palmettostatearmory.com/dg02-51655130972.html",
-			"price": 329.99,
-			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/5/1/51655130972_1.jpg",
-			"image_file_name": "dg02-51655130972.jpg",
-			"size": "full_size_s",
-			"width": 1.28,
-			"length": 7.65,
-			"height": 5.38,
-			"barrel_length": 4.5,
-			"longer_barrel": false,
-			"threaded_barrel": true,
-			"night_sight": false,
-			"compensated_slide": false,
-			"slide_color": "sniper_green",
-			"slide_coating": "cerakote",
-			"frame_color": "black",
-			"optic_compatibility": "rmr",
-			"mag_bag_bonus": true,
-			"number_of_included_mags": 1,
-			"mag_size": 17
-		},
-		{
 			"psa_product_name": "PSA Dagger Micro 9mm Pistol - Shield Cut With Night Sights, Black",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-9mm-pistol-shield-cut-with-night-sights-black.html",
 			"price": 359.99,
@@ -2533,29 +2510,6 @@ const data: DaggersData = {
 			"mag_size": 17
 		},
 		{
-			"psa_product_name": "PSA Dagger Full Size - S 9mm SW3 RMR Pistol With Non Threaded Barrel, Black",
-			"psa_url": "https://palmettostatearmory.com/psa-dagger-full-size-s-9mm-sw3-rmr-pistol-with-non-threaded-barrel-black.html",
-			"price": 319.99,
-			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655202143_2926_1.jpg",
-			"image_file_name": "psa-dagger-full-size-s-9mm-sw3-rmr-pistol-with-non-threaded-barrel-black.jpg",
-			"size": "full_size_s",
-			"width": 1.28,
-			"length": 7.65,
-			"height": 5.38,
-			"barrel_length": 3.9,
-			"longer_barrel": false,
-			"threaded_barrel": false,
-			"night_sight": false,
-			"compensated_slide": false,
-			"slide_color": "black",
-			"slide_coating": "cerakote",
-			"frame_color": "black",
-			"optic_compatibility": "rmr",
-			"mag_bag_bonus": true,
-			"number_of_included_mags": 1,
-			"mag_size": 17
-		},
-		{
 			"psa_product_name": "PSA Dagger Full Size - S 9mm SW3 RMR Pistol With Stainless Non-Threaded Barrel  With10 -17rd Magazines and Bag, Black",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-full-size-s-9mm-sw3-rmr-pistol-with-stainless-non-threaded-barrel-lower-1-3-day-sights-with10-17rd-magazines-and-bag-black.html",
 			"price": 429.99,
@@ -3363,15 +3317,15 @@ const data: DaggersData = {
 	],
 	"slide_colors": {
 		"flat_dark_earth": "Flat Dark Earth",
-		"sniper_green": "Sniper Green",
 		"black": "Black",
+		"sniper_green": "Sniper Green",
 		"sniper_greencerakote": "Sniper GreenCerakote",
 		"black_cerkote": "Black Cerkote"
 	},
 	"frame_colors": {
 		"flat_dark_earth": "Flat Dark Earth",
-		"black": "Black",
 		"sniper_green": "Sniper Green",
+		"black": "Black",
 		"m81_woodland_camo": "M81 Woodland Camo"
 	}
 } as const
