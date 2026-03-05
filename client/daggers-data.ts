@@ -1661,7 +1661,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Compact 9mm RMR Pistol W/Threaded Barrel, 10 - 15rd Magazines, & Pistol Case, Black",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-rmr-pistol-w-threaded-barrel-10-15rd-magazines-pistol-case-black.html",
-			"price": 419.99,
+			"price": 399.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655201476_112425_2.jpg",
 			"image_file_name": "psa-dagger-compact-9mm-rmr-pistol-w-threaded-barrel-10-15rd-magazines-pistol-case-black.jpg",
 			"size": "compact",
