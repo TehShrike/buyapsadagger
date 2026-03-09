@@ -2030,7 +2030,7 @@ const data: DaggersData = {
 			"psa_product_name": "PSA Dagger Complete SW1 RMR Pistol W/ Gold Barrel & 10 15RD Mags, Black",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-complete-sw1-rmr-pistol-w-gold-barrel-10-15rd-mags-black-dlc.html",
 			"price": 459.99,
-			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg0151655139887_052623_1.jpg",
+			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655139887_3926_2.jpg",
 			"image_file_name": "psa-dagger-complete-sw1-rmr-pistol-w-gold-barrel-10-15rd-mags-black-dlc.jpg",
 			"size": "compact",
 			"width": 0,
