@@ -3,6 +3,29 @@ import type { DaggersData } from './product.d.ts'
 const data: DaggersData = {
 	"daggers": [
 		{
+			"psa_product_name": "BLEM PSA Dagger Compact 9mm RMR Pistol with Threaded Barrel, Black",
+			"psa_url": "https://palmettostatearmory.com/blem-psa-dagger-compact-9mm-rmr-pistol-with-threaded-barrel-black-dlc.html",
+			"price": 299.99,
+			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655129121b_2.jpg",
+			"image_file_name": "blem-psa-dagger-compact-9mm-rmr-pistol-with-threaded-barrel-black-dlc.jpg",
+			"size": "compact",
+			"width": 1.28,
+			"length": 7.15,
+			"height": 4.78,
+			"barrel_length": 3.9,
+			"longer_barrel": false,
+			"threaded_barrel": true,
+			"night_sight": false,
+			"compensated_slide": false,
+			"slide_color": "black",
+			"slide_coating": "cerakote",
+			"frame_color": null,
+			"optic_compatibility": "rmr",
+			"mag_bag_bonus": true,
+			"number_of_included_mags": 1,
+			"mag_size": 15
+		},
+		{
 			"psa_product_name": "Blem PSA Dagger Micro X-1 9mm Pistol - Shield Cut, Non-Threaded Barrel, Flat Dark Earth",
 			"psa_url": "https://palmettostatearmory.com/blem-psa-dagger-micro-x-1-9mm-pistol-shield-cut-non-threaded-barrel-flat-dark-earth.html",
 			"price": 359.99,
@@ -1590,6 +1613,29 @@ const data: DaggersData = {
 			"mag_size": 15
 		},
 		{
+			"psa_product_name": "PSA Dagger Compact 9mm RMR Pistol With Threaded Barrel, Flat Dark Earth",
+			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-rmr-pistol-with-threaded-barrel-flat-dark-earth.html",
+			"price": 319.99,
+			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655128743_3.jpg",
+			"image_file_name": "psa-dagger-compact-9mm-rmr-pistol-with-threaded-barrel-flat-dark-earth.jpg",
+			"size": "compact",
+			"width": 1.28,
+			"length": 7.65,
+			"height": 4.78,
+			"barrel_length": 4.5,
+			"longer_barrel": false,
+			"threaded_barrel": true,
+			"night_sight": false,
+			"compensated_slide": false,
+			"slide_color": "flat_dark_earth",
+			"slide_coating": "cerakote",
+			"frame_color": "flat_dark_earth",
+			"optic_compatibility": "rmr",
+			"mag_bag_bonus": true,
+			"number_of_included_mags": 1,
+			"mag_size": 15
+		},
+		{
 			"psa_product_name": "PSA Dagger Compact 9mm RMR Pistol With Threaded Barrel, Sniper Green",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-rmr-pistol-with-threaded-barrel-sniper-green.html",
 			"price": 319.99,
@@ -2648,6 +2694,29 @@ const data: DaggersData = {
 			"mag_size": 17
 		},
 		{
+			"psa_product_name": "PSA Dagger Full Size - S 9mm SW3 RMR Pistol With Threaded Barrel, Black",
+			"psa_url": "https://palmettostatearmory.com/psa-dagger-full-size-s-9mm-sw3-rmr-pistol-with-threaded-barrel-black.html",
+			"price": 329.99,
+			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655202142_2926_1.jpg",
+			"image_file_name": "psa-dagger-full-size-s-9mm-sw3-rmr-pistol-with-threaded-barrel-black.jpg",
+			"size": "full_size_s",
+			"width": 1.28,
+			"length": 7.65,
+			"height": 5.38,
+			"barrel_length": 4.5,
+			"longer_barrel": false,
+			"threaded_barrel": true,
+			"night_sight": false,
+			"compensated_slide": false,
+			"slide_color": "black",
+			"slide_coating": "cerakote",
+			"frame_color": "black",
+			"optic_compatibility": "rmr",
+			"mag_bag_bonus": true,
+			"number_of_included_mags": 1,
+			"mag_size": 17
+		},
+		{
 			"psa_product_name": "PSA Dagger Full Size - S 9mm SW3 RMR Pistol With Threaded Barrel, Flat Dark Earth",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-full-size-s-9mm-sw3-rmr-pistol-with-threaded-barrel-flat-dark-earth2.html",
 			"price": 329.99,
@@ -3316,9 +3385,9 @@ const data: DaggersData = {
 		}
 	],
 	"slide_colors": {
+		"black": "Black",
 		"flat_dark_earth": "Flat Dark Earth",
 		"sniper_green": "Sniper Green",
-		"black": "Black",
 		"sniper_greencerakote": "Sniper GreenCerakote",
 		"black_cerkote": "Black Cerkote"
 	},
