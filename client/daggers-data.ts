@@ -143,7 +143,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Compact 9mm Pistol with Extreme Carry Cuts & Night Sights, Black DLC",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-night-sights-black-dlc-2.html",
-			"price": 329.99,
+			"price": 319.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/9/1/910125111_1.jpg",
 			"image_file_name": "psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-night-sights-black-dlc-2.jpg",
 			"size": "compact",
