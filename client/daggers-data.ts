@@ -3198,29 +3198,6 @@ const data: DaggersData = {
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 10,
 			"mag_size": 17
-		},
-		{
-			"psa_product_name": "PSA Sabre Dagger Full Size - S 9mm Pistol, TiN Spiral Fluted Barrel, W/Mag Extensions, Black",
-			"psa_url": "https://palmettostatearmory.com/psa-sabre-dagger-full-size-s-9mm-pistol-tin-fluted-barrel-w-mag-extensions-black.html",
-			"price": 599.99,
-			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655152374_42224_1_1_.jpg",
-			"image_file_name": "psa-sabre-dagger-full-size-s-9mm-pistol-tin-fluted-barrel-w-mag-extensions-black.jpg",
-			"size": "full_size_s",
-			"width": 1.28,
-			"length": 7.15,
-			"height": 5.38,
-			"barrel_length": 3.9,
-			"longer_barrel": false,
-			"threaded_barrel": false,
-			"night_sight": false,
-			"compensated_slide": false,
-			"slide_color": "black",
-			"slide_coating": "cerakote",
-			"frame_color": "black",
-			"optic_compatibility": "none",
-			"mag_bag_bonus": true,
-			"number_of_included_mags": 2,
-			"mag_size": 17
 		}
 	],
 	"slide_colors": {
