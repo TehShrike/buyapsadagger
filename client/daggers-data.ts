@@ -28,7 +28,7 @@ const data: DaggersData = {
 		{
 			"psa_product_name": "PSA Dagger Compact Pistol SW1 RMR with Stainless Spiral Non-Threaded Barrel , Black",
 			"psa_url": "https://palmettostatearmory.com/disc-psa-dagger-compact-pistol-sw1-rmr-with-stainless-spiral-non-threaded-barrel-black.html",
-			"price": 389.99,
+			"price": 289.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655211144_32626_1.jpg",
 			"image_file_name": "disc-psa-dagger-compact-pistol-sw1-rmr-with-stainless-spiral-non-threaded-barrel-black.jpg",
 			"size": "compact",
