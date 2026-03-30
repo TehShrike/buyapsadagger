@@ -37,28 +37,31 @@ const calculate_possible_filter_param_values = (products: Product[], sizes: Size
 	return size_to_filter_param_values
 }
 
+const filter_map = <K,V>(map: Map<K,V>, predicate: (value: V) => boolean) => {
+	const output = new Map<K,V>()
+	for_each(Array.from(map.entries()), ([key, value]) => {
+		if (predicate(value)) {
+			output.set(key, value)
+		}
+	})
+	return output
+}
+
 export const calculate_displayed_filter_options_per_pistol_size = (products: Product[], sizes: Size[], keys: FilterParamKey[]) => {
 	const size_to_filter_param_values = calculate_possible_filter_param_values(products, sizes, keys)
-	const output = new Map<Size, Set<FilterParamKey>>()
+	const output = new Map<Size, Map<FilterParamKey, Set<string | boolean>>>()
 
 	for_each(sizes, (size) => {
-		const key_map = size_to_filter_param_values.get(size)
-		assert(key_map)
-		const displayed_keys = new Set<FilterParamKey>()
-		for_each(keys, (key) => {
-			const filter_set = key_map.get(key)
-			assert(filter_set)
-			if (filter_set.size >= 2) {
-				displayed_keys.add(key)
-			}
-		})
-		output.set(size, displayed_keys)
+		const param_key_to_possible_values = size_to_filter_param_values.get(size)
+		assert(param_key_to_possible_values)
+
+		output.set(size, filter_map(param_key_to_possible_values, (value) => value.size >= 2))
 	})
 
-	return (size: Size): Set<FilterParamKey> => {
-		const displayed_keys = output.get(size)
-		assert(displayed_keys)
-		return displayed_keys
+	return (size: Size): Map<FilterParamKey, Set<string | boolean>> => {
+		const param_key_to_possible_values = output.get(size)
+		assert(param_key_to_possible_values)
+		return param_key_to_possible_values
 	}
 }
 

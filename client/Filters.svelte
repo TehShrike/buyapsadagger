@@ -2,7 +2,8 @@
 	import PistolSizeSelector from './PistolSizeSelector.svelte'
 	import FilterSelection from './FilterSelection.svelte'
 	import type { FilterParams, FilterParamKey } from './filter-daggers.ts'
-	import { map } from '#lib/array.ts'
+	import { map, filter } from '#lib/array.ts'
+	import { ANY } from './querystring_options.ts'
 
 	let {
 		displayed_filter_options,
@@ -10,17 +11,27 @@
 		get_altered_query_string,
 		should_this_option_be_enabled,
 	}: {
-		displayed_filter_options: Set<FilterParamKey>
+		displayed_filter_options: Map<FilterParamKey, Set<string | boolean>>
 		params_with_defaults: FilterParams
 		get_altered_query_string: (param: string, value: string) => string
 		should_this_option_be_enabled: (key: FilterParamKey, value: FilterParams[FilterParamKey]) => boolean
 	} = $props()
 
+	const filter_to_existing_options = (
+		key: FilterParamKey,
+		options: { label: string; value: FilterParams[FilterParamKey] }[],
+	) => {
+		const possible_values = displayed_filter_options.get(key)
+		return filter(options, (option) =>
+			option.value === ANY || !!possible_values?.has(option.value) || !!possible_values?.has(option.value === 'true' ? true : option.value === 'false' ? false : option.value)
+		)
+	}
+
 	const add_disabled_to_unsafe_options = (
 		key: FilterParamKey,
 		options: { label: string; value: FilterParams[FilterParamKey] }[],
 	) => {
-		return map(options, (option) => {
+		return map(filter_to_existing_options(key, options), (option) => {
 			return {
 				...option,
 				disabled: !should_this_option_be_enabled(key, option.value),

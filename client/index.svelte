@@ -32,7 +32,7 @@
 	)
 
 	const ignore_filter_options_that_are_not_displayed = (
-		displayed_filter_options: Set<FilterParamKey>,
+		displayed_filter_options: Map<FilterParamKey, Set<string | boolean>>,
 		current_filter_params: FilterParams,
 	) => {
 		return {

@@ -14,7 +14,7 @@ const possible_filter_option_values_excluding_any: AlternateOptionsToConsider = 
 	slide_coating: ['none', 'dlc', 'cerakote'] as const,
 }
 
-export const calculate_alternate_option_selections_we_need_to_consider = (displayed_filter_options: Set<FilterParamKey>, current_filter_params: FilterParams) => object_from_entries(map(
+export const calculate_alternate_option_selections_we_need_to_consider = (displayed_filter_options: Map<FilterParamKey, Set<string | boolean>>, current_filter_params: FilterParams) => object_from_entries(map(
 	object_entries(possible_filter_option_values_excluding_any),
 	([key, values]) => [key, filter(values, value => displayed_filter_options.has(key) && value !== current_filter_params[key])],
 ))
