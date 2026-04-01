@@ -20,16 +20,33 @@ if ! git diff --staged --quiet; then
 	exit 1
 fi
 
+FILES_TO_COMMIT=(psa-parsers/products/*.json public/images client/daggers-data.ts)
+
+reset_files() {
+	echo "Resetting changed files..."
+	git checkout -- "${FILES_TO_COMMIT[@]}"
+	# Clean any untracked files in public/images
+	git clean -fd public/images
+}
+
 echo "Running product scrapers..."
-npm run update_daggers
+if ! npm run update_daggers; then
+	echo "update_daggers failed!"
+	reset_files
+	exit 1
+fi
 
 echo ""
 echo "Validating products..."
-npm run validate_products
+if ! npm run validate_products; then
+	echo "validate_products failed!"
+	reset_files
+	exit 1
+fi
 
 echo ""
 echo "Committing changes..."
-git add psa-parsers/products/*.json public/images client/daggers-data.ts
+git add "${FILES_TO_COMMIT[@]}"
 
 if git diff --staged --quiet; then
 	echo "No changes to commit"
