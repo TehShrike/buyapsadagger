@@ -1176,6 +1176,29 @@ const data: DaggersData = {
 			"mag_size": 15
 		},
 		{
+			"psa_product_name": "PSA Dagger Compact 9mm Pistol With SW6 RMR Slide & Copper Threaded Barrel, FDE",
+			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-sw6-rmr-slide-copper-threaded-barrel-fde.html",
+			"price": 339.99,
+			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655202117_11626_1.jpg",
+			"image_file_name": "psa-dagger-compact-9mm-pistol-with-sw6-rmr-slide-copper-threaded-barrel-fde.jpg",
+			"size": "compact",
+			"width": 1.28,
+			"length": 7.15,
+			"height": 4.78,
+			"barrel_length": 4.5,
+			"longer_barrel": false,
+			"threaded_barrel": true,
+			"night_sight": false,
+			"compensated_slide": false,
+			"slide_color": "flat_dark_earth",
+			"slide_coating": "cerakote",
+			"frame_color": "flat_dark_earth",
+			"optic_compatibility": "rmr",
+			"mag_bag_bonus": false,
+			"number_of_included_mags": 1,
+			"mag_size": 15
+		},
+		{
 			"psa_product_name": "PSA Dagger Compact 9mm Pistol With SW6 RMR Slide & Non-Threaded Barrel, FDE",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-sw6-rmr-slide-non-threaded-barrel-fde.html",
 			"price": 329.99,
@@ -3290,6 +3313,29 @@ const data: DaggersData = {
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 2,
 			"mag_size": 17
+		},
+		{
+			"psa_product_name": "PSA Sabre Dagger Micro 9mm Pistol, w/ Mag Extensions, M81 Woodland Camo",
+			"psa_url": "https://palmettostatearmory.com/psa-sabre-dagger-micro-9mm-pistol-w-mag-extensions-m81-woodland-camo.html",
+			"price": 629.99,
+			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/m/dm02-51655197975_92625_1.jpg",
+			"image_file_name": "psa-sabre-dagger-micro-9mm-pistol-w-mag-extensions-m81-woodland-camo.jpg",
+			"size": "micro",
+			"width": 1.1,
+			"length": 6.5,
+			"height": 4.9,
+			"barrel_length": 3.41,
+			"longer_barrel": false,
+			"threaded_barrel": false,
+			"night_sight": false,
+			"compensated_slide": false,
+			"slide_color": "black",
+			"slide_coating": "cerakote",
+			"frame_color": "m81_woodland",
+			"optic_compatibility": "none",
+			"mag_bag_bonus": false,
+			"number_of_included_mags": 1,
+			"mag_size": 15
 		}
 	],
 	"slide_colors": {
@@ -3304,7 +3350,8 @@ const data: DaggersData = {
 		"flat_dark_earth": "Flat Dark Earth",
 		"sniper_green": "Sniper Green",
 		"m81_woodland_camo": "M81 Woodland Camo",
-		"m81_desert_camo": "M81 Desert Camo"
+		"m81_desert_camo": "M81 Desert Camo",
+		"m81_woodland": "M81 Woodland"
 	}
 } as const
 
