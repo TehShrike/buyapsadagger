@@ -15,6 +15,7 @@ const titles_to_filter_out = [
 	'Complete Polymer Frame',
 	'Complete Slide Assembly',
 	'Complete Frame',
+	'Compensator',
 ]
 
 const parse_listing_page = (html_content: string): ProductInfo[] => {
