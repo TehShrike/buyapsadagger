@@ -67,7 +67,7 @@ const download_product_pages = async (): Promise<void> => {
 					timeout: 60000,
 				})
 
-				await new Promise((resolve) => setTimeout(resolve, 2000))
+				await new Promise((resolve) => setTimeout(resolve, 1000))
 
 				const html = await page.content()
 				fs.writeFileSync(file_path, html, 'utf-8')
