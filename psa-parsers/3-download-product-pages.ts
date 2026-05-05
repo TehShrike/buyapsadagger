@@ -67,16 +67,14 @@ const download_product_pages = async (): Promise<void> => {
 					timeout: 60000,
 				})
 
-				await new Promise((resolve) => setTimeout(resolve, 1000))
+				await page
+					.waitForSelector('.fotorama__stage__frame img[src]', { timeout: 10000 })
+					.catch(() => console.warn(`Fotorama image not found for ${product.url}`))
 
 				const html = await page.content()
 				fs.writeFileSync(file_path, html, 'utf-8')
 
 				console.log(`Saved: ${filename} (${html.length} characters)`)
-
-				if (i < products_data.length - 1) {
-					await new Promise((resolve) => setTimeout(resolve, 1000))
-				}
 			} catch (error) {
 				console.error(
 					`Failed to download ${product.url}:`,
