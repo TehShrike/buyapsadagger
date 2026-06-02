@@ -1,8 +1,12 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import { fileURLToPath } from 'url'
-import puppeteer from 'puppeteer'
+import puppeteer from 'puppeteer-extra'
 import assert from '#lib/assert.ts'
+
+import StealthPlugin from 'puppeteer-extra-plugin-stealth'
+
+puppeteer.use(StealthPlugin())
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
