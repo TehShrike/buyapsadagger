@@ -16,6 +16,12 @@ Don't forget, we're writing Svelte 5 with runes and stuff now, not Svelte 3 or 4
 
 `crontab -e` to see the current automated running.  It's piping to `>> /tmp/scraper.log 2>> /tmp/scraper.err`
 
+when live, crontab -e should contain
+
+```
+0 8-18 * * * cd /Users/joshduff/git/buyapsadagger && nvm use && npm run scrape_and_commit && date >> /tmp/scraper.log 2>> /tmp/scraper.err
+```
+
 # Project Structure
 
 This is a web scraping project for PSA Dagger firearms data from Palmetto State Armory.
