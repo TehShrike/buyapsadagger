@@ -48,6 +48,9 @@ const download_product_pages = async (): Promise<void> => {
 		)
 
 		for (let i = 0; i < products_data.length; i++) {
+			if (i > 0) {
+				await new Promise((resolve) => setTimeout(resolve, 2000))
+			}
 			const product = products_data[i]
 			assert(product)
 			const url_parts = new URL(product.url)
