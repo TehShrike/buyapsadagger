@@ -1,11 +1,14 @@
+import { createInterface } from 'node:readline'
 import * as fs from 'fs'
 import * as path from 'path'
 import { fileURLToPath } from 'url'
-import puppeteer from 'puppeteer-extra'
+import puppeteer_base from 'puppeteer'
+import { addExtra } from 'puppeteer-extra'
 import assert from '#lib/assert.ts'
 
 import StealthPlugin from 'puppeteer-extra-plugin-stealth'
 
+const puppeteer = addExtra(puppeteer_base as unknown as Parameters<typeof addExtra>[0])
 puppeteer.use(StealthPlugin())
 
 const __filename = fileURLToPath(import.meta.url)
@@ -15,6 +18,16 @@ type ProductData = {
 	url: string
 	title: string
 }
+
+const waitForEnter = () => new Promise<void>(resolve => {
+	const rl = createInterface({ input: process.stdin, output: process.stdout })
+	rl.question('Press Enter when the page has loaded...', () => {
+		rl.close()
+		resolve()
+	})
+})
+
+let captcha_bypassed = false
 
 const download_product_pages = async (): Promise<void> => {
 	const daggers_json_path = path.join(__dirname, 'products', 'daggers.json')
@@ -34,7 +47,7 @@ const download_product_pages = async (): Promise<void> => {
 	}
 
 	const launch_options = {
-		headless: true,
+		headless: false,
 		args: ['--no-sandbox', '--disable-setuid-sandbox'],
 		...(process.platform === 'darwin' && {
 			executablePath:
@@ -73,6 +86,11 @@ const download_product_pages = async (): Promise<void> => {
 					waitUntil: 'domcontentloaded',
 					timeout: 60000,
 				})
+
+				if (!captcha_bypassed) {
+					await waitForEnter()
+					captcha_bypassed = true
+				}
 
 				await page
 					.waitForSelector('.fotorama__stage__frame img[src]', { timeout: 10000 })

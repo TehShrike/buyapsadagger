@@ -1,6 +1,9 @@
-import puppeteer from 'puppeteer-extra'
+import { createInterface } from 'node:readline'
+import puppeteer_base from 'puppeteer'
+import { addExtra } from 'puppeteer-extra'
 import StealthPlugin from 'puppeteer-extra-plugin-stealth'
 
+const puppeteer = addExtra(puppeteer_base as unknown as Parameters<typeof addExtra>[0])
 puppeteer.use(StealthPlugin())
 
 type ScrapedListingData = {
@@ -8,11 +11,21 @@ type ScrapedListingData = {
 	page_count: number
 }
 
+const waitForEnter = () => new Promise<void>(resolve => {
+	const rl = createInterface({ input: process.stdin, output: process.stdout })
+	rl.question('Press Enter when the page has loaded...', () => {
+		rl.close()
+		resolve()
+	})
+})
+
+let captcha_bypassed = false
+
 export const scrape_listing_pages = async (
 	initial_url: string
 ): Promise<ScrapedListingData> => {
 	const launch_options = {
-		headless: true,
+		headless: false,
 		args: [
 			'--no-sandbox',
 			'--disable-setuid-sandbox',
@@ -38,6 +51,12 @@ export const scrape_listing_pages = async (
 			waitUntil: 'domcontentloaded',
 			timeout: 60000
 		})
+
+		if (!captcha_bypassed) {
+			await waitForEnter()
+			captcha_bypassed = true
+		}
+
 		await new Promise((resolve) => setTimeout(resolve, 2000))
 
 		let page_number = 1
