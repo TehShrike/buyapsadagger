@@ -11,6 +11,7 @@
 		"test:types": "tsc --noEmit",
 		"test:svelte": "svelte-check --workspace client",
 		"build_graphicsmagick": "[ -n \"$CF_PAGES\" ] && echo 'Skipping graphicsmagick build on CF Pages' || bash scripts/build-graphicsmagick.sh",
+		"launch_chrome": "node psa-parsers/launch-chrome.ts",
 		"0_delete_downloaded_files": "rm -f psa-parsers/listing-pages/*.html psa-parsers/products/*.html && rm -f public/images/*.jpg",
 		"1_download_product_listings": "node psa-parsers/1-download-listings.ts",
 		"2_scrape_product_listings": "node psa-parsers/2-parse-listings.ts",

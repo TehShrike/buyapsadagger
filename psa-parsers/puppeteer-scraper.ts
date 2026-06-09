@@ -6,6 +6,9 @@ import StealthPlugin from 'puppeteer-extra-plugin-stealth'
 const puppeteer = addExtra(puppeteer_base as unknown as Parameters<typeof addExtra>[0])
 puppeteer.use(StealthPlugin())
 
+const debug_port = 9222
+const browser_url = `http://127.0.0.1:${debug_port}`
+
 type ScrapedListingData = {
 	html_pages: string[]
 	page_count: number
@@ -24,22 +27,19 @@ let captcha_bypassed = false
 export const scrape_listing_pages = async (
 	initial_url: string
 ): Promise<ScrapedListingData> => {
-	const launch_options = {
-		headless: false,
-		args: [
-			'--no-sandbox',
-			'--disable-setuid-sandbox',
-			'--ignore-certificate-errors',
-		],
-		...(process.platform === 'darwin' && {
-			executablePath:
-				'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-		}),
+	let browser
+	try {
+		browser = await puppeteer.connect({ browserURL: browser_url })
+	} catch (error) {
+		throw new Error(
+			`Could not connect to Chrome on ${browser_url}. ` +
+				`Start Chrome with remote debugging first (see psa-parsers/launch-chrome.ts). ` +
+				`Underlying error: ${error instanceof Error ? error.message : String(error)}`
+		)
 	}
 
-	const browser = await puppeteer.launch(launch_options)
-
-	const page = await browser.newPage()
+	const existing_pages = await browser.pages()
+	const page = existing_pages[0] ?? (await browser.newPage())
 	const html_pages: string[] = []
 
 	try {
@@ -121,6 +121,6 @@ export const scrape_listing_pages = async (
 		console.error('Error during scraping:', error)
 		throw error
 	} finally {
-		await browser.close()
+		browser.disconnect()
 	}
 }
