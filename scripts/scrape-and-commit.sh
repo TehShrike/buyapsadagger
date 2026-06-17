@@ -23,10 +23,11 @@ fi
 FILES_TO_COMMIT=(psa-parsers/products/*.json public/images client/daggers-data.ts)
 
 reset_files() {
-	echo "Resetting changed files..."
-	git checkout -- "${FILES_TO_COMMIT[@]}"
-	# Clean any untracked files in public/images
-	git clean -fd public/images
+	echo "Not actually resetting – go fix the issue"
+	# echo "Resetting changed files..."
+	# git checkout -- "${FILES_TO_COMMIT[@]}"
+	# # Clean any untracked files in public/images
+	# git clean -fd public/images
 }
 
 echo "Running product scrapers..."
