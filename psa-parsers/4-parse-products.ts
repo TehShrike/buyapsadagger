@@ -128,7 +128,11 @@ const extract_price = ($: cheerio.CheerioAPI): number => {
 }
 
 const extract_image_url = ($: cheerio.CheerioAPI): string => {
-	return $('.fotorama__stage__frame img').first().attr('src') || ''
+	return (
+		$('.fotorama__stage__frame img').first().attr('src') ||
+		$('.gallery-placeholder__image').first().attr('src') ||
+		''
+	)
 }
 
 type ParseResult =
@@ -136,6 +140,7 @@ type ParseResult =
 	| { type: 'bundle' }
 	| { type: 'out_of_stock' }
 	| { type: 'not_a_pistol' }
+	| { type: 'bot_blocked' }
 	| { type: 'failed' }
 
 const parse_product_file = async (file_path: string): Promise<ParseResult> => {
@@ -157,6 +162,10 @@ const parse_product_file = async (file_path: string): Promise<ParseResult> => {
 
 		const url = extract_url($)
 		const title = extract_title($)
+
+		if (!title) {
+			return { type: 'bot_blocked' }
+		}
 
 		if (/slide assembly/i.test(title)) {
 			return { type: 'not_a_pistol' }
@@ -220,22 +229,25 @@ const parse_products = async (): Promise<void> => {
 			console.log(`⊘ ${filename} - Skipped out of stock product`)
 		} else if (result.type === 'not_a_pistol') {
 			console.log(`⊘ ${filename} - Skipped non-pistol product`)
+		} else if (result.type === 'bot_blocked') {
+			console.log(`⛔ ${filename} - No product title, looks like a bot-blocked page`)
 		} else {
 			console.log(`✗ ${filename} - Failed to parse`)
 		}
 
-		return result
+		return { filename, result }
 	})
 
 	const results = await Promise.all(parse_promises)
 
 	const parsed_products: ParsedProduct[] = []
+	const bot_blocked_files: string[] = []
 	let skipped_bundles = 0
 	let skipped_out_of_stock = 0
 	let skipped_not_a_pistol = 0
 	let failed_count = 0
 
-	for (const result of results) {
+	for (const { filename, result } of results) {
 		if (result.type === 'success') {
 			parsed_products.push(result.data)
 		} else if (result.type === 'bundle') {
@@ -244,12 +256,24 @@ const parse_products = async (): Promise<void> => {
 			skipped_out_of_stock++
 		} else if (result.type === 'not_a_pistol') {
 			skipped_not_a_pistol++
+		} else if (result.type === 'bot_blocked') {
+			bot_blocked_files.push(filename)
 		} else if (result.type === 'failed') {
 			failed_count++
 		}
 	}
 
 	const elapsed = Date.now() - start_time
+
+	if (bot_blocked_files.length > 0) {
+		console.error(
+			`\n${bot_blocked_files.length} bot-blocked product pages – not writing daggers2.json. Re-run 3_download_product_pages to fetch them:`
+		)
+		for (const filename of bot_blocked_files) {
+			console.error(`  ${filename}`)
+		}
+		process.exit(1)
+	}
 
 	await fs.mkdir(products_dir, { recursive: true })
 

@@ -1,8 +1,8 @@
-import { createInterface } from 'node:readline'
 import * as fs from 'fs'
 import * as path from 'path'
 import { fileURLToPath } from 'url'
 import puppeteer_base from 'puppeteer'
+import type { Page as PuppeteerPage } from 'puppeteer'
 import { addExtra } from 'puppeteer-extra'
 import assert from '#lib/assert.ts'
 
@@ -22,15 +22,32 @@ type ProductData = {
 	title: string
 }
 
-const waitForEnter = () => new Promise<void>(resolve => {
-	const rl = createInterface({ input: process.stdin, output: process.stdout })
-	rl.question('Press Enter when the page has loaded...', () => {
-		rl.close()
-		resolve()
-	})
-})
+const is_challenge_page = async (page: PuppeteerPage): Promise<boolean> => {
+	try {
+		const title = await page.title()
+		return /just a moment/i.test(title)
+	} catch {
+		return true
+	}
+}
 
-let captcha_bypassed = false
+const wait_for_challenge_to_clear = async (
+	page: PuppeteerPage
+): Promise<void> => {
+	let announced = false
+	while (await is_challenge_page(page)) {
+		if (!announced) {
+			console.log(
+				'Cloudflare challenge detected – click the captcha in the browser, retrying until it clears...'
+			)
+			announced = true
+		}
+		await new Promise((resolve) => setTimeout(resolve, 3000))
+	}
+	if (announced) {
+		console.log('Challenge cleared, continuing')
+	}
+}
 
 const download_product_pages = async (): Promise<void> => {
 	const daggers_json_path = path.join(__dirname, 'products', 'daggers.json')
@@ -91,10 +108,7 @@ const download_product_pages = async (): Promise<void> => {
 					timeout: 60000,
 				})
 
-				if (!captcha_bypassed) {
-					await waitForEnter()
-					captcha_bypassed = true
-				}
+				await wait_for_challenge_to_clear(page)
 
 				await page
 					.waitForSelector('.fotorama__stage__frame img[src]', { timeout: 10000 })
