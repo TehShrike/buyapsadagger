@@ -74,6 +74,13 @@
 		...params_readable,
 		size: params_with_defaults.size,
 	})
+
+	const size_is_out_of_stock = $derived(
+		filter_daggers(daggers_data.daggers, {
+			...default_values,
+			size: params_with_defaults.size,
+		}).length === 0,
+	)
 </script>
 
 <svelte:head>
@@ -130,28 +137,32 @@
 			/>
 		</div>
 	</div>
-	<div class="filters-and-results">
-		<Filters
-			{displayed_filter_options}
-			{params_with_defaults}
-			{get_altered_query_string}
-			{should_this_option_be_enabled}
-		/>
-		<div class="products-grid card">
-			{#if filtered_daggers.length === 0}
-				<div class="no-results">No results for these filter options</div>
-			{/if}
-			{#each filtered_daggers as product (product.psa_url)}
-				<a href={product.psa_url} target="_blank" rel="noopener" class="product-card">
-					<h3>
-						{generate_product_title(product, daggers_data, params_with_defaults)}
-					</h3>
-					<img src="/images/{product.image_file_name}" alt={product.psa_product_name} />
-					<div class="price">${product.price.toFixed(2)}</div>
-				</a>
-			{/each}
+	{#if size_is_out_of_stock}
+		<div class="card out-of-stock">Out of stock at the moment</div>
+	{:else}
+		<div class="filters-and-results">
+			<Filters
+				{displayed_filter_options}
+				{params_with_defaults}
+				{get_altered_query_string}
+				{should_this_option_be_enabled}
+			/>
+			<div class="products-grid card">
+				{#if filtered_daggers.length === 0}
+					<div class="no-results">No results for these filter options</div>
+				{/if}
+				{#each filtered_daggers as product (product.psa_url)}
+					<a href={product.psa_url} target="_blank" rel="noopener" class="product-card">
+						<h3>
+							{generate_product_title(product, daggers_data, params_with_defaults)}
+						</h3>
+						<img src="/images/{product.image_file_name}" alt={product.psa_product_name} />
+						<div class="price">${product.price.toFixed(2)}</div>
+					</a>
+				{/each}
+			</div>
 		</div>
-	</div>
+	{/if}
 </div>
 
 <style>
@@ -243,10 +254,22 @@
 
 	.no-results {
 		flex-grow: 1;
+		grid-column: 1 / -1;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		font-size: 16px;
+		font-weight: bold;
+		color: var(--dark_color);
+	}
+
+	.out-of-stock {
+		align-self: stretch;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: calc(var(--spacing) * 3) var(--spacing);
+		font-size: 18px;
 		font-weight: bold;
 		color: var(--dark_color);
 	}
