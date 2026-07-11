@@ -171,6 +171,10 @@ const parse_product_file = async (file_path: string): Promise<ParseResult> => {
 			return { type: 'not_a_pistol' }
 		}
 
+		if (/magazine/i.test(title) && !/pistol/i.test(title)) {
+			return { type: 'not_a_pistol' }
+		}
+
 		const price = extract_price($)
 		const original_product_image_url = extract_image_url($)
 		const product_details = extract_product_details($)
