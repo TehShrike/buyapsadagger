@@ -210,7 +210,7 @@ const data: DaggersData = {
 			"mag_size": 15
 		},
 		{
-			"psa_product_name": "PSA Dagger Compact 9mm Pistol With Extreme Carry Cuts RMR Slide, Threaded Barrel - 2-Tone Sniper Green With PSA Soft Case",
+			"psa_product_name": "PSA Dagger Compact 9mm Pistol With Extreme Carry Cuts RMR Slide, Threaded Barrel - 2-Tone Sniper Green",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-rmr-slide-ameriglo-lower-1-3-co-witness-sights-threaded-barrel-2-tone-sniper-green-with-psa-soft-case.html",
 			"price": 319.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655116727_1_1.jpg",
@@ -256,7 +256,7 @@ const data: DaggersData = {
 			"mag_size": 15
 		},
 		{
-			"psa_product_name": "PSA Dagger Compact 9mm RMR Pistol W/Threaded Barrel, 10 - 15rd Magazines, & Pistol Case, Flat Dark Earth",
+			"psa_product_name": "PSA Dagger Compact 9mm RMR Pistol W/Threaded Barrel, 10 - 15rd Magazines, Flat Dark Earth",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-extreme-carry-cuts-rmr-threaded-barrel-with-10-15rd-magazines-pistol-case-flat-dark-earth.html",
 			"price": 439.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655134077_31926_1.jpg",
@@ -670,6 +670,29 @@ const data: DaggersData = {
 			"mag_size": 15
 		},
 		{
+			"psa_product_name": "PSA Dagger Compact 9mm Pistol With SW2 Extreme Carry Cut RMR Slide & Copper Threaded Barrel, w10-15rd mags, Black",
+			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-sw2-extreme-carry-cut-rmr-slide-copper-threaded-barrel-w10-15rd-mags-black.html",
+			"price": 439.99,
+			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655201573_3926_1.jpg",
+			"image_file_name": "psa-dagger-compact-9mm-pistol-with-sw2-extreme-carry-cut-rmr-slide-copper-threaded-barrel-w10-15rd-mags-black.jpg",
+			"size": "compact",
+			"width": 0,
+			"length": 0,
+			"height": 0,
+			"barrel_length": 0,
+			"longer_barrel": false,
+			"threaded_barrel": true,
+			"night_sight": false,
+			"compensated_slide": false,
+			"slide_color": null,
+			"slide_coating": "none",
+			"frame_color": null,
+			"optic_compatibility": "rmr",
+			"mag_bag_bonus": true,
+			"number_of_included_mags": 1,
+			"mag_size": 15
+		},
+		{
 			"psa_product_name": "PSA Dagger Compact 9mm Pistol With SW2 Extreme Carry Cut RMR Slide & Stainless Threaded Barrel, Black",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-sw2-extreme-carry-cut-rmr-slide-stainless-threaded-barrel-black.html",
 			"price": 339.99,
@@ -992,6 +1015,29 @@ const data: DaggersData = {
 			"mag_size": 15
 		},
 		{
+			"psa_product_name": "PSA Dagger Compact 9mm Pistol With SW6 RMR Slide & Copper Spiral Fluted Threaded Barrel, Black",
+			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-sw6-rmr-slide-copper-spiral-fluted-threaded-barrel-black.html",
+			"price": 359.99,
+			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655202115_11626_1.jpg",
+			"image_file_name": "psa-dagger-compact-9mm-pistol-with-sw6-rmr-slide-copper-spiral-fluted-threaded-barrel-black.jpg",
+			"size": "compact",
+			"width": 1.28,
+			"length": 7.15,
+			"height": 4.78,
+			"barrel_length": 4.5,
+			"longer_barrel": false,
+			"threaded_barrel": true,
+			"night_sight": false,
+			"compensated_slide": false,
+			"slide_color": "black",
+			"slide_coating": "cerakote",
+			"frame_color": null,
+			"optic_compatibility": "rmr",
+			"mag_bag_bonus": false,
+			"number_of_included_mags": 1,
+			"mag_size": 15
+		},
+		{
 			"psa_product_name": "PSA Dagger Compact 9mm Pistol With SW6 RMR Slide & Copper Threaded Barrel, FDE",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-pistol-with-sw6-rmr-slide-copper-threaded-barrel-fde.html",
 			"price": 339.99,
@@ -1291,7 +1337,7 @@ const data: DaggersData = {
 			"mag_size": 15
 		},
 		{
-			"psa_product_name": "PSA Dagger Compact 9mm RMR Pistol W/Threaded Barrel, 10 - 15rd Magazines, & Pistol Case, Black",
+			"psa_product_name": "PSA Dagger Compact 9mm RMR Pistol W/Threaded Barrel, 10 - 15rd Magazines, Black",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-compact-9mm-rmr-pistol-w-threaded-barrel-10-15rd-magazines-pistol-case-black.html",
 			"price": 419.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg01-51655201476_3926_1.jpg",
@@ -2372,6 +2418,29 @@ const data: DaggersData = {
 			"mag_size": 17
 		},
 		{
+			"psa_product_name": "PSA Dagger Full Size - S 9mm SW6 RMR Pistol With Non Threaded Barrel, Black",
+			"psa_url": "https://palmettostatearmory.com/psa-dagger-full-size-s-9mm-sw6-rmr-pistol-with-non-threaded-barrel-black.html",
+			"price": 319.99,
+			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655202168_21326_1.jpg",
+			"image_file_name": "psa-dagger-full-size-s-9mm-sw6-rmr-pistol-with-non-threaded-barrel-black.jpg",
+			"size": "full_size_s",
+			"width": 1.28,
+			"length": 7.15,
+			"height": 5.38,
+			"barrel_length": 3.9,
+			"longer_barrel": false,
+			"threaded_barrel": false,
+			"night_sight": false,
+			"compensated_slide": false,
+			"slide_color": "black",
+			"slide_coating": "cerakote",
+			"frame_color": "black",
+			"optic_compatibility": "rmr",
+			"mag_bag_bonus": false,
+			"number_of_included_mags": 1,
+			"mag_size": 17
+		},
+		{
 			"psa_product_name": "PSA Dagger Full Size - S 9mm SW6 RMR Pistol With Threaded Barrel &10-17rd Mags, Flat Dark Earth",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-full-size-s-9mm-sw6-rmr-pistol-with-threaded-barrel-10-17rd-mags-flat-dark-earth.html",
 			"price": 439.99,
@@ -2392,6 +2461,29 @@ const data: DaggersData = {
 			"optic_compatibility": "rmr",
 			"mag_bag_bonus": true,
 			"number_of_included_mags": 10,
+			"mag_size": 17
+		},
+		{
+			"psa_product_name": "PSA Dagger Full Size - S 9mm SW6 RMR Pistol With Threaded Barrel, Flat Dark Earth",
+			"psa_url": "https://palmettostatearmory.com/psa-dagger-full-size-s-9mm-sw6-rmr-pistol-with-threaded-barrel-flat-dark-earth.html",
+			"price": 329.99,
+			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655202177_21126_1.jpg",
+			"image_file_name": "psa-dagger-full-size-s-9mm-sw6-rmr-pistol-with-threaded-barrel-flat-dark-earth.jpg",
+			"size": "full_size_s",
+			"width": 1.28,
+			"length": 7.65,
+			"height": 5.38,
+			"barrel_length": 4.5,
+			"longer_barrel": false,
+			"threaded_barrel": true,
+			"night_sight": false,
+			"compensated_slide": false,
+			"slide_color": "flat_dark_earth",
+			"slide_coating": "cerakote",
+			"frame_color": "flat_dark_earth",
+			"optic_compatibility": "rmr",
+			"mag_bag_bonus": false,
+			"number_of_included_mags": 1,
 			"mag_size": 17
 		},
 		{
@@ -2418,7 +2510,7 @@ const data: DaggersData = {
 			"mag_size": 17
 		},
 		{
-			"psa_product_name": "PSA Dagger Full Size-S , ECC, RMR, Threaded Barrel, Soft Case, With 10-17RD Mags, Black",
+			"psa_product_name": "PSA Dagger Full Size-S , ECC, RMR, Threaded Barrel, With 10-17RD Mags, Black",
 			"psa_url": "https://palmettostatearmory.com/psa-dagger-full-size-s-blk-blk-dlc-rmr-threaded-barrel-1-3-lower-soft-case-with-10-17rd-mags.html",
 			"price": 439.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655136908_3926_1.jpg",
@@ -2556,7 +2648,7 @@ const data: DaggersData = {
 			"mag_size": 15
 		},
 		{
-			"psa_product_name": "PSA Dagger Full Size - S 9mm ECC RMR Threaded Barrel Pistol With 10 17rd Magazines & Pistol Case, Flat Dark Earth",
+			"psa_product_name": "PSA Dagger Full Size - S 9mm ECC RMR Threaded Barrel Pistol With 10 17rd Magazines, Flat Dark Earth",
 			"psa_url": "https://palmettostatearmory.com/psa-full-size-s-9mm-ecc-rmr-threaded-barrel-lower-1-3-day-sights-pistol-with-10-17rd-magazines-pistol-case-flat-dark-earth.html",
 			"price": 439.99,
 			"original_product_image_url": "https://palmettostatearmory.com/media/catalog/product/cache/7af8331bf1196ca28793bd1e8f6ecc7b/d/g/dg02-51655136904_3926_1.jpg",
