@@ -42,7 +42,7 @@
 	const has_filter_options = $derived(displayed_filter_options.size > 0)
 </script>
 
-<div class="filters" class:card={has_filter_options} class:no-filter-options={!has_filter_options}>
+<div class="filters card" data-has-filter-options={has_filter_options}>
 	<div class="filters-pistol-size-selector">
 		<PistolSizeSelector
 			bind:size={params_with_defaults.size}
@@ -130,7 +130,7 @@
 	}
 
 	.filters-pistol-size-selector,
-	.filters.no-filter-options {
+	.filters[data-has-filter-options='false'] {
 		display: none;
 	}
 
@@ -139,7 +139,7 @@
 			display: block;
 		}
 
-		.filters.no-filter-options {
+		.filters[data-has-filter-options='false'] {
 			display: flex;
 		}
 	}
