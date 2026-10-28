@@ -38,9 +38,11 @@
 			}
 		})
 	}
+
+	const has_filter_options = $derived(displayed_filter_options.size > 0)
 </script>
 
-<div class="filters card">
+<div class="filters" class:card={has_filter_options} class:no-filter-options={!has_filter_options}>
 	<div class="filters-pistol-size-selector">
 		<PistolSizeSelector
 			bind:size={params_with_defaults.size}
@@ -127,13 +129,18 @@
 		flex-basis: max(300px, 20%);
 	}
 
-	.filters-pistol-size-selector {
+	.filters-pistol-size-selector,
+	.filters.no-filter-options {
 		display: none;
 	}
 
 	@media (max-width: 800px) {
 		.filters-pistol-size-selector {
 			display: block;
+		}
+
+		.filters.no-filter-options {
+			display: flex;
 		}
 	}
 </style>
