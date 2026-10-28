@@ -8,6 +8,7 @@
 	--white: #ffffff;
 
 	--spacing: 16px;
+	--card_padding: 16px;
 
 	@media (max-width: 800px) {
 		--spacing: 8px;
@@ -30,5 +31,5 @@ body {
 .card {
 	background-color: var(--light_color);
 	border-radius: 8px;
-	padding: 16px;
+	padding: var(--card_padding);
 }

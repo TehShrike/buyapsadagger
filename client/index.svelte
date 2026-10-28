@@ -30,6 +30,7 @@
 	const displayed_filter_options = $derived(
 		get_displayed_filter_options_for_size(params_with_defaults.size),
 	)
+	const has_filter_options = $derived(displayed_filter_options.size > 0)
 
 	const ignore_filter_options_that_are_not_displayed = (
 		displayed_filter_options: Map<FilterParamKey, Set<string | boolean>>,
@@ -140,9 +141,10 @@
 	{#if size_is_out_of_stock}
 		<div class="card out-of-stock">Out of stock at the moment</div>
 	{:else}
-		<div class="filters-and-results">
+		<div class="filters-and-results" data-has-filter-options={has_filter_options}>
 			<Filters
 				{displayed_filter_options}
+				{has_filter_options}
 				{params_with_defaults}
 				{get_altered_query_string}
 				{should_this_option_be_enabled}
@@ -206,11 +208,17 @@
 	}
 
 	.filters-and-results {
+		--filters_pane_width: max(300px, 20%);
+		--filters_and_results_gap: calc(var(--spacing) * 1.5);
 		display: flex;
 		flex-direction: row;
 		align-items: flex-start;
 		justify-content: space-between;
-		gap: calc(var(--spacing) * 1.5);
+		gap: var(--filters_and_results_gap);
+	}
+
+	.filters-and-results[data-has-filter-options='false'] .products-grid {
+		margin-left: calc(var(--filters_pane_width) + 2 * var(--card_padding) + var(--filters_and_results_gap));
 	}
 
 	a {
@@ -225,6 +233,10 @@
 
 		.products-grid {
 			align-self: stretch;
+		}
+
+		.filters-and-results[data-has-filter-options='false'] .products-grid {
+			margin-left: 0;
 		}
 
 		.intro {

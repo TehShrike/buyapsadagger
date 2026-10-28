@@ -7,11 +7,13 @@
 
 	let {
 		displayed_filter_options,
+		has_filter_options,
 		params_with_defaults,
 		get_altered_query_string,
 		should_this_option_be_enabled,
 	}: {
 		displayed_filter_options: Map<FilterParamKey, Set<string | boolean>>
+		has_filter_options: boolean
 		params_with_defaults: FilterParams
 		get_altered_query_string: (param: string, value: string) => string
 		should_this_option_be_enabled: (key: FilterParamKey, value: FilterParams[FilterParamKey]) => boolean
@@ -38,8 +40,6 @@
 			}
 		})
 	}
-
-	const has_filter_options = $derived(displayed_filter_options.size > 0)
 </script>
 
 <div class="filters card" data-has-filter-options={has_filter_options}>
@@ -126,7 +126,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: var(--spacing);
-		flex-basis: max(300px, 20%);
+		flex-basis: var(--filters_pane_width);
 	}
 
 	.filters-pistol-size-selector,
